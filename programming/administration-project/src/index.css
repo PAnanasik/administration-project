@@ -1,0 +1,30 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@100;200;300;400;500;600;700;800;900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html {
+  overflow-x: hidden;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+  scroll-behavior: smooth;
+}
+
+.bg-dashboard {
+  background: #F6F6F6;
+  background-size: cover;
+}
+
+.bg-rectangle {
+  background-image: url(assets/dashboard/rectangles.svg);
+  border-top-right-radius: 12px;
+  border-bottom-right-radius: 12px;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
