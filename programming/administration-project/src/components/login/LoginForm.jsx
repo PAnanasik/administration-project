@@ -25,7 +25,7 @@ const LoginForm = () => {
     const InputIcon = ({ prop }) => {
         const array = [phoneInput, nameInput, mailInput, passwordInput]
         return (
-            <img src={array[prop]} alt="phone" className='absolute right-[20px] top-[11px] w-6 h-6'/>
+            <img src={array[prop]} alt="phone" className='absolute right-[20px] top-[18px] w-6 h-6'/>
         )
     }
 
@@ -47,11 +47,12 @@ const LoginForm = () => {
                 className={`${errors?.number ? styles.badInputStyles : styles.inputStyles} relative`}
                 placeholder="Номер телефона"
                 onInput={handleInput}
+                pattern="[7]\d{3}\d{3}\d{2}\d{2}"
+                title="Используйте формат: 79046585851"
                 {...register('number', {
                     required: "Поле обязательно к заполнению",
                     minLength: 11,
                     maxLength: 11,
-                    pattern: /^[0-9]+$/
                 }  
                 )}
                 />
@@ -101,7 +102,7 @@ const LoginForm = () => {
 
 
     return (
-        <section className='bg-white w-full h-[100vh] flex justify-center items-center px-[20px]'>
+        <section className='bg-white w-full lg:h-full h-[100vh] flex justify-center items-center px-[20px]'>
             <div className='lg:min-w-[600px] min-w-[200px]'>
                 <h1 className={`${styles.sectionHeadText} text-center`}>Войти в аккаунт</h1>
                 <h1 className={`${styles.sectionSubText} text-center`}>Мы вновь вас приветствуем!</h1>
@@ -117,7 +118,8 @@ const LoginForm = () => {
                 onSubmit={handleSubmit(onSubmit)}>
                     <InputCardPhone />
                     <InputCardPassword />
-                    <input type="submit" value="Войти" className='bg-primary p-4 rounded-[8px] text-white font-medium'/>
+                    <input type="submit" value="Войти" className='bg-primary p-4 rounded-[8px] text-white font-medium
+                    ease duration-300 hover:bg-hover cursor-pointer mt-[15px]'/>
                     <div className='flex mb-1 justify-center text-center'>
                         <p>Еще нет аккаунта? <a href="#" className='text-primary underline underline-offset-4'>Зарегистрируйтесь</a></p>
                     </div>

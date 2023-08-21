@@ -7,6 +7,7 @@ import avatar from './dashboard/avatar.png'
 import surnameDashboard from './surname-dashboard.png'
 import arrowExpanded from './dashboard/arrow-expanded.svg'
 import arrowExpand from './dashboard/arrow-expand.svg'
+import scan from './dashboard/receipt-scan-dashboard.png'
 
 export {
     phoneInput,
@@ -16,5 +17,6 @@ export {
     avatar,
     surnameDashboard,
     arrowExpanded,
-    arrowExpand
+    arrowExpand,
+    scan
 }

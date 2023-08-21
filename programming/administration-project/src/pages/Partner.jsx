@@ -1,6 +1,6 @@
 import React from 'react'
 import { Navbar, DashboardPartner } from '../components'
-import Background from '../components/dashboard/canvas/Background'
+import Background from '../components/partner/canvas/Background'
 
 
 const Partner = () => {

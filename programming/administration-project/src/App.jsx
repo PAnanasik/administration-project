@@ -1,12 +1,14 @@
-import Background from "./components/dashboard/canvas/Background"
+import Background from "./components/partner/canvas/Background"
 import Client from "./pages/Client"
-// import Login from "./pages/Login"
+import Partner from "./pages/Partner"
+import Login from "./pages/Login"
+import Registration from "./pages/Registration"
+
 function App() {
 
   return (
     <div>
-      <Client />
-      <Background />
+      <Login />
     </div>
   )
 }

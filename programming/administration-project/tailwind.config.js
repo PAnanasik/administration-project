@@ -8,7 +8,8 @@ export default {
     extend: {
       colors: {
         primary: "#2B6DEB",
-        input: "#F5F5F5"
+        input: "#F5F5F5",
+        hover: "#165bda"
       },
       screens: {
         xs: "480px",
