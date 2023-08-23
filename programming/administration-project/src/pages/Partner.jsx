@@ -1,6 +1,5 @@
 import React from 'react'
 import { Navbar, DashboardPartner } from '../components'
-import Background from '../components/partner/canvas/Background'
 
 
 const Partner = () => {
@@ -9,7 +8,6 @@ const Partner = () => {
         <Navbar />
         <div className='relative z-0'>
             <DashboardPartner />
-            <Background />
         </div>
     </div>
   )

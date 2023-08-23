@@ -2,9 +2,14 @@ import React, { useState } from 'react'
 import { styles } from '../../styles'
 import { useForm } from 'react-hook-form';
 import { mailInput, nameInput, passwordInput, phoneInput } from '../../assets';
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 
 const RegistrationForm = () => {
-    const [partner, setPartner] = useState(true)
+
+    const navigate = useNavigate()
+    const [partner, setPartner] = useState(false)
+    const [redirect, setRedirect] = useState(false)
 
     const {
         register,
@@ -14,11 +19,34 @@ const RegistrationForm = () => {
         handleSubmit,
         reset,
     } = useForm({
-        mode: "onBlur"
+        mode: "onBlur",
     });
 
-    const onSubmit = (data) => {
-        alert(JSON.stringify(data));
+    const onSubmit = async (data, event) => {
+        event.preventDefault()
+        axios({
+            method: "post",
+            url: "http://127.0.0.1:8000/api/v1/auth/users/",
+            data: data,
+            headers: { "Content-Type": "application/json" },
+            })
+            .then(function (response) {
+                //handle success
+                setRedirect(true);
+                console.log(response);
+            })
+            .catch(function (response) {
+                //handle error
+                console.log(response);
+        });
+
+
+        if (redirect) {
+            navigate("/login")
+        }
+
+        console.log(data)
+
         reset();
     }
 
@@ -41,25 +69,25 @@ const RegistrationForm = () => {
             }
         }
         return (
-            <div className="relative h-12 w-full">
+            <div className="relative h-[60px] w-full">
                 <input
                 type='text'
                 className={`${errors?.number ? styles.badInputStyles : styles.inputStyles} relative`}
                 placeholder="Номер телефона"
                 onInput={handleInput}
-                pattern="[7]\d{3}\d{3}\d{2}\d{2}"
-                title="Используйте формат: 79046585851"
-                {...register('number', {
+                pattern="[+][7]\d{3}\d{3}\d{2}\d{2}"
+                title="Используйте формат: +79046585851"
+                {...register('phone', {
                     required: "Поле обязательно к заполнению",
-                    minLength: 11,
-                    maxLength: 11,
+                    minLength: 12,
+                    maxLength: 12,
                 }  
                 )}
                 />
                 {active && <InputIcon prop={0} />}
                 <div className="mt-1">
                 {errors?.number && <p className="text-red-500 text-[12px]">
-                    {errors?.number?.message || "Длина номера 11 цифр" || "Ошибка!"}
+                    {errors?.number?.message || "Длина номера 12 символов" || "Ошибка!"}
                     </p>}
                 </div>
             </div>
@@ -77,13 +105,13 @@ const RegistrationForm = () => {
             }
         }
         return (
-            <div className="relative h-12 w-full">
+            <div className="relative h-[60px] w-full">
                 <input
                 type='text'
-                className={`${errors?.firstName ? styles.badInputStyles : styles.inputStyles}`}
+                className={`${errors?.fio ? styles.badInputStyles : styles.inputStyles}`}
                 placeholder="ФИО"
                 onInput={handleInput}
-                {...register('firstName', {
+                {...register('fio', {
                     required: "Поле обязательно к заполнению",
                     pattern: /^[А-Яа-я]+$/
                 }  
@@ -91,13 +119,48 @@ const RegistrationForm = () => {
                 />
                 {active && <InputIcon prop={1} />}
                 <div className="mt-1">
-                {errors?.firstName && <p className="text-red-500 text-[12px]">
-                    {errors?.firstName?.message || "Только буквы русского алфавита" || "Ошибка!"}
+                {errors?.fio && <p className="text-red-500 text-[12px]">
+                    {errors?.fio?.message || "Только буквы русского алфавита" || "Ошибка!"}
                     </p>}
                 </div>
             </div>
         )
     }
+
+    const InputCardCompany = () => {
+        const [active, setActive] = useState(true)
+
+        function handleInput(event) {
+            if (event.target.value == 0) {
+                setActive(true)
+            } 
+            else {
+                setActive(false)
+            }
+        }
+        return (
+            <div className="relative h-[60px] w-full">
+                <input
+                type='text'
+                className={`${errors?.name ? styles.badInputStyles : styles.inputStyles}`}
+                placeholder="Название компании"
+                onInput={handleInput}
+                {...register('name', {
+                    required: "Поле обязательно к заполнению",
+                    pattern: /^[А-Яа-я]+$/
+                }  
+                )}
+                />
+                {active && <InputIcon prop={1} />}
+                <div className="mt-1">
+                {errors?.name && <p className="text-red-500 text-[12px]">
+                    {errors?.name?.message || "Только буквы русского алфавита" || "Ошибка!"}
+                    </p>}
+                </div>
+            </div>
+        )
+    }
+
     const InputCardMail = () => {
         const [active, setActive] = useState(true)
 
@@ -110,13 +173,13 @@ const RegistrationForm = () => {
             }
         }
         return (
-            <div className="relative h-12 w-full">
+            <div className="relative h-[60px] w-full">
                 <input
                 type='email'
-                className={`${errors?.mail ? styles.badInputStyles : styles.inputStyles}`}
+                className={`${errors?.email ? styles.badInputStyles : styles.inputStyles}`}
                 placeholder="Почта"
                 onInput={handleInput}
-                {...register('mail', {
+                {...register('email', {
                     required: "Поле обязательно к заполнению",
                     pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
                 }  
@@ -124,8 +187,8 @@ const RegistrationForm = () => {
                 />
                 {active && <InputIcon prop={2} />}
                 <div className="mt-1">
-                {errors?.mail && <p className="text-red-500 text-[12px]">
-                    {errors?.mail?.message || "Неверный формат почты" || "Ошибка!"}
+                {errors?.email && <p className="text-red-500 text-[12px]">
+                    {errors?.email?.message || "Неверный формат почты" || "Ошибка!"}
                     </p>}
                 </div>
             </div>
@@ -165,23 +228,27 @@ const RegistrationForm = () => {
         )
     }
 
-
     return (
         <section className='bg-white w-full h-full flex justify-center items-center px-[20px] my-[30px]'>
             <div className='lg:min-w-[600px] min-w-[200px]'>
                 <h1 className={`${styles.sectionHeadText} text-center`}>Зарегистрироваться</h1>
                 <div className='flex w-full justify-center my-[30px]'>
-                    <button className={`${partner ? 'bg-primary text-white' : 'bg-input text-black'} p-2 
+                    <button className={`${partner ? 'bg-input text-black' : 'bg-primary text-white'} p-2 
                     rounded-l-[8px] max-w-[150px] w-full`}
                     onClick={() => setPartner(!partner)}>Клиент</button>
-                    <button className={`${partner ? 'bg-input text-black' : 'bg-primary text-white'} p-2 
+                    <button className={`${partner ? 'bg-primary text-white' : 'bg-input text-black'} p-2 
                     rounded-r-[8px] max-w-[150px] w-full`}
-                    onClick={() => setPartner(!partner)}>Партнер</button>
+                    onClick={() => setPartner(!partner)}
+                    {...register('method', {
+                        value: `${partner ? 'company' : 'client'}`
+                    }  
+                    )}>Партнер</button>
                 </div>
-                <form className='flex flex-col gap-[35px]'
+                <form className='flex flex-col gap-[40px]'
                 onSubmit={handleSubmit(onSubmit)}>
                     <InputCardPhone />
-                    <InputCardName />
+                    {partner && <InputCardName />}
+                    {!partner && <InputCardCompany />}
                     <InputCardMail />
                     <InputCardPassword />
                     <div className='flex gap-[10px] items-center'>
@@ -191,7 +258,7 @@ const RegistrationForm = () => {
                     <input type="submit" value="Зарегистрироваться" className='bg-primary p-4 rounded-[8px] text-white font-medium
                     ease duration-300 hover:bg-hover cursor-pointer'/>
                     <div className='flex mb-1 justify-center text-center'>
-                        <p>Уже есть аккаунт? <a href="#" className='text-primary underline underline-offset-4'>Войдите</a></p>
+                        <p>Уже есть аккаунт? <a href="/login" className='text-primary underline underline-offset-4'>Войдите</a></p>
                     </div>
                 </form>
             </div>

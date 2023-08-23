@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { styles } from '../../styles'
-import { arrowExpand, arrowExpanded, avatar, nameInput, phoneInput, surnameDashboard} from '../../assets'
+import { arrowExpand, arrowExpanded, avatar, mailInput, nameInput, phoneInput, surnameDashboard} from '../../assets'
 
 import { Navigation } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,12 +9,16 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
 
-const DashboardPartner = () => {
+const DashboardPartner = ({ response }) => {
+  const [name, setName] = useState('')
+  console.log(response)
+  
+
   const Intro = () => {
     return (
-      <div className='w-full h-[200px] flex md:justify-between justify-center items-center md:text-left text-center 
-      bg-white rounded-[12px] md:pl-[40px] pl-0 relative'>
-        <h2 className={`${styles.sectionHeadText}`}>Добрый день, <br /><span>Your name</span></h2>
+      <div className='relative w-full h-[200px] flex md:justify-between justify-center items-center md:text-left text-center 
+      bg-white rounded-[12px] md:pl-[40px] pl-0'>
+        <h2 className={`${styles.sectionHeadText}`}>Добрый день, <br /><span>{response.fio}</span></h2>
         <div className='md:block hidden absolute w-[600px] right-0 h-full bg-rectangle'>
         </div>
       </div>
@@ -23,20 +27,19 @@ const DashboardPartner = () => {
 
   const ContactInfo = () => {
     return (
-      <section className='mt-[15px] flex-1'>
+      <section className='relative mt-[15px] flex-1'>
         <h2 className={`${styles.dashboardItemSubtitle}`}>Контактная информация</h2>
         <div className='bg-white w-full md:h-[200px] mt-[15px] rounded-[12px] md:px-[30px] px-[10px] h-full'>
           <div className='flex md:flex-row flex-col w-full h-full items-center py-[10px]'>
-            <div className='mb-[20px]'>
+            {/* <div className='mb-[20px]'>
               <img src={avatar} alt="" className='w-[100px] h-[100px] md:mr-[30px]'/>
-            </div>
-            <div className='md:ml-[30px] md:pl-[30px] px-[10px] py-[20px] w-full h-full flex flex-col justify-center gap-[10px] border-solid 
-            md:border-l-[1px] md:border-t-transparent border-t-[1px] border-[#E9E9E9]'>
+            </div> */}
+            <div className='px-[10px] py-[20px] w-full h-full flex flex-col justify-center gap-[10px]'>
               <div className='relative'>
                 <input
                   type='text'
                   className={`${styles.dashboardInputStyles} relative`}
-                  value="Евгений"
+                  value={response.fio}
                   disabled
                   />
                 <img src={nameInput} alt="name-icon" className='absolute left-[20px] top-[11px] w-6 h-6'/>
@@ -46,21 +49,22 @@ const DashboardPartner = () => {
                 <input
                   type='text'
                   className={`${styles.dashboardInputStyles} relative`}
-                  value="Смуглов"
+                  value={response.email}
                   disabled
                   />
-                <img src={surnameDashboard} alt="name-icon" className='absolute left-[20px] top-[11px] w-6 h-6'/>
+                <img src={mailInput} alt="name-icon" className='absolute left-[20px] top-[11px] w-6 h-6'/>
               </div>
 
               <div className='relative'>
                 <input
                   type='text'
                   className={`${styles.dashboardInputStyles} relative`}
-                  value="79046738007"
+                  value={response.phone}
                   disabled
                   />
                 <img src={phoneInput} alt="name-icon" className='absolute left-[20px] top-[11px] w-6 h-6'/>
               </div>
+
             </div>
           </div>
         </div>
@@ -171,14 +175,16 @@ const DashboardPartner = () => {
   }
 
   return (
-    <section className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px]'>
-      <Intro />
-      <div className='flex md:flex-row flex-col md:gap-[30px] gap-0'>
-        <div className='flex md:w-1/2 w-full flex-col h-full'>
-          <ContactInfo />
-          <PartnersSlider />
+    <section className='w-full h-full bgdashboard'>
+      <div className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px]'>
+        <Intro />
+        <div className='flex md:flex-row flex-col md:gap-[30px] gap-0'>
+          <div className='flex md:w-1/2 w-full flex-col h-full'>
+            <ContactInfo />
+            <PartnersSlider />
+          </div>
+          <HistoryInfo />
         </div>
-        <HistoryInfo />
       </div>
     </section>
   )

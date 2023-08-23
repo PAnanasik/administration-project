@@ -30,26 +30,27 @@ const DashboardPartner = () => {
             className={`${errors?.number ? styles.badInputStyles : styles.inputStyles} relative`}
             placeholder="Номер телефона"
             onInput={handleInput}
-            pattern="[\+][7]\d{3}\d{3}\d{2}\d{2}"
+            pattern="[+][7]\d{3}\d{3}\d{2}\d{2}"
             title="Используйте формат: +79046585851"
             {...register('number', {
                 required: "Поле обязательно к заполнению",
-                minLength: 11,
-                maxLength: 11,
+                minLength: 12,
+                maxLength: 12,
             }  
             )}
             />
             {active && <InputIcon prop={0} />}
             <div className="mt-1">
               {errors?.number && <p className="text-red-500 text-[12px]">
-                {errors?.number?.message || "Длина номера 11 цифр" || "Ошибка!"}
+                {errors?.number?.message || "Длина номера 12 символов" || "Ошибка!"}
                 </p>}
             </div>
         </div>
     )
   }
 
-  const InputCardPhoneNext = () => {
+
+  const InputCardName = () => {
     const [active, setActive] = useState(true)
 
     function handleInput(event) {
@@ -63,25 +64,27 @@ const DashboardPartner = () => {
     return (
         <div className="relative h-[60px] w-full">
             <input
-            type='tel'
-            className={`${errors?.numbernext ? styles.badInputStyles : styles.inputStyles} relative`}
-            placeholder="Номер телефона"
+            type='text'
+            className={`${errors?.firstName ? styles.badInputStyles : styles.inputStyles}`}
+            placeholder="ФИО"
             onInput={handleInput}
-            pattern="[7]\d{3}\d{3}\d{2}\d{2}"
-            title="Используйте формат: 79046585851"
-            required
+            {...register('firstName', {
+                required: "Поле обязательно к заполнению",
+                pattern: /^[А-Яа-я]+$/
+            }  
+            )}
             />
-            {active && <InputIcon prop={0} />}
+            {active && <InputIcon prop={1} />}
             <div className="mt-1">
-              {errors?.numbernext && <p className="text-red-500 text-[12px]">
-                {errors?.numbernext?.message || "Длина номера 11 цифр" || "Ошибка!"}
+            {errors?.firstName && <p className="text-red-500 text-[12px]">
+                {errors?.firstName?.message || "Только буквы русского алфавита" || "Ошибка!"}
                 </p>}
             </div>
         </div>
     )
-  }
+}
 
-  const InputCardName = () => {
+    const InputCardPhoneNext = () => {
       const [active, setActive] = useState(true)
 
       function handleInput(event) {
@@ -96,24 +99,124 @@ const DashboardPartner = () => {
           <div className="relative h-[60px] w-full">
               <input
               type='text'
-              className={`${errors?.firstName ? styles.badInputStyles : styles.inputStyles}`}
-              placeholder="ФИО"
+              className={`${errors?.numbernext ? styles.badInputStyles : styles.inputStyles} relative`}
+              placeholder="Номер телефона"
               onInput={handleInput}
-              {...register('firstName', {
-                  required: "Поле обязательно к заполнению",
-                  pattern: /^[А-Яа-я]+$/
-              }  
-              )}
+              pattern="[+][7]\d{3}\d{3}\d{2}\d{2}"
+              title="Используйте формат: +79046585851"
+              required
               />
-              {active && <InputIcon prop={1} />}
+              {active && <InputIcon prop={0} />}
               <div className="mt-1">
-              {errors?.firstName && <p className="text-red-500 text-[12px]">
-                  {errors?.firstName?.message || "Только буквы русского алфавита" || "Ошибка!"}
+                {errors?.numbernext && <p className="text-red-500 text-[12px]">
+                  {errors?.numbernext?.message || "Длина номера 12 цифр" || "Ошибка!"}
                   </p>}
               </div>
           </div>
       )
-}
+    }
+
+  const InputCardReceipt = () => {
+    const [active, setActive] = useState(true)
+
+    function handleInput(event) {
+        if (event.target.value == 0) {
+            setActive(true)
+        } 
+        else {
+            setActive(false)
+        }
+    }
+    return (
+        <div className="relative h-[60px] w-full">
+            <input
+            type='text'
+            className={`${errors?.receipt ? styles.badInputStyles : styles.inputStyles}`}
+            placeholder="Номер чека"
+            onInput={handleInput}
+            {...register('receipt', {
+                required: "Поле обязательно к заполнению",
+                pattern: /^[А-Яа-я]+$/
+            }  
+            )}
+            />
+            {active && <InputIcon prop={1} />}
+            <div className="mt-1">
+            {errors?.receipt && <p className="text-red-500 text-[12px]">
+                {errors?.receipt?.message || "Длина чека должна быть больше 0 цифр" || "Ошибка!"}
+                </p>}
+            </div>
+        </div>
+    )
+  }
+
+  const InputCardCash = () => {
+    const [active, setActive] = useState(true)
+
+    function handleInput(event) {
+        if (event.target.value == 0) {
+            setActive(true)
+        } 
+        else {
+            setActive(false)
+        }
+    }
+    return (
+        <div className="relative h-[60px] w-full">
+            <input
+            type='cash'
+            className={`${errors?.cash ? styles.badInputStyles : styles.inputStyles}`}
+            placeholder="Сумма покупки"
+            onInput={handleInput}
+            {...register('cash', {
+                required: "Поле обязательно к заполнению",
+                pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+            }  
+            )}
+            />
+            {active && <InputIcon prop={2} />}
+            <div className="mt-1">
+            {errors?.cash && <p className="text-red-500 text-[12px]">
+                {errors?.cash?.message || "Неверный формат" || "Ошибка!"}
+                </p>}
+            </div>
+        </div>
+    )
+  }
+
+  const InputCardDate = () => {
+    const [active, setActive] = useState(true)
+
+    function handleInput(event) {
+        if (event.target.value == 0) {
+            setActive(true)
+        } 
+        else {
+            setActive(false)
+        }
+    }
+    return (
+        <div className="relative h-[60px] w-full">
+            <input
+            type='cash'
+            className={`${errors?.date ? styles.badInputStyles : styles.inputStyles}`}
+            placeholder="Дата и время покупки"
+            onInput={handleInput}
+            {...register('date', {
+                required: "Поле обязательно к заполнению",
+                pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+            }  
+            )}
+            />
+            {active && <InputIcon prop={2} />}
+            <div className="mt-1">
+            {errors?.date && <p className="text-red-500 text-[12px]">
+                {errors?.date?.message || "Неверный формат" || "Ошибка!"}
+                </p>}
+            </div>
+        </div>
+    )
+  }
 
 
   const {
@@ -127,9 +230,24 @@ const DashboardPartner = () => {
       mode: "onBlur"
   });
 
-  const onSubmit = (data) => {
-      alert(JSON.stringify(data));
-      reset();
+  const onSubmit = async (data, event) => {
+    event.preventDefault()
+    axios({
+        method: "post",
+        url: "http://localhost:8000/api/v1/add_cheque/",
+        data: data,
+        headers: { "Content-Type": "application/json" },
+        })
+        .then(function (response) {
+            //handle success
+            console.log(response);
+        })
+        .catch(function (response) {
+            //handle error
+            console.log(response);
+    });
+
+    reset();
   }
     
   const Intro = () => {
@@ -162,35 +280,20 @@ const DashboardPartner = () => {
   }
 
   const AddPurchase = () => {
-    const [matches, setMatches] = useState(
-      window.matchMedia("(min-width: 768px)").matches
-    )
-  
-    useEffect(() => {
-      window
-      .matchMedia("(min-width: 768px)")
-      .addEventListener('change', event => setMatches(event.matches));
-
-      matches ? 
-      document.querySelector('#scan-input').disabled = true :
-      document.querySelector('#scan-input').disabled = false
-    }, []);
 
     return (
       <section className='mt-[15px] flex-1'>
         <h2 className={`${styles.dashboardItemSubtitle}`}>Добавить покупку</h2>
-        <div className='bg-white w-full h-[300px] mt-[15px] rounded-[12px] md:px-[30px] px-[10px]'>
-          <form className='w-full flex flex-col md:gap-[30px] gap-[15px] h-full justify-center'>
+        <div className='bg-white w-full max-h-[900px] p-[30px] mt-[15px] rounded-[12px] md:px-[30px] px-[10px]'>
+          <form className='w-full flex flex-col md:gap-[30px] gap-[15px] h-full justify-center' onSubmit={handleSubmit(onSubmit)}>
               <InputCardPhoneNext />
-              <p className='text-[16px] text-[#9B9B9B]'>
-                Чтобы сканировать чек вам нужно воспользоваться камерой телефона. 
-                Зайдите на сайт с мобильного устройства.
-              </p>
+              <InputCardReceipt />
+              <InputCardCash />
+              <InputCardDate />
               <button type='submit' className='bg-primary p-4 rounded-[8px] text-white font-medium md:w-1/2 w-full 
               mt-[10px] flex justify-center relative ease duration-300 hover:bg-hover'>
                 <img src={scan} alt="" className='w-6 h-6'/>
-                <p>Сканировать чек</p>
-                <input type="file" accept="image/*;capture=camera" className='opacity-0 absolute w-full h-full top-0' id="scan-input"/>
+                <p>Добавить чек</p>
               </button>
             </form>
         </div>
@@ -199,12 +302,14 @@ const DashboardPartner = () => {
   }
 
   return (
-    <section className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px]'>
-      <Intro />
-      <div className='flex md:flex-row flex-col md:gap-[30px] gap-0'>
-          <AddClient />
-          <AddPurchase />
-        
+    <section className='w-full h-full bgdashboard'>
+      <div className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px] '>
+        <Intro />
+        <div className='flex md:flex-row flex-col md:gap-[30px] gap-0'>
+            <AddClient />
+            <AddPurchase />
+          
+        </div>
       </div>
     </section>
   )

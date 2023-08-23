@@ -1,7 +1,10 @@
 import React from 'react'
 import { avatar } from '../../assets'
+import { useContext } from 'react';
+import { UserContext } from '../../App';
 
 const Navbar = () => {
+  const { user, setUser } = useContext(UserContext);
   return (
     <div className='h-[80px] bg-white'>
         <nav className='md:px-[30px] px-[15px] h-full max-w-[1640px] mx-auto'>
@@ -10,6 +13,7 @@ const Navbar = () => {
                 <div className='flex items-center gap-[20px]'>
                     <p className='md:text-[16px] text-[14px] font-medium'>9491 бонусов</p>
                     <img src={avatar} alt="dfaafdfad" className='w-14 h-14 md:block hidden'/>
+                    <a href="" className='md:text-[16px] text-[14px] font-normal' onClick={() => setUser({ loggedIn: false })}>Выйти</a>
                 </div>
             </div>
         </nav>

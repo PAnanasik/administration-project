@@ -4,7 +4,7 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body {
+html {
   overflow-x: hidden;
 }
 
@@ -16,10 +16,12 @@ html, body {
   scroll-behavior: smooth;
 }
 
-.bg-dashboard {
+.bgdashboard {
   background: #F6F6F6;
+  /* background-position: top; */
+  /* background-size: cover; */
   background-size: cover;
-  color: #165bda
+  content-visibility: auto;
 }
 
 .bg-rectangle {

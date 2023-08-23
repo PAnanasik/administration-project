@@ -1,14 +1,14 @@
 import React from 'react'
 import { Navbar, DashboardClient } from '../components'
-import Background from '../components/client/canvas/Background'
+import Background from '../components/canvas/Background'
 
 
-const Client = () => {
+const Client = ({ response }) => {
   return (
     <div>
         <Navbar />
         <div className='relative z-0'>
-            <DashboardClient />
+            <DashboardClient response={response} />
             <Background />
         </div>
     </div>
