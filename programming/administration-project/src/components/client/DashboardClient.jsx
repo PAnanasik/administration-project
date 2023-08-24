@@ -97,7 +97,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
       const [expanded, setExpanded] = useState(false)
       const HistoryItemDesc = () => {
         return (
-          <div className='flex flex-col gap-[10px] my-[20px]'>
+          <div className='flex flex-col gap-[10px] py-[20px] px-[30px] border-solid border-b-[1px] border-[#D2D2D2]'>
             <p>Цена: {amount}</p>
             <p>Дата покупки: {date}</p>
             <div className='flex items-center gap-[8px]'>
@@ -112,9 +112,9 @@ const DashboardPartner = ({ responseLogin, token }) => {
         )
       }
       return (
-        <div className='rounded-[8px] px-[15px]'>
-            <div className={`${expanded ? 'border-solid border-b-[1px] border-[#d1d1d1]' : 'border-none'} 
-            w-full h-[60px] flex justify-between items-center`}>
+        <div className='rounded-[8px]'>
+            <div className={`border-solid border-b-[1px] border-[#D2D2D2]
+            w-full h-[60px] flex justify-between items-center px-[30px]`}>
               <h2 className={`${styles.dashboardItemTitle}`}>{name}</h2>
               <button onClick={() => setExpanded(!expanded)}>
                 <img src={expanded ? arrowExpanded : arrowExpand} alt="" className='w-4 h-4'/>
@@ -129,14 +129,13 @@ const DashboardPartner = ({ responseLogin, token }) => {
     return (
       <section className='mt-[15px] flex-1'>
         <h2 className={`${styles.dashboardItemSubtitle}`}>История покупок</h2>
-        <div className='bg-white w-full min-h-[460px] mt-[15px] rounded-[12px]
-        border-solid border-[1px] border-[#D2D2D2]'>
+        <div className='bg-white w-full min-h-[460px] mt-[15px] rounded-[12px] border-solid border-[1px] border-[#D2D2D2]'>
             <div className='bg-input w-full h-[60px] rounded-t-[12px] flex justify-between items-center px-[30px] font-medium
             border-solid border-b-[1px] border-[#D2D2D2]'>
-                <h2>Партнер</h2>
-                <h2>{matches? 'Клиенты' : 'Информация'}</h2>
+                <h2>Товар</h2>
+                <h2>Информация</h2>
             </div>
-            <div className='[&>*:nth-child(10)]:border-transparent'>
+            <div className='[&>*:nth-child(6)]:border-transparent'>
                 {state.map((item, index) => (
                   <HistoryItem key={index} {...item}/>
                 ))}
