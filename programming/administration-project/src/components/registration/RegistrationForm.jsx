@@ -6,10 +6,12 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 
 const RegistrationForm = () => {
+    console.log(document.querySelector("#bla-bla"))
 
     const navigate = useNavigate()
     const [partner, setPartner] = useState(false)
     const [redirect, setRedirect] = useState(false)
+    console.log(partner)
 
     const {
         register,
@@ -236,14 +238,11 @@ const RegistrationForm = () => {
                 <div className='flex w-full justify-center my-[30px]'>
                     <button className={`${partner ? 'bg-input text-black' : 'bg-primary text-white'} p-2 
                     rounded-l-[8px] max-w-[150px] w-full`}
-                    onClick={() => setPartner(!partner)}>Клиент</button>
+                    onClick={() => setPartner(!partner)}
+                    >Клиент</button>
                     <button className={`${partner ? 'bg-primary text-white' : 'bg-input text-black'} p-2 
                     rounded-r-[8px] max-w-[150px] w-full`}
-                    onClick={() => setPartner(!partner)}
-                    {...register('method', {
-                        value: `${partner ? 'company' : 'client'}`
-                    }  
-                    )}>Партнер</button>
+                    onClick={() => setPartner(!partner)}>Партнер</button>
                 </div>
                 <form className='flex flex-col gap-[40px]'
                 onSubmit={handleSubmit(onSubmit)}>
@@ -256,8 +255,12 @@ const RegistrationForm = () => {
                         <input type="checkbox" className='w-4 h-4' required/>
                         <p>Продолжая, вы принимаете какую-то там <a href="#" className='text-primary underline underline-offset-4'>оферту</a></p>
                     </div>
-                    <input type="submit" value="Зарегистрироваться" className='bg-primary p-4 rounded-[8px] text-white font-medium
-                    ease duration-300 hover:bg-hover cursor-pointer'/>
+                    <button type="submit" className='bg-primary p-4 rounded-[8px] text-white font-medium
+                    ease duration-300 hover:bg-hover cursor-pointer'
+                    {...register('method', {
+                        value: `${partner ? 'company' : 'client'}`
+                    }  
+                    )}>Зарегистрироваться</button>
                     <div className='flex mb-1 justify-center text-center'>
                         <p>Уже есть аккаунт? <a href="/login" className='text-primary underline underline-offset-4'>Войдите</a></p>
                     </div>

@@ -20,7 +20,9 @@ const styles = {
   badInputStyles:
     "relative h-[60px] w-full bg-[#F5F5F5] px-[20px] rounded-[8px] outline-red-400 text-[18px]",
   dashboardInputStyles:
-    "relative h-12 w-full bg-[#F5F5F5] pl-[60px] rounded-[8px] focus:outline-primary text-[18px]",
+    "relative h-[60px] w-full bg-[#F5F5F5] pl-[60px] rounded-[8px] focus:outline-primary text-[18px]",
+  dashboardInputAvatarStyles:
+    "relative h-[60px] w-full bg-[#F5F5F5] rounded-[8px] focus:outline-primary text-[18px]",
 };
 
 export { styles }

@@ -45,7 +45,7 @@ const LoginForm = () => {
                 withCredentials: true
                 })
                 .then(function (response) {
-                    setResponseAuth({ loggedIn: true, response: response.data[0], token: token });
+                    setResponseAuth({ loggedIn: true, responseLogin: response.data[0], token: token });
                     setRedirection(true);
                     console.log(response.data[0]);
                     console.log(pcUrl);

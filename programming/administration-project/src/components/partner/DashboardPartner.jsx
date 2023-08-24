@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useContext, createContext } from 'react'
 import { styles } from '../../styles'
 import { arrowExpand, arrowExpanded, nameInput, phoneInput, scan } from '../../assets'
-import { useForm } from 'react-hook-form';
+import { get, useForm } from 'react-hook-form';
 import axios from 'axios';
 
-const DashboardPartner = ({ token }) => {
+const DashboardPartner = ({ token, responseLogin }) => {
+    console.log(token)
     const UserResponseContext = createContext()
 
     const [selectedCategory, setSelectedCategory] = useState('')
-    const [userResponse, setUserResponse] = useState({ response: '' })
+    const [userResponse, setUserResponse] = useState({ response: '', responseError: '' })
 
     console.log(selectedCategory)
 
@@ -229,39 +230,7 @@ const DashboardPartner = ({ token }) => {
         </div>
     )
   }
-  const InputCardPartnerName = () => {
-    const [active, setActive] = useState(true)
 
-    function handleInput(event) {
-        if (event.target.value == 0) {
-            setActive(true)
-        } 
-        else {
-            setActive(false)
-        }
-    }
-    return (
-        <div className="relative h-[60px] w-full">
-            <input
-            type='text'
-            className={`${errors?.name_partner ? styles.badInputStyles : styles.inputStyles}`}
-            placeholder="Название компании"
-            onInput={handleInput}
-            {...register('name_partner', {
-                required: "Поле обязательно к заполнению",
-                // pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
-            }  
-            )}
-            />
-            {active && <InputIcon prop={2} />}
-            <div className="mt-1">
-            {errors?.name_partner && <p className="text-red-500 text-[12px]">
-                {errors?.name_partner?.message || "Неверный формат" || "Ошибка!"}
-                </p>}
-            </div>
-        </div>
-    )
-  }
   const InputCardPurchaseName = () => {
     const [active, setActive] = useState(true)
 
@@ -375,8 +344,6 @@ const DashboardPartner = ({ token }) => {
     mode: "onBlur"
 });
 
-  console.log(token)
-
   const onSubmitAddPurchase = async (data, event) => {
     event.preventDefault()
     axios({
@@ -399,22 +366,26 @@ const DashboardPartner = ({ token }) => {
 
   const onSubmitAddClient = async (data, event) => {
     event.preventDefault()
+
     axios({
-        method: "post",
-        url: "http://localhost:8000/api/v1/future_clients/",
+        method: "POST",
+        url: "http://localhost:8000/api/v1/add_client/",
         data: data,
-        headers: { "Authorization": `token ${token}` },
+        headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `token ${token}` 
+        },
         withCredentials: true
         })
         .then(function (response) {
-            setResponse(response)
+            console.log(response);
         })
         .catch(function (response) {
             console.log(response);
     });
 
+    console.log(data)
     reset();
-    <ClientsList data={data} />
   }
 
     
@@ -422,14 +393,14 @@ const DashboardPartner = ({ token }) => {
     return (
       <div className='w-full h-[200px] flex md:justify-between justify-center items-center md:text-left text-center 
       bg-white rounded-[12px] md:pl-[40px] pl-0 relative'>
-        <h2 className={`${styles.sectionHeadText}`}>Добрый день, <br /><span>Your name</span></h2>
+        <h2 className={`${styles.sectionHeadText}`}>Добрый день, <br /><span>{responseLogin.name}</span></h2>
         <div className='md:block hidden absolute w-[600px] right-0 h-full bg-rectangle'>
         </div>
       </div>
     )
   }
 
-   const AddPurchase = () => {
+   const AddPurchase = ({ responseLogin }) => {
 
     return (
       <section className='mt-[15px] flex-1'>
@@ -442,12 +413,16 @@ const DashboardPartner = ({ token }) => {
               <InputCardReceipt />
               <InputCardCash />
               <InputCardDate />
-              <InputCardPartnerName />
               <InputCardPurchaseName />
               <InputCardBonusPercent />
               <InputCardCategories />
               <button type='submit' className='bg-primary p-4 rounded-[8px] text-white font-medium md:max-w-[400px] w-full 
-              mt-[10px] flex justify-center relative ease duration-300 hover:bg-hover gap-[10px]'>
+              mt-[10px] flex justify-center relative ease duration-300 hover:bg-hover gap-[10px]'
+              {...register('name_partner', {
+                value: `${responseLogin.name}`
+            }  
+            )}
+            >
                 <img src={scan} alt="" className='w-6 h-6'/>
                 <p>Добавить чек</p>
               </button>
@@ -457,7 +432,7 @@ const DashboardPartner = ({ token }) => {
     )
   }
 
-  const AddClient = () => {
+  const AddClient = ({ responseLogin }) => {
     return (
       <section className='mt-[15px] flex-1'>
         <h2 className={`${styles.dashboardItemSubtitle}`}>Добавить клиента</h2>
@@ -467,8 +442,14 @@ const DashboardPartner = ({ token }) => {
             <form key={2} action="" onSubmit={handleSubmit2(onSubmitAddClient)} className='w-full flex flex-col gap-[30px] h-full justify-center'>
               <InputCardPhone />
               <InputCardName />
-              <input type="submit" value="Добавить клиента" className='bg-primary p-4 rounded-[8px] text-white font-medium md:max-w-[400px]
-                w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer'/>
+              <button type="submit" className='bg-primary p-4 rounded-[8px] text-white font-medium md:max-w-[400px]
+                w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer'
+                {...register2('name_partner', {
+                    value: `${responseLogin.name}`
+                }  
+                )}>
+                    Добавить клиента
+                </button>
             </form>
           </div>
         </div>
@@ -476,7 +457,7 @@ const DashboardPartner = ({ token }) => {
     )
   }
 
-  const ClientItem = () => {
+  const ClientItem = ({ fio, phone }) => {
     const [expanded, setExpanded] = useState(false)
     const [matches, setMatches] = useState(
         window.matchMedia("(min-width: 560px)").matches
@@ -491,20 +472,25 @@ const DashboardPartner = ({ token }) => {
     const ItemDesc = () => {
         return (
           <div className='flex flex-col gap-[10px] h-[80px] justify-center px-[30px] border-solid border-t-[1px] border-[#D2D2D2]'>
-            <p className='font-medium'>Номер:  <span>+79046537705</span></p>
+            <p className='font-medium'>Номер: <span>{phone}</span></p>
           </div>
         )
       }
 
     return (
-        <div className='border-solid border-b-[1px] border-[#D2D2D2]'>
+        <div className='border-solid border-b-[1px] border-[#D2D2D2] cursor-pointer'>
             <div className='w-full h-[80px] flex flex-row justify-between items-center 
             font-medium relative px-[30px]'>
                 <div className='flex gap-[10px] items-center'>
                     <div className='w-[40px] h-[40px] rounded-full bg-primary'></div>
-                    <h2>Томас Мразь</h2>
+                    <h2>{fio || 'Без имени'}</h2>
                 </div>
-                {matches ? <p>+79046537705</p> : 
+                {matches 
+                ? 
+                <div>
+                    <p>{phone}</p>  
+                </div> 
+                : 
                 <button onClick={() => setExpanded(!expanded)}>
                     <img src={expanded ? arrowExpanded : arrowExpand} className='w-4 h-4'></img>
                 </button>
@@ -517,11 +503,43 @@ const DashboardPartner = ({ token }) => {
     )
   }
 
-  const ClientsList = ({ data }) => {
-    console.log('kaif ' + data)
+  const ClientsList = ({ }) => {
+    const [state, setState] = useState([]);
+
+    useEffect(() => {
+        const dataFetch = async () => {
+          try {
+            const response = await axios.get('http://localhost:8000/api/v1/partner_clients/', {
+                headers: {
+                    Authorization: `token ${token}`
+                }
+            });
+            console.log(response);
+            const responseState = response.data;
+            setState(responseState);
+          } catch(error) {
+            console.log(error)
+          }
+        };
+
+        dataFetch();
+    }, []);
+
+    const [value, setValue] = useState('')
+
+    const filteredClients = state.filter((item) => {
+        return item.fio?.toLowerCase()?.includes(value.toLowerCase())
+    })
+   
     return (
       <section className='mt-[15px] flex-1'>
         <h2 className={`${styles.dashboardItemSubtitle}`}>Список клиентов</h2>
+        <div className='mt-[10px] mb-[15px]'>
+            <input type="text" className='max-w-[400px] w-full h-[40px] rounded-[8px]  border-solid border-[1px] border-[#D2D2D2]
+            px-[15px] outline-primary'
+            placeholder='Поиск по клиентам'
+            onChange={(event) => setValue(event.target.value)}/>
+        </div>
         <div className='bg-white w-full min-h-[460px] mt-[15px] rounded-[12px] h-full 
         border-solid border-[1px] border-[#D2D2D2]'>
             <div className='bg-input w-full h-[60px] rounded-t-[12px] flex justify-between items-center px-[30px] font-medium
@@ -530,16 +548,9 @@ const DashboardPartner = ({ token }) => {
                 <h2>Номер</h2>
             </div>
             <div className='[&>*:nth-child(10)]:border-transparent'>
-                <ClientItem />
-                {/* <ClientItem />
-                <ClientItem />
-                <ClientItem />
-                <ClientItem />
-                <ClientItem />
-                <ClientItem />
-                <ClientItem />
-                <ClientItem />
-                <ClientItem /> */}
+                {filteredClients.map((item, index) => (
+                    <ClientItem key={index} {...item}/>
+                ))}
             </div>
         </div>
       </section>
@@ -550,15 +561,15 @@ const DashboardPartner = ({ token }) => {
   return (
     <section className='w-full h-full bgdashboard'>
       <div className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px] '>
-        <Intro />
+        <Intro responseLogin={responseLogin} />
         <div className='flex flex-col md:gap-[30px] gap-0'>
-            <UserResponseContext.Provider value={{ userResponse, setUserResponse }} className='flex w-full flex-col h-full'>
+            {/* <UserResponseContext.Provider value={{ userResponse, setUserResponse }} className='flex w-full flex-col h-full'> */}
                 <div>
-                    <AddPurchase />
-                    <AddClient />
-                    <ClientsList />
+                    <AddPurchase responseLogin={responseLogin} />
+                    <AddClient responseLogin={responseLogin} />
+                    <ClientsList  />
                 </div>
-            </UserResponseContext.Provider>
+            {/* </UserResponseContext.Provider> */}
         </div>
       </div>
     </section>
