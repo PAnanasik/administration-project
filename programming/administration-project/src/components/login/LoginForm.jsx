@@ -4,29 +4,28 @@ import { useForm } from 'react-hook-form';
 import { mailInput, nameInput, passwordInput, phoneInput } from '../../assets';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import { ResponseContext, UserContext } from '../../App';
+import { ResponseContext } from '../../App';
 import { useContext } from 'react';
 
 const LoginForm = () => {
     const url = 'http://127.0.0.1:8000'
     const clientUrl = `http://localhost:8000/api/v1/client/`
-    const partnerUrl = `http://localhost:8000/api/v1/partners/`
+    const partnerUrl = `http://localhost:8000/api/v1/partner/`
 
     const [partner, setPartner] = useState(false)
 
-
-    const { user, setUser } = useContext(UserContext);
     const { responseAuth, setResponseAuth } = useContext(ResponseContext);
     const [redirection, setRedirection] = useState(false)
     const navigate = useNavigate()
 
 
+
     // function handleButtonChange() {
     //     setPartner(!partner)
+    //     setUser({ client: partner })
     //     console.log(partner)
     // }
 
-    // setUser({ client: partner })
 
     function requestFunction(data, pcUrl) {
         axios({
@@ -46,20 +45,16 @@ const LoginForm = () => {
                 withCredentials: true
                 })
                 .then(function (response) {
-                    //handle success
-                    setResponseAuth(response.data[0])
+                    setResponseAuth({ loggedIn: true, response: response.data[0], token: token });
                     setRedirection(true);
-                    setUser({ loggedIn: true });
-                    console.log(response.data[0])
-                    console.log(pcUrl)
+                    console.log(response.data[0]);
+                    console.log(pcUrl);
                 })
                 .catch(function (response) {
                     //handle error
                     console.log(response);
                 });
-                // setRedirection(true);
               
-                // setUser({ loggedIn: true });
             })
             
             .catch(function (response) {
@@ -90,14 +85,25 @@ const LoginForm = () => {
         reset();
     }
 
+
     useEffect(() => {
-        if (redirection && user.client) {
+        if (redirection && !partner) {
+            // setResponseAuth({ loggedIn: true });
+            console.log(responseAuth.loggedIn)
+            console.log(partner)
+            // setUser({ token: `${token}` });
             navigate('/dashboardclient')
+            console.log('1111')
         }
-        else if (redirection && !user.client) {
+        else if (redirection && partner) {
+            // setResponseAuth({ loggedIn: true });
+            console.log(responseAuth.loggedIn)
+            console.log(partner)
+            // setUser({ token: `${token}` });
             navigate('/dashboardpartner')
+            console.log('2222')
         }
-    }, [redirection])
+    }, [redirection, partner])
 
 
     const InputIcon = ({ prop }) => {

@@ -6,7 +6,7 @@ import Background from '../components/canvas/Background'
 const Client = ({ response }) => {
   return (
     <div>
-        <Navbar />
+        <Navbar response={response} />
         <div className='relative z-0'>
             <DashboardClient response={response} />
             <Background />

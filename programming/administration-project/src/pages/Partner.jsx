@@ -1,13 +1,15 @@
 import React from 'react'
-import { Navbar, DashboardPartner } from '../components'
+import { NavbarPartner, DashboardPartner } from '../components'
+import Background from '../components/canvas/Background'
 
 
-const Partner = () => {
+const Partner = ({ token }) => {
   return (
     <div>
-        <Navbar />
+        <NavbarPartner />
         <div className='relative z-0'>
-            <DashboardPartner />
+            <DashboardPartner token={token} />
+            <Background />
         </div>
     </div>
   )

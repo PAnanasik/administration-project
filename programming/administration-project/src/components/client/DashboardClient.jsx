@@ -174,6 +174,75 @@ const DashboardPartner = ({ response }) => {
     )
   }
 
+  const PartnersItem = () => {
+    const [expanded, setExpanded] = useState(false)
+    const [matches, setMatches] = useState(
+        window.matchMedia("(min-width: 560px)").matches
+    )
+
+    useEffect(() => {
+        window
+        .matchMedia("(min-width: 560px)")
+        .addEventListener('change', event => setMatches(event.matches));
+    }, []);
+
+    const ItemDesc = () => {
+        return (
+          <div className='flex flex-col gap-[10px] h-[80px] justify-center px-[30px] border-solid border-t-[1px] border-[#D2D2D2]'>
+            <p className='font-medium'>Номер:  <span>+79046537705</span></p>
+          </div>
+        )
+      }
+
+    return (
+        <div className=''>
+            <div className='w-full h-[80px] flex flex-row justify-between items-center 
+            font-medium relative border-solid border-t-[1px] border-[#D2D2D2] px-[30px]'>
+                <div className='flex gap-[10px] items-center'>
+                    <div className='w-[40px] h-[40px] rounded-full bg-primary'></div>
+                    <h2>Томас Мразь</h2>
+                </div>
+                {matches ? <p>+79046537705</p> : 
+                <button onClick={() => setExpanded(!expanded)}>
+                    <img src={expanded ? arrowExpanded : arrowExpand} className='w-4 h-4'></img>
+                </button>
+                }
+            </div>
+
+
+            {expanded && <ItemDesc/>}
+        </div>
+    )
+  }
+
+  const PartnersList = () => {
+    return (
+      <section className='mt-[15px] flex-1'>
+        <h2 className={`${styles.dashboardItemSubtitle}`}>Список партнеров</h2>
+        <div className='bg-white w-full min-h-[460px] mt-[15px] rounded-[12px] h-full 
+        border-solid border-[1px] border-[#D2D2D2]'>
+            <div className='bg-input w-full h-[60px] rounded-t-[12px] flex justify-between items-center px-[30px] font-medium'>
+                <h2>Клиент</h2>
+                <h2>Номер</h2>
+            </div>
+            <div className='[&>*:nth-child(10)]:border-b-transparent'>
+                <PartnersItem />
+                <PartnersItem />
+                <PartnersItem />
+                <PartnersItem />
+                <PartnersItem />
+                <PartnersItem />
+                <PartnersItem />
+                <PartnersItem />
+                <PartnersItem />
+                <PartnersItem />
+            </div>
+        </div>
+      </section>
+    )
+  }
+
+
   return (
     <section className='w-full h-full bgdashboard'>
       <div className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px]'>
@@ -185,6 +254,7 @@ const DashboardPartner = ({ response }) => {
           </div>
           <HistoryInfo />
         </div>
+        <PartnersList />
       </div>
     </section>
   )

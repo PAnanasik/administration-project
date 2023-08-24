@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { styles } from '../../styles'
 import { useForm } from 'react-hook-form';
 import { mailInput, nameInput, passwordInput, phoneInput } from '../../assets';
@@ -25,7 +25,7 @@ const RegistrationForm = () => {
     const onSubmit = async (data, event) => {
         event.preventDefault()
         axios({
-            method: "post",
+            method: "POST",
             url: "http://127.0.0.1:8000/api/v1/auth/users/",
             data: data,
             headers: { "Content-Type": "application/json" },
@@ -33,22 +33,25 @@ const RegistrationForm = () => {
             .then(function (response) {
                 //handle success
                 setRedirect(true);
+                console.log('kaif')
                 console.log(response);
             })
             .catch(function (response) {
+                console.log('error')
                 //handle error
                 console.log(response);
         });
-
-
-        if (redirect) {
-            navigate("/login")
-        }
-
         console.log(data)
 
         reset();
     }
+
+    // useEffect(() => {
+    //     if (redirect) {
+    //         navigate("/login")
+    //     }
+
+    // })
 
     const InputIcon = ({ prop }) => {
         const array = [phoneInput, nameInput, mailInput, passwordInput]
@@ -112,7 +115,6 @@ const RegistrationForm = () => {
                 placeholder="ФИО"
                 onInput={handleInput}
                 {...register('fio', {
-                    required: "Поле обязательно к заполнению",
                     pattern: /^[А-Яа-я]+$/
                 }  
                 )}
@@ -180,7 +182,6 @@ const RegistrationForm = () => {
                 placeholder="Почта"
                 onInput={handleInput}
                 {...register('email', {
-                    required: "Поле обязательно к заполнению",
                     pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
                 }  
                 )}
@@ -247,8 +248,8 @@ const RegistrationForm = () => {
                 <form className='flex flex-col gap-[40px]'
                 onSubmit={handleSubmit(onSubmit)}>
                     <InputCardPhone />
-                    {partner && <InputCardName />}
-                    {!partner && <InputCardCompany />}
+                    {!partner && <InputCardName />}
+                    {partner && <InputCardCompany />}
                     <InputCardMail />
                     <InputCardPassword />
                     <div className='flex gap-[10px] items-center'>
