@@ -28,32 +28,29 @@ const RegistrationForm = () => {
         }
     });
 
-    const onSubmit = async (dataMain) => {
-        // event.preventDefault()
-        console.log(dataMain)
-        axios({
-            method: "GET",
-            url: "http://127.0.0.1:8000/auth/code/",
-            headers: { "Content-Type": "application/json" },
+    const registration = async (dataMain, event) => {
+        event.preventDefault()
+        await axios({
+            method: "PUT",
+            url: "http://localhost:8000/auth/code/",
+            headers: { 
+                "Content-Type": "application/json",
+            },
             data: {
-                phone: `${dataMain.phone}`
+                phone: `${dataMain.phone}` 
             },
             })
             .then(function (response) {
-                //handle success
-                setRedirection(true);
-                setResponseAuth({ dataUser: dataMain })
-                console.log(responseAuth.dataUser)
-                console.log('kaif')
+                setResponseAuth({ data: dataMain })
+                setRedirection(true)
                 console.log(response);
             })
             .catch(function (response) {
-                console.log('error')
-                //handle error
                 console.log(response);
             });
-        reset();
-    }
+            // console.log(dataMain.phone)
+            // reset();
+        }
 
     useEffect(() => {
         if (redirection) {
@@ -262,7 +259,7 @@ const RegistrationForm = () => {
                     onClick={() => setPartner(!partner)}>Партнер</button>
                 </div>
                 <form className='flex flex-col gap-[40px]'
-                onSubmit={handleSubmit(onSubmit)}>
+                onSubmit={handleSubmit(registration)}>
                     <InputCardPhone />
                     {!partner && <InputCardName />}
                     {partner && <InputCardCompany />}
