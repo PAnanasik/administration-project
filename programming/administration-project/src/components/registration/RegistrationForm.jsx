@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { styles } from '../../styles'
 import { useForm } from 'react-hook-form';
 import { mailInput, nameInput, passwordInput, phoneInput } from '../../assets';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import { ResponseContext } from '../../App';
 
 const RegistrationForm = () => {
-    console.log(document.querySelector("#bla-bla"))
-
     const navigate = useNavigate()
+    const { responseAuth, setResponseAuth } = useContext(ResponseContext);
     const [partner, setPartner] = useState(false)
     const [redirection, setRedirection] = useState(false)
     console.log(partner)
@@ -20,21 +20,30 @@ const RegistrationForm = () => {
         },
         handleSubmit,
         reset,
+        setValue,
     } = useForm({
         mode: "onBlur",
+        defaultValues: {
+            method: ""
+        }
     });
 
-    const onSubmit = async (data, event) => {
-        event.preventDefault()
+    const onSubmit = async (dataMain) => {
+        // event.preventDefault()
+        console.log(dataMain)
         axios({
-            method: "POST",
-            url: "http://127.0.0.1:8000/api/v1/auth/users/",
-            data: data,
+            method: "GET",
+            url: "http://127.0.0.1:8000/auth/code/",
             headers: { "Content-Type": "application/json" },
+            data: {
+                phone: `${dataMain.phone}`
+            },
             })
             .then(function (response) {
                 //handle success
                 setRedirection(true);
+                setResponseAuth({ dataUser: dataMain })
+                console.log(responseAuth.dataUser)
                 console.log('kaif')
                 console.log(response);
             })
@@ -42,9 +51,7 @@ const RegistrationForm = () => {
                 console.log('error')
                 //handle error
                 console.log(response);
-        });
-        console.log(data)
-
+            });
         reset();
     }
 
@@ -242,7 +249,7 @@ const RegistrationForm = () => {
       }, []);
 
     return (
-        <section className={`bg-white w-full h-full flex justify-center ${matches ? 'items-center' : 'items-start'} px-[20px] my-[30px]`}>
+        <section className={`bg-white w-full lg:h-full h-[100vh] flex justify-center ${matches ? 'items-center' : 'items-start'} px-[20px] my-[30px]`}>
             <div className='lg:min-w-[600px] min-w-[200px]'>
                 <h1 className={`${styles.sectionHeadText} text-center`}>Зарегистрироваться</h1>
                 <div className='flex w-full justify-center my-[30px]'>
@@ -267,10 +274,7 @@ const RegistrationForm = () => {
                     </div>
                     <button type="submit" className='bg-primary p-4 rounded-[8px] text-white font-medium
                     ease duration-300 hover:bg-hover cursor-pointer'
-                    {...register('method', {
-                        value: `${partner ? 'company' : 'client'}`
-                    }  
-                    )}>Зарегистрироваться</button>
+                    onClick={() => setValue("method", `${partner ? 'company' : 'client'}`)}>Зарегистрироваться</button>
                     <div className='flex mb-1 justify-center text-center'>
                         <p>Уже есть аккаунт? <a href="/login" className='text-primary underline underline-offset-4'>Войдите</a></p>
                     </div>

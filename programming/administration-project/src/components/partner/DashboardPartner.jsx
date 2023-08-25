@@ -6,8 +6,7 @@ import axios from 'axios';
 
 const DashboardPartner = ({ token, responseLogin }) => {
     console.log(token)
-    const UserResponseContext = createContext()
-    const [userResponse, setUserResponse] = useState({ response: '', responseError: '' })
+    const [responseState, setState] = useState([])
 
 
   const InputIcon = ({ prop }) => {
@@ -456,7 +455,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
 
 
 
-  const ClientItem = ({ fio, phone }) => {
+  const ClientItem = ({ fio, phone, bonus }) => {
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
             setModal(false);
@@ -475,23 +474,54 @@ const DashboardPartner = ({ token, responseLogin }) => {
     }, []);
 
     const ModalWindow = () => {
+        const [dataBonus, setDataBonus] = useState(bonus)
+        const [inputValue, setInputValue] = useState()
+        const withdrawBonuses = async (event) => {
+            event.preventDefault()
+            axios({
+                method: "PUT",
+                url: "http://localhost:8000/api/v1/withdraw_bonus/",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `token ${token}` 
+                },
+                withCredentials: true,
+                data: {
+                    bonuses: `${inputValue}`,
+                    phone: `${phone}` 
+                },
+                })
+                .then(function (response) {
+                    console.log(response.data.data.bonus)
+                    setDataBonus(response.data.data.bonus)
+                    // console.log(response);
+                    
+                })
+                .catch(function (response) {
+                    console.log(response);
+                });
+            }
+
         return (
-            <div className='max-w-[600px] w-full h-[400px] bg-white absolute border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
+            <div className='max-w-[600px] w-full h-[400px] bg-white fixed border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
             top-[50%] left-[50%] translate-x-[-50%] translate-y-[100%] z-[10] p-[30px] before:w-full before:h-[60px] before:bg-primary
             before:content-normal before:block before:absolute before:top-0 before:left-0 before:rounded-t-[12px]'>
                 <div className='mt-[50px] h-[300px] relative'>
                     <h2 className='font-medium text-[20px] pb-[15px]'>Имя пользователя</h2>
                     <div className='pt-[20px] border-solid border-t-[1px] border-[#D2D2D2] flex flex-col'>
                         <>
-                            <p>Бонусов: <span>20000</span></p>
+                            <p>Бонусов: <span>{dataBonus}</span></p>
                            
-                            <input type="text" name="" id="" className='bg-input mt-[15px] h-[40px] rounded-[8px] 
-                            md:max-w-[300px] w-full px-[15px] outline-primary' placeholder='Списать бонусы' />
+                           <form action="" onSubmit={withdrawBonuses} className='flex flex-col'>
+                                <input type="text" name="" id="" className='bg-input mt-[15px] h-[40px] rounded-[8px] 
+                                md:max-w-[300px] w-full px-[15px] outline-primary' placeholder='Списать бонусы' 
+                                onInput={(e) => setInputValue(e.target.value)}/>
+                                <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium md:max-w-[150px]
+                                    w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer outline-none' onClick={withdrawBonuses}>
+                                    Списать
+                                </button>
+                           </form>
                         </>
-                        <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium md:max-w-[150px]
-                        w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer outline-none'>
-                            Списать
-                        </button>
                     </div>
                     <button type="submit" className='bg-primary p-2 rounded-[8px] text-white font-medium
                     w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer absolute bottom-0' onClick={() => setModal(false)}>
@@ -585,7 +615,6 @@ const DashboardPartner = ({ token, responseLogin }) => {
                 {filteredClients.map((item, index) => (
                     <ClientItem key={index} {...item}/>
                 ))}
-                <ClientItem />
             </div>
         </div>
       </section>

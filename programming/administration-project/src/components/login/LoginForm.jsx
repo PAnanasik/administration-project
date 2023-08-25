@@ -87,14 +87,21 @@ const LoginForm = () => {
 
 
     useEffect(() => {
-        if (redirection) {
+        if (redirection && !partner) {
             // setResponseAuth({ loggedIn: true });
             console.log(responseAuth.loggedIn)
             console.log(partner)
-            setResponseAuth({ partner: false })
             // setUser({ token: `${token}` });
-            navigate('/confirmation')
+            navigate('/dashboardclient')
             console.log('1111')
+        }
+        else if (redirection && partner) {
+            // setResponseAuth({ loggedIn: true });
+            console.log(responseAuth.loggedIn)
+            console.log(partner)
+            // setUser({ token: `${token}` });
+            navigate('/dashboardpartner')
+            console.log('2222')
         }
     }, [redirection, partner])
 

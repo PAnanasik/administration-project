@@ -79,9 +79,9 @@ const DashboardPartner = ({ responseLogin, token }) => {
       const getPurchases = async () => {
         try {
           const response = await axios.get('http://localhost:8000/api/v1/partner_purchases/', {
-              headers: {
-                  Authorization: `token ${token}`
-              }
+            headers: {
+                Authorization: `token ${token}`
+            }
           });
           const responseState = response.data;
           setState(responseState);
@@ -92,6 +92,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
 
       getPurchases();
     }, []);
+
 
     const HistoryItem = ({ name, amount, date, is_confirmed }) => {
       const [expanded, setExpanded] = useState(false)
@@ -145,19 +146,44 @@ const DashboardPartner = ({ responseLogin, token }) => {
     )
   }
 
-  const PartnersItem = ({ name, clients }) => {
+  const PartnersItem = ({ name, token }) => {
     const [expanded, setExpanded] = useState(false)
+
+    const addPartner = async () => {
+      axios({
+          method: "POST",
+          url: "http://localhost:8000/api/v1/add_client/",
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `token ${token}` 
+          },
+          withCredentials: true,
+          data: {
+            name_partner: `${name}`,
+            phone: `${responseLogin.phone}` 
+          },
+          })
+          .then(function (response) {
+              console.log(response);
+          })
+          .catch(function (response) {
+              console.log(response);
+          });
+      }
 
     const ItemDesc = () => {
         return (
           <div className='flex flex-col gap-[10px] h-[80px] justify-center px-[30px] border-solid border-t-[1px] border-[#D2D2D2]'>
-            <p className='font-medium'>Клиентов:  <span>{clients.length}</span></p>
+            <button className='bg-primary p-2 rounded-[8px] text-white font-medium
+            max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer'>
+              Добавить
+            </button>
           </div>
         )
       }
 
     return (
-        <div className='border-solid border-b-[1px] border-[#D2D2D2] cursor-pointer'>
+        <div className='border-solid border-b-[1px] border-[#D2D2D2]'>
             <div className='w-full h-[80px] flex flex-row justify-between items-center 
         font-medium relative px-[30px]'>
                 <div className='flex gap-[10px] items-center'>
@@ -166,7 +192,10 @@ const DashboardPartner = ({ responseLogin, token }) => {
                 </div>
                 {matches 
                 ? 
-                <p>{clients.length}</p> 
+                <button type="submit" className='bg-primary p-2 rounded-[8px] text-white font-medium
+                max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer' onClick={addPartner}>
+                  Добавить
+                </button>
                 : 
                 <button onClick={() => setExpanded(!expanded)}>
                     <img src={expanded ? arrowExpanded : arrowExpand} className='w-4 h-4'></img>
@@ -199,7 +228,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
         };
 
         getPartners();
-    }, []);
+    }, [PartnersItem, PartnersListAll, PartnersList]);
 
     const [value, setValue] = useState('')
 
@@ -252,7 +281,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
         };
 
         getAllPartners();
-    }, []);
+    }, [PartnersItem, PartnersListAll, PartnersList]);
 
     const [value, setValue] = useState('')
 
@@ -278,7 +307,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
             </div>
             <div className='[&>*:nth-child(10)]:border-transparent'>
                 {filteredPartners.map((item, index) => (
-                  <PartnersItem key={index} {...item}/>
+                  <PartnersItem key={index} {...item} token={token}/>
                 ))}
             </div>
         </div>

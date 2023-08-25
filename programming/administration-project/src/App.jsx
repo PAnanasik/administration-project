@@ -14,7 +14,7 @@ export const ResponseContext = createContext();
 function App() {
 
   // const [user, setUser] = useState({ loggedIn: false });
-  const [responseAuth, setResponseAuth] = useState({ partner: false, loggedIn: false, responseLogin: '', token: '' });
+  const [responseAuth, setResponseAuth] = useState({ dataUser: [], loggedIn: false, responseLogin: '', token: '' });
 
   return (
     <BrowserRouter>
@@ -22,11 +22,11 @@ function App() {
           <Routes>
               <Route path='/' element={<Registration />} />
               <Route path='/login' element={<Login />} />
-              <Route path='/confirmation' element={<Confirmation />} />
-              {/* <Route element={<ProtectedRoutes logged={responseAuth.loggedIn} />}> */}
+              <Route path='/confirmation' element={<Confirmation dataUser={responseAuth.dataUser} />} />
+              <Route element={<ProtectedRoutes logged={responseAuth.loggedIn} />}>
                 <Route path='/dashboardclient' element={<Client responseLogin={responseAuth.responseLogin} token={responseAuth.token} />} />
                 <Route path='/dashboardpartner' element={<Partner token={responseAuth.token} responseLogin={responseAuth.responseLogin} />} />
-              {/* </Route> */}
+              </Route>
           </Routes>
           </ResponseContext.Provider>
     </BrowserRouter>
