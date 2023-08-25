@@ -7,11 +7,7 @@ import axios from 'axios';
 const DashboardPartner = ({ token, responseLogin }) => {
     console.log(token)
     const UserResponseContext = createContext()
-
-    const [selectedCategory, setSelectedCategory] = useState('')
     const [userResponse, setUserResponse] = useState({ response: '', responseError: '' })
-
-    console.log(selectedCategory)
 
 
   const InputIcon = ({ prop }) => {
@@ -298,6 +294,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
     )
   }
   const InputCardCategories = () => {
+    const [selectedCategory, setSelectedCategory] = useState('')
 
     return (
         <div className="relative h-[60px] w-full">
@@ -306,15 +303,15 @@ const DashboardPartner = ({ token, responseLogin }) => {
             className={`${styles.inputStyles}`}
             placeholder="Категория товара"
             id='selection'
-            // defaultValue={selectedCategory}
+            defaultValue={selectedCategory}
             onChange={e => setSelectedCategory(e.target.value)}
             {...register('payment_order', {
-              value: "Электроника"
+              value: `${selectedCategory}`
             }  
             )}
             >
-              <option value="">Электроника</option>
-              <option value="">Одежда и обувь</option>
+              <option value="Электроника">Электроника</option>
+              <option value="Одежда и обувь">Одежда и обувь</option>
               {/* <option value="">4314</option> */}
             </select>
              

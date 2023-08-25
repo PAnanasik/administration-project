@@ -5,7 +5,7 @@ import Partner from './pages/Partner.jsx';
 import ProtectedRoutes from './ProtectedRoutes.jsx';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { createContext, useState } from 'react';
-import Background from './components/canvas/Background.jsx';
+import Confirmation from './pages/Confirmation.jsx';
 
 // export const UserContext = createContext();
 export const ResponseContext = createContext();
@@ -14,7 +14,7 @@ export const ResponseContext = createContext();
 function App() {
 
   // const [user, setUser] = useState({ loggedIn: false });
-  const [responseAuth, setResponseAuth] = useState({ loggedIn: false, responseLogin: '', token: '' });
+  const [responseAuth, setResponseAuth] = useState({ partner: false, loggedIn: false, responseLogin: '', token: '' });
 
   return (
     <BrowserRouter>
@@ -22,6 +22,7 @@ function App() {
           <Routes>
               <Route path='/' element={<Registration />} />
               <Route path='/login' element={<Login />} />
+              <Route path='/confirmation' element={<Confirmation />} />
               <Route element={<ProtectedRoutes logged={responseAuth.loggedIn} />}>
                 <Route path='/dashboardclient' element={<Client responseLogin={responseAuth.responseLogin} token={responseAuth.token} />} />
                 <Route path='/dashboardpartner' element={<Partner token={responseAuth.token} responseLogin={responseAuth.responseLogin} />} />
