@@ -454,7 +454,15 @@ const DashboardPartner = ({ token, responseLogin }) => {
     )
   }
 
+
+
   const ClientItem = ({ fio, phone }) => {
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') {
+            setModal(false);
+        }
+    })
+    const [modal, setModal] = useState(false)
     const [expanded, setExpanded] = useState(false)
     const [matches, setMatches] = useState(
         window.matchMedia("(min-width: 560px)").matches
@@ -466,6 +474,34 @@ const DashboardPartner = ({ token, responseLogin }) => {
         .addEventListener('change', event => setMatches(event.matches));
     }, []);
 
+    const ModalWindow = () => {
+        return (
+            <div className='max-w-[600px] w-full h-[400px] bg-white absolute border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
+            top-[50%] left-[50%] translate-x-[-50%] translate-y-[100%] z-[10] p-[30px] before:w-full before:h-[60px] before:bg-primary
+            before:content-normal before:block before:absolute before:top-0 before:left-0 before:rounded-t-[12px]'>
+                <div className='mt-[50px] h-[300px] relative'>
+                    <h2 className='font-medium text-[20px] pb-[15px]'>Имя пользователя</h2>
+                    <div className='pt-[20px] border-solid border-t-[1px] border-[#D2D2D2] flex flex-col'>
+                        <>
+                            <p>Бонусов: <span>20000</span></p>
+                           
+                            <input type="text" name="" id="" className='bg-input mt-[15px] h-[40px] rounded-[8px] 
+                            md:max-w-[300px] w-full px-[15px] outline-primary' placeholder='Списать бонусы' />
+                        </>
+                        <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium md:max-w-[150px]
+                        w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer outline-none'>
+                            Списать
+                        </button>
+                    </div>
+                    <button type="submit" className='bg-primary p-2 rounded-[8px] text-white font-medium
+                    w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer absolute bottom-0' onClick={() => setModal(false)}>
+                        Закрыть
+                    </button>
+                </div>
+            </div>
+        )
+    }
+
     const ItemDesc = () => {
         return (
           <div className='flex flex-col gap-[10px] h-[80px] justify-center px-[30px] border-solid border-t-[1px] border-[#D2D2D2]'>
@@ -475,28 +511,29 @@ const DashboardPartner = ({ token, responseLogin }) => {
       }
 
     return (
-        <div className='border-solid border-b-[1px] border-[#D2D2D2] cursor-pointer'>
-            <div className='w-full h-[80px] flex flex-row justify-between items-center 
-            font-medium relative px-[30px]'>
-                <div className='flex gap-[10px] items-center'>
-                    <div className='w-[40px] h-[40px] rounded-full bg-primary'></div>
-                    <h2>{fio || 'Без имени'}</h2>
+        <>
+            <div className='border-solid border-b-[1px] border-[#D2D2D2]'>
+                <div className='w-full h-[80px] flex flex-row justify-between items-center 
+                font-medium relative px-[30px]'>
+                    <div className='flex gap-[10px] items-center cursor-pointer' onClick={() => setModal(!modal)}>
+                        <div className='w-[40px] h-[40px] rounded-full bg-primary'></div>
+                        <h2>{fio || 'Без имени'}</h2>
+                    </div>
+                    {matches 
+                    ? 
+                    <div>
+                        <p>{phone}</p>  
+                    </div> 
+                    : 
+                    <button onClick={() => setExpanded(!expanded)}>
+                        <img src={expanded ? arrowExpanded : arrowExpand} className='w-4 h-4'></img>
+                    </button>
+                    }
                 </div>
-                {matches 
-                ? 
-                <div>
-                    <p>{phone}</p>  
-                </div> 
-                : 
-                <button onClick={() => setExpanded(!expanded)}>
-                    <img src={expanded ? arrowExpanded : arrowExpand} className='w-4 h-4'></img>
-                </button>
-                }
+                {expanded && <ItemDesc/>}
             </div>
-
-
-            {expanded && <ItemDesc/>}
-        </div>
+            {modal && <ModalWindow /> }
+        </>
     )
   }
 
@@ -531,7 +568,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
     return (
       <section className='mt-[15px] flex-1'>
         <h2 className={`${styles.dashboardItemSubtitle}`}>Список клиентов</h2>
-        <div className='mt-[10px] mb-[15px]'>
+        <div className='my-[10px]'>
             <input type="text" className='max-w-[400px] w-full h-[40px] rounded-[8px]  border-solid border-[1px] border-[#D2D2D2]
             px-[15px] outline-primary'
             placeholder='Поиск по клиентам'
@@ -548,6 +585,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
                 {filteredClients.map((item, index) => (
                     <ClientItem key={index} {...item}/>
                 ))}
+                <ClientItem />
             </div>
         </div>
       </section>
@@ -556,7 +594,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
 
 
   return (
-    <section className='w-full h-full bgdashboard'>
+    <section className='relative w-full h-full bgdashboard'>
       <div className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px] '>
         <Intro responseLogin={responseLogin} />
         <div className='flex flex-col md:gap-[30px] gap-0'>

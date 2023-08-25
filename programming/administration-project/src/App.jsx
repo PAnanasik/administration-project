@@ -23,10 +23,10 @@ function App() {
               <Route path='/' element={<Registration />} />
               <Route path='/login' element={<Login />} />
               <Route path='/confirmation' element={<Confirmation />} />
-              <Route element={<ProtectedRoutes logged={responseAuth.loggedIn} />}>
+              {/* <Route element={<ProtectedRoutes logged={responseAuth.loggedIn} />}> */}
                 <Route path='/dashboardclient' element={<Client responseLogin={responseAuth.responseLogin} token={responseAuth.token} />} />
                 <Route path='/dashboardpartner' element={<Partner token={responseAuth.token} responseLogin={responseAuth.responseLogin} />} />
-              </Route>
+              {/* </Route> */}
           </Routes>
           </ResponseContext.Provider>
     </BrowserRouter>

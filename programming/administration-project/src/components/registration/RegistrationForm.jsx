@@ -10,7 +10,7 @@ const RegistrationForm = () => {
 
     const navigate = useNavigate()
     const [partner, setPartner] = useState(false)
-    const [redirect, setRedirect] = useState(false)
+    const [redirection, setRedirection] = useState(false)
     console.log(partner)
 
     const {
@@ -34,7 +34,7 @@ const RegistrationForm = () => {
             })
             .then(function (response) {
                 //handle success
-                setRedirect(true);
+                setRedirection(true);
                 console.log('kaif')
                 console.log(response);
             })
@@ -48,12 +48,12 @@ const RegistrationForm = () => {
         reset();
     }
 
-    // useEffect(() => {
-    //     if (redirect) {
-    //         navigate("/login")
-    //     }
+    useEffect(() => {
+        if (redirection) {
+            navigate("/confirmation")
+        }
 
-    // })
+    },[redirection])
 
     const InputIcon = ({ prop }) => {
         const array = [phoneInput, nameInput, mailInput, passwordInput]
@@ -231,8 +231,18 @@ const RegistrationForm = () => {
         )
     }
 
+    const [matches, setMatches] = useState(
+        window.matchMedia("(min-height: 800px)").matches
+      )
+    
+      useEffect(() => {
+          window
+          .matchMedia("(min-height: 800px)")
+          .addEventListener('change', event => setMatches(event.matches));
+      }, []);
+
     return (
-        <section className='bg-white w-full h-full flex justify-center items-center px-[20px] my-[30px]'>
+        <section className={`bg-white w-full h-full flex justify-center ${matches ? 'items-center' : 'items-start'} px-[20px] my-[30px]`}>
             <div className='lg:min-w-[600px] min-w-[200px]'>
                 <h1 className={`${styles.sectionHeadText} text-center`}>Зарегистрироваться</h1>
                 <div className='flex w-full justify-center my-[30px]'>

@@ -75,10 +75,10 @@ const ConfirmationForm = () => {
             <div className="relative h-12 w-full">
                 <input
                 type='text'
-                className={`${errors?.number ? styles.badInputStyles : styles.inputStyles} relative`}
+                className={`${errors?.code ? styles.badInputStyles : styles.inputStyles} relative`}
                 placeholder="Код подтверждения"
                 onInput={handleInput}
-                {...register('phone', {
+                {...register('code', {
                     required: "Поле обязательно к заполнению",
                     minLength: 12,
                     maxLength: 12,
@@ -87,8 +87,8 @@ const ConfirmationForm = () => {
                 />
                 {active && <InputIcon prop={0} />}
                 <div className="mt-1">
-                {errors?.number && <p className="text-red-500 text-[12px]">
-                    {errors?.number?.message || "Длина номера 12 символов" || "Ошибка!"}
+                {errors?.code && <p className="text-red-500 text-[12px]">
+                    {errors?.code?.message || "Длина номера 12 символов" || "Ошибка!"}
                     </p>}
                 </div>
             </div>
