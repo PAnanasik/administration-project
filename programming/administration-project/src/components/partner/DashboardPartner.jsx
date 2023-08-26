@@ -362,10 +362,10 @@ const DashboardPartner = ({ token, responseLogin }) => {
 
   const onSubmitAddClient = async (data, event) => {
     event.preventDefault()
-
+    data.method = "add"
     axios({
-        method: "POST",
-        url: "http://localhost:8000/api/v1/add_client/",
+        method: "PUT",
+        url: "http://localhost:8000/api/v1/add_or_remove_client/",
         data: data,
         headers: { 
             "Content-Type": "application/json",
@@ -502,6 +502,32 @@ const DashboardPartner = ({ token, responseLogin }) => {
                 });
             }
 
+        const removeClient = async (event) => {
+            event.preventDefault()
+            axios({
+                method: "PUT",
+                url: "http://localhost:8000/api/v1/add_or_remove_client/",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `token ${token}` 
+                },
+                withCredentials: true,
+                data: {
+                    name_partner: `${responseLogin.name}`,
+                    phone: `${phone}`,
+                    method: 'remove'
+                },
+                })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (response) {
+                    console.log(response);
+                });
+                
+            }
+          
+
         return (
             <div className='max-w-[600px] w-full h-[400px] bg-white fixed border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
             top-[50%] left-[50%] translate-x-[-50%] translate-y-[100%] z-[10] p-[30px] before:w-full before:h-[60px] before:bg-primary
@@ -516,10 +542,17 @@ const DashboardPartner = ({ token, responseLogin }) => {
                                 <input type="text" name="" id="" className='bg-input mt-[15px] h-[40px] rounded-[8px] 
                                 md:max-w-[300px] w-full px-[15px] outline-primary' placeholder='Списать бонусы' 
                                 onInput={(e) => setInputValue(e.target.value)}/>
-                                <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium md:max-w-[150px]
-                                    w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer outline-none' onClick={withdrawBonuses}>
-                                    Списать
-                                </button>
+                                <div className="flex items-center gap-[10px] h-full">
+                                    <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium md:max-w-[150px]
+                                        w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer outline-none' onClick={withdrawBonuses}>
+                                        Списать
+                                    </button>
+                                    <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium
+                                        md:max-w-[150px] w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer'
+                                        onClick={removeClient}>
+                                        Удалить
+                                    </button>
+                                </div>
                            </form>
                         </>
                     </div>

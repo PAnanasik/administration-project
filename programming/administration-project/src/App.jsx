@@ -14,7 +14,7 @@ export const ResponseContext = createContext();
 function App() {
 
   // const [user, setUser] = useState({ loggedIn: false });
-  const [responseAuth, setResponseAuth] = useState({ dataUser: [], loggedIn: false, responseLogin: '', token: '' });
+  const [responseAuth, setResponseAuth] = useState({ dataUser: {}, loggedIn: false, responseLogin: '', token: '' });
 
   return (
     <BrowserRouter>

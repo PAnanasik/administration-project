@@ -4,6 +4,7 @@ import { arrowExpand, arrowExpanded, avatar, mailInput, nameInput, phoneInput } 
 import axios from 'axios';
 
 const DashboardPartner = ({ responseLogin, token }) => {
+  console.log(token)
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 560px)").matches
   )
@@ -146,13 +147,13 @@ const DashboardPartner = ({ responseLogin, token }) => {
     )
   }
 
-  const PartnersItem = ({ name, token }) => {
+  const PartnersItemAll = ({ name, token }) => {
     const [expanded, setExpanded] = useState(false)
 
     const addPartner = async () => {
       axios({
-          method: "POST",
-          url: "http://localhost:8000/api/v1/add_client/",
+          method: "PUT",
+          url: "http://localhost:8000/api/v1/add_or_remove_client/",
           headers: { 
             "Content-Type": "application/json",
             "Authorization": `token ${token}` 
@@ -160,7 +161,8 @@ const DashboardPartner = ({ responseLogin, token }) => {
           withCredentials: true,
           data: {
             name_partner: `${name}`,
-            phone: `${responseLogin.phone}` 
+            phone: `${responseLogin.phone}`,
+            method: 'add'
           },
           })
           .then(function (response) {
@@ -169,6 +171,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
           .catch(function (response) {
               console.log(response);
           });
+          
       }
 
     const ItemDesc = () => {
@@ -209,6 +212,71 @@ const DashboardPartner = ({ responseLogin, token }) => {
     )
   }
 
+  const PartnersItem = ({ name, token }) => {
+    const [expanded, setExpanded] = useState(false)
+
+    const removePartner = async () => {
+      axios({
+          method: "PUT",
+          url: "http://localhost:8000/api/v1/add_or_remove_client/",
+          headers: { 
+            "Content-Type": "application/json",
+            "Authorization": `token ${token}` 
+          },
+          withCredentials: true,
+          data: {
+            name_partner: `${name}`,
+            phone: `${responseLogin.phone}`,
+            method: 'remove'
+          },
+          })
+          .then(function (response) {
+              console.log(response);
+          })
+          .catch(function (response) {
+              console.log(response);
+          });
+          
+      }
+
+    const ItemDesc = () => {
+        return (
+          <div className='flex flex-col gap-[10px] h-[80px] justify-center px-[30px] border-solid border-t-[1px] border-[#D2D2D2]'>
+            <button className='bg-red-500 p-2 rounded-[8px] text-white font-medium
+            max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-red-400 cursor-pointer'>
+              Удалить
+            </button>
+          </div>
+        )
+      }
+
+    return (
+        <div className='border-solid border-b-[1px] border-[#D2D2D2]'>
+            <div className='w-full h-[80px] flex flex-row justify-between items-center 
+        font-medium relative px-[30px]'>
+                <div className='flex gap-[10px] items-center'>
+                    <div className='w-[40px] h-[40px] rounded-full bg-primary'></div>
+                    <h2>{name || 'Без имени'}</h2>
+                </div>
+                {matches 
+                ? 
+                <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium
+                max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-red-400 cursor-pointer' onClick={removePartner}>
+                  Удалить
+                </button>
+                : 
+                <button onClick={() => setExpanded(!expanded)}>
+                    <img src={expanded ? arrowExpanded : arrowExpand} className='w-4 h-4'></img>
+                </button>
+                }
+            </div>
+
+
+            {expanded && <ItemDesc/>}
+        </div>
+    )
+  }
+
   const PartnersList = ({ token }) => {
     const [state, setState] = useState([]);
 
@@ -228,7 +296,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
         };
 
         getPartners();
-    }, [PartnersItem, PartnersListAll, PartnersList]);
+    }, [PartnersItemAll, PartnersItem, PartnersListAll, PartnersList]);
 
     const [value, setValue] = useState('')
 
@@ -254,7 +322,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
             </div>
             <div className='[&>*:nth-child(10)]:border-transparent'>
                 {filteredPartners.map((item, index) => (
-                  <PartnersItem key={index} {...item}/>
+                  <PartnersItem key={index} {...item} token={token}/>
                 ))}
             </div>
         </div>
@@ -281,7 +349,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
         };
 
         getAllPartners();
-    }, [PartnersItem, PartnersListAll, PartnersList]);
+    }, [PartnersItemAll, PartnersItem, PartnersListAll, PartnersList]);
 
     const [value, setValue] = useState('')
 
@@ -307,7 +375,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
             </div>
             <div className='[&>*:nth-child(10)]:border-transparent'>
                 {filteredPartners.map((item, index) => (
-                  <PartnersItem key={index} {...item} token={token}/>
+                  <PartnersItemAll key={index} {...item} token={token}/>
                 ))}
             </div>
         </div>

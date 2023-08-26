@@ -45,24 +45,26 @@ const ConfirmationForm = ({ dataUser }) => {
 
     const onSubmit = async (data, event) => {
         event.preventDefault()
-        dataUser.code = data.code
-        axios({
-            method: "post",
-            url: "http://localhost:8000/auth/code/",
-            data: dataUser
-            })
-            .then(function (response) {
-                console.log(response);
-                setRedirection(true)
-            })
-            .catch(function (response) {
-                dataUser.code = data.code
-                console.log(response);
-        });
-
-        reset();
-        console.log(data)
-    }   
+        if (dataUser.code == data.code) {
+                axios({
+                    method: "post",
+                    url: "http://localhost:8000/auth/registration/",
+                    data: dataUser
+                    })
+                    .then(function (response) {
+                        console.log(response);
+                        setRedirection(true)
+                    })
+                    .catch(function (response) {
+                        // dataUser.code = data.code
+                        console.log(response);
+                });
+        
+                reset();
+                // console.log(data)
+                // console.log(dataUser)
+            }   
+        }
 
     useEffect(() => {
         if (redirection) {

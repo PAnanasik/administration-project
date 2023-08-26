@@ -28,29 +28,46 @@ const RegistrationForm = () => {
         }
     });
 
-    const registration = async (dataMain, event) => {
-        event.preventDefault()
+    const registration = async (dataMain) => {
         await axios({
-            method: "PUT",
-            url: "http://localhost:8000/auth/code/",
+            method: "POST",
+            url: "http://localhost:8000/auth/send_code/",
             headers: { 
-                "Content-Type": "application/json",
+              "Content-Type": "application/json"
             },
             data: {
-                phone: `${dataMain.phone}` 
+              phone: `${dataMain.phone}` 
             },
             })
             .then(function (response) {
-                setResponseAuth({ data: dataMain })
-                setRedirection(true)
+                setResponseAuth({ dataUser: dataMain });
+                setRedirection(true);
+                dataMain.code = response.data.code
                 console.log(response);
             })
             .catch(function (response) {
                 console.log(response);
             });
-            // console.log(dataMain.phone)
-            // reset();
         }
+
+    // useEffect(() => {
+    //     const registration = async () => {
+    //         var formdata = new FormData();
+    //         formdata.append("phone", "+79048517201");
+            
+    //         var requestOptions = {
+    //           method: 'PUT',
+    //           body: formdata,
+    //           redirect: 'follow'
+    //         };
+            
+    //         fetch("http://localhost:8000/auth/code/", requestOptions)
+    //           .then(response => response.text())
+    //           .then(result => console.log(result))
+    //           .catch(error => console.log('error', error));
+    //     }
+    //     registration()
+    // }, [])
 
     useEffect(() => {
         if (redirection) {
@@ -258,8 +275,7 @@ const RegistrationForm = () => {
                     rounded-r-[8px] max-w-[150px] w-full`}
                     onClick={() => setPartner(!partner)}>Партнер</button>
                 </div>
-                <form className='flex flex-col gap-[40px]'
-                onSubmit={handleSubmit(registration)}>
+                <form className='flex flex-col gap-[40px]' onSubmit={handleSubmit(registration)}>
                     <InputCardPhone />
                     {!partner && <InputCardName />}
                     {partner && <InputCardCompany />}
