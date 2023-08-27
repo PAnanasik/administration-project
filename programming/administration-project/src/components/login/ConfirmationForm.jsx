@@ -5,9 +5,11 @@ import { ResponseContext } from '../../App';
 import { useContext, useState, useEffect } from 'react';
 import { mailInput, nameInput, passwordInput, phoneInput } from '../../assets';
 import axios from 'axios';
+import ErrorMessage from '../common/ErrorMessage';
 
 const ConfirmationForm = ({ dataUser }) => {
     console.log(dataUser)
+    const [show, setShow] = useState(false)
 
     const { responseAuth, setResponseAuth } = useContext(ResponseContext);
     const [redirection, setRedirection] = useState(false)
@@ -45,6 +47,7 @@ const ConfirmationForm = ({ dataUser }) => {
 
     const onSubmit = async (data, event) => {
         event.preventDefault()
+        // dataUser.code == data.code
         if (dataUser.code == data.code) {
                 axios({
                     method: "post",
@@ -63,8 +66,12 @@ const ConfirmationForm = ({ dataUser }) => {
                 reset();
                 // console.log(data)
                 // console.log(dataUser)
-            }   
+        } else {
+            setShow(true)
+            setResponseAuth({ dataUser: dataUser, error: "Неправильный код" })
+            setTimeout(() => setShow(false), 3000)
         }
+    }
 
     useEffect(() => {
         if (redirection) {
@@ -128,6 +135,7 @@ const ConfirmationForm = ({ dataUser }) => {
                 </div>
             </form>
         </div>
+        {show && <ErrorMessage error={{message: responseAuth.error}}/>}
     </section>
   )
 }

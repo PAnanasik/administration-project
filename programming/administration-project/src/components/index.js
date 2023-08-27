@@ -4,7 +4,7 @@ import Navbar from "./common/Navbar"
 import NavbarPartner from "./common/NavbarPartner"
 import DashboardClient from "./client/DashboardClient"
 import DashboardPartner from "./partner/DashboardPartner"
-
+import ErrorMessage from "./common/ErrorMessage"
 
 export {
     RegistrationForm,
@@ -12,5 +12,6 @@ export {
     Navbar,
     NavbarPartner,
     DashboardClient,
-    DashboardPartner
+    DashboardPartner,
+    ErrorMessage,
 }

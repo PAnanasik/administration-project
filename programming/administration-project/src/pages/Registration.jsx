@@ -1,7 +1,4 @@
-import React from 'react'
-import { DashboardClient, RegistrationForm } from '../components'
-import Login from './Login'
-import { Routes, Route } from 'react-router-dom'
+import { RegistrationForm } from '../components'
 
 
 const Registration = () => {

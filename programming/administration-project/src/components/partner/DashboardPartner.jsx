@@ -1,11 +1,15 @@
-import React, { useState, useEffect, useContext, createContext } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { styles } from '../../styles'
 import { arrowExpand, arrowExpanded, nameInput, phoneInput, scan } from '../../assets'
-import { get, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import { ResponseContext } from '../../App';
 import axios from 'axios';
+import ErrorMessage from '../common/ErrorMessage';
 
 const DashboardPartner = ({ token, responseLogin }) => {
     console.log(token)
+    const { responseAuth, setResponseAuth } = useContext(ResponseContext);
+    const [show, setShow] = useState(false)
     const [responseState, setState] = useState([])
 
 
@@ -375,13 +379,13 @@ const DashboardPartner = ({ token, responseLogin }) => {
         })
         .then(function (response) {
             console.log(response);
+            setState(oldItem => [...oldItem, responseState])
         })
         .catch(function (response) {
             console.log(response);
     });
 
     console.log(data)
-    reset();
   }
 
     
@@ -498,7 +502,10 @@ const DashboardPartner = ({ token, responseLogin }) => {
                     
                 })
                 .catch(function (response) {
-                    console.log(response);
+                    console.log(response)
+                    setShow(true)
+                    setResponseAuth({ error: response.message })
+                    setTimeout(() => setShow(false), 3000)
                 });
             }
 
@@ -520,6 +527,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
                 })
                 .then(function (response) {
                     console.log(response);
+                    setState(oldItem => [...oldItem, responseState])
                 })
                 .catch(function (response) {
                     console.log(response);
@@ -669,6 +677,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
             {/* </UserResponseContext.Provider> */}
         </div>
       </div>
+      {show && <ErrorMessage error={responseAuth.error}/>}
     </section>
   )
 }

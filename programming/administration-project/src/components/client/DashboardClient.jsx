@@ -85,7 +85,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
             }
           });
           const responseState = response.data;
-          setState(responseState);
+          setState(oldItem => [...oldItem, responseState]);
         } catch(error) {
           console.log(error)
         }
@@ -296,7 +296,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
         };
 
         getPartners();
-    }, [PartnersItemAll, PartnersItem, PartnersListAll, PartnersList]);
+    }, [state]);
 
     const [value, setValue] = useState('')
 
@@ -349,7 +349,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
         };
 
         getAllPartners();
-    }, [PartnersItemAll, PartnersItem, PartnersListAll, PartnersList]);
+    }, []);
 
     const [value, setValue] = useState('')
 

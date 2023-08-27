@@ -6,12 +6,21 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ResponseContext } from '../../App';
 import { useContext } from 'react';
+import ErrorMessage from '../common/ErrorMessage';
 
 const LoginForm = () => {
     const url = 'http://127.0.0.1:8000'
     const clientUrl = `http://localhost:8000/api/v1/client/`
     const partnerUrl = `http://localhost:8000/api/v1/partner/`
 
+    const showError = () => {
+        setTimeout(() => setShow(false), 5000)
+        document.querySelector('#submit_btn').disabled = true
+        setTimeout(() => document.querySelector('#submit_btn').disabled = false, 5000)
+    }
+
+
+    const [show, setShow] = useState(false)
     const [partner, setPartner] = useState(false)
 
     const { responseAuth, setResponseAuth } = useContext(ResponseContext);
@@ -51,15 +60,17 @@ const LoginForm = () => {
                     console.log(pcUrl);
                 })
                 .catch(function (response) {
-                    //handle error
-                    console.log(response);
+                    setShow(true)
+                    setResponseAuth({ error: {message: "Проверьте правильность выбранной роли"} })
+                    showError()
                 });
               
             })
             
             .catch(function (response) {
-                //handle error
-                console.log(response);
+                setShow(true)
+                setResponseAuth({ error: {message: "Проверьте правильность введенных данных"} })
+                showError()
         });
     }
 
@@ -81,8 +92,6 @@ const LoginForm = () => {
         } else {
             requestFunction(data, clientUrl)
         }
-        
-        reset();
     }
 
 
@@ -203,14 +212,13 @@ const LoginForm = () => {
                     <InputCardPhone />
                     <InputCardPassword />
                     <input type="submit" value="Войти" className='bg-primary p-4 rounded-[8px] text-white font-medium
-                    ease duration-300 hover:bg-hover cursor-pointer mt-[15px]' 
-                    onClick={() => {
-                    }}/>
+                    ease duration-300 hover:bg-hover cursor-pointer mt-[15px]' id='submit_btn'/>
                     <div className='flex mb-1 justify-center text-center'>
                         <p>Еще нет аккаунта? <a href="/" className='text-primary underline underline-offset-4'>Зарегистрируйтесь</a></p>
                     </div>
                 </form>
             </div>
+            {show && <ErrorMessage error={responseAuth.error}/>}
         </section>
     )
 }
