@@ -1,4 +1,3 @@
-import React from 'react'
 import { avatar } from '../../assets'
 import { useContext } from 'react';
 import { ResponseContext } from '../../App';

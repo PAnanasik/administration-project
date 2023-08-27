@@ -549,14 +549,14 @@ const DashboardPartner = ({ token, responseLogin }) => {
             top-[50%] left-[50%] translate-x-[-50%] translate-y-[100%] z-[10] p-[30px] before:w-full before:h-[60px] before:bg-primary
             before:content-normal before:block before:absolute before:top-0 before:left-0 before:rounded-t-[12px]'>
                 <div className='mt-[50px] h-[300px] relative'>
-                    <h2 className='font-medium text-[20px] pb-[15px]'>Имя пользователя</h2>
+                    <h2 className='font-medium text-[20px] pb-[15px]'>{fio}</h2>
                     <div className='pt-[20px] border-solid border-t-[1px] border-[#D2D2D2] flex flex-col'>
                         <>
                             <p>Бонусов: <span>{dataBonus}</span></p>
                            
                            <form action="" onSubmit={withdrawBonuses} className='flex flex-col'>
                                 <input type="text" name="" id="" className='bg-input mt-[15px] h-[40px] rounded-[8px] 
-                                md:max-w-[300px] w-full px-[15px] outline-primary' placeholder='Списать бонусы' 
+                                md:max-w-[310px] w-full px-[15px] outline-primary' placeholder='Списать бонусы' 
                                 onInput={(e) => setInputValue(e.target.value)}/>
                                 <div className="flex items-center gap-[10px] h-full">
                                     <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium md:max-w-[150px]
