@@ -7,13 +7,11 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { createContext, useState } from 'react';
 import Confirmation from './pages/Confirmation.jsx';
 
-// export const UserContext = createContext();
 export const ResponseContext = createContext();
 
 
 function App() {
 
-  // const [user, setUser] = useState({ loggedIn: false });
   const [responseAuth, setResponseAuth] = useState({ dataUser: {}, loggedIn: false, responseLogin: '', token: '', error: '' });
 
   return (

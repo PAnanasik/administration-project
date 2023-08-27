@@ -6,6 +6,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import { ResponseContext } from '../../App';
 import ErrorMessage from '../common/ErrorMessage';
+import { showError } from '..';
 
 const RegistrationForm = () => {
     const [show, setShow] = useState(false)
@@ -51,8 +52,9 @@ const RegistrationForm = () => {
             })
             .catch(function (response) {
                 setShow(true)
-                setResponseAuth({ error: response.response.data })
-                setTimeout(() => setShow(false), 3000)
+                setResponseAuth({ error: {message: "Пользователь с этим номером телефона уже существует"} })
+                setTimeout(() => setShow(false), 5000)
+                showError()
             });
         }
 
@@ -292,8 +294,8 @@ const RegistrationForm = () => {
                         <p>Продолжая, вы принимаете какую-то там <a href="#" className='text-primary underline underline-offset-4'>оферту</a></p>
                     </div>
                     <button type="submit" className='bg-primary p-4 rounded-[8px] text-white font-medium
-                    ease duration-300 hover:bg-hover cursor-pointer relative z-10   '
-                    onClick={() => setValue("method", `${partner ? 'company' : 'client'}`)}>Зарегистрироваться</button>
+                    ease duration-300 hover:bg-hover cursor-pointer relative z-10'
+                    onClick={() => setValue("method", `${partner ? 'company' : 'client'}`)} id='submit_btn'>Зарегистрироваться</button>
                     <div className='flex mb-1 justify-center text-center'>
                         <p>Уже есть аккаунт? <a href="/login" className='text-primary underline underline-offset-4'>Войдите</a></p>
                     </div>

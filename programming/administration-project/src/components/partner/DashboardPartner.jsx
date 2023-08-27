@@ -480,34 +480,42 @@ const DashboardPartner = ({ token, responseLogin }) => {
     const ModalWindow = () => {
         const [dataBonus, setDataBonus] = useState(bonus)
         const [inputValue, setInputValue] = useState()
+        console.log(bonus, Number(inputValue))
         const withdrawBonuses = async (event) => {
-            event.preventDefault()
-            axios({
-                method: "PUT",
-                url: "http://localhost:8000/api/v1/withdraw_bonus/",
-                headers: { 
-                    "Content-Type": "application/json",
-                    "Authorization": `token ${token}` 
-                },
-                withCredentials: true,
-                data: {
-                    bonuses: `${inputValue}`,
-                    phone: `${phone}` 
-                },
-                })
-                .then(function (response) {
-                    console.log(response.data.data.bonus)
-                    setDataBonus(response.data.data.bonus)
-                    // console.log(response);
-                    
-                })
-                .catch(function (response) {
-                    console.log(response)
-                    setShow(true)
-                    setResponseAuth({ error: response.message })
-                    setTimeout(() => setShow(false), 3000)
-                });
-            }
+            if (bonus && Number(inputValue)) {
+                event.preventDefault()
+                axios({
+                    method: "PUT",
+                    url: "http://localhost:8000/api/v1/withdraw_bonus/",
+                    headers: { 
+                        "Content-Type": "application/json",
+                        "Authorization": `token ${token}` 
+                    },
+                    withCredentials: true,
+                    data: {
+                        bonuses: `${inputValue}`,
+                        phone: `${phone}` 
+                    },
+                    })
+                    .then(function (response) {
+                        console.log(response.data.data.bonus)
+                        setDataBonus(response.data.data.bonus)
+                        // console.log(response);
+                        
+                    })
+                    .catch(function (response) {
+                        console.log(response)
+                        setShow(true)
+                        setResponseAuth({ error: {message: "Проверьте правильность введенных данных"} })
+                        setTimeout(() => setShow(false), 3000)
+                    });
+                }
+            // } else {
+            //     setShow(true)
+            //     setResponseAuth({ error: {message: "Количество списываемых бонусов должно быть меньше всего количества бонусов"} })
+            //     setTimeout(() => setShow(false), 3000)
+            // }
+        }
 
         const removeClient = async (event) => {
             event.preventDefault()

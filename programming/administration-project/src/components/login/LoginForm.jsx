@@ -7,17 +7,12 @@ import { useNavigate } from 'react-router-dom';
 import { ResponseContext } from '../../App';
 import { useContext } from 'react';
 import ErrorMessage from '../common/ErrorMessage';
+import { showError } from '..';
 
 const LoginForm = () => {
     const url = 'http://127.0.0.1:8000'
     const clientUrl = `http://localhost:8000/api/v1/client/`
     const partnerUrl = `http://localhost:8000/api/v1/partner/`
-
-    const showError = () => {
-        setTimeout(() => setShow(false), 5000)
-        document.querySelector('#submit_btn').disabled = true
-        setTimeout(() => document.querySelector('#submit_btn').disabled = false, 5000)
-    }
 
 
     const [show, setShow] = useState(false)
@@ -62,6 +57,7 @@ const LoginForm = () => {
                 .catch(function (response) {
                     setShow(true)
                     setResponseAuth({ error: {message: "Проверьте правильность выбранной роли"} })
+                    setTimeout(() => setShow(false), 5000)
                     showError()
                 });
               
@@ -70,6 +66,7 @@ const LoginForm = () => {
             .catch(function (response) {
                 setShow(true)
                 setResponseAuth({ error: {message: "Проверьте правильность введенных данных"} })
+                setTimeout(() => setShow(false), 5000)
                 showError()
         });
     }
