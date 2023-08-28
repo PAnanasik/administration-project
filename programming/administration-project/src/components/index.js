@@ -18,5 +18,5 @@ export {
     NavbarPartner,
     DashboardClient,
     DashboardPartner,
-    ErrorMessage,
+    ErrorMessage
 }

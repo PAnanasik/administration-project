@@ -1,4 +1,3 @@
-import React from 'react'
 import ConfirmationForm from '../components/login/ConfirmationForm'
 
 const Confirmation = ({ dataUser }) => {

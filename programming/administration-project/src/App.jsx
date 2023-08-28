@@ -22,7 +22,7 @@ function App() {
               <Route path='/login' element={<Login />} />
               <Route path='/confirmation' element={<Confirmation dataUser={responseAuth.dataUser} />} />
               <Route element={<ProtectedRoutes logged={responseAuth.loggedIn} />}>
-                <Route path='/dashboardclient' element={<Client responseLogin={responseAuth.responseLogin} token={responseAuth.token} />} />
+                <Route path='/dashboardclient' element={<Client responseLogin={responseAuth.responseLogin} token={responseAuth.token}  />} />
                 <Route path='/dashboardpartner' element={<Partner token={responseAuth.token} responseLogin={responseAuth.responseLogin} />} />
               </Route>
           </Routes>

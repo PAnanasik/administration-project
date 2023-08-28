@@ -648,7 +648,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
       <section className='mt-[15px] flex-1'>
         <h2 className={`${styles.dashboardItemSubtitle}`}>Список клиентов</h2>
         <div className='my-[10px]'>
-            <input type="text" className='max-w-[400px] w-full h-[40px] rounded-[8px]  border-solid border-[1px] border-[#D2D2D2]
+            <input type="text" className='max-w-[400px] w-full h-[40px] rounded-[8px] border-solid border-[1px] border-[#D2D2D2]
             px-[15px] outline-primary'
             placeholder='Поиск по клиентам'
             onChange={(event) => setValue(event.target.value)}/>

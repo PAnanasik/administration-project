@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { styles } from '../../styles'
-import { arrowExpand, arrowExpanded, avatar, mailInput, nameInput, phoneInput } from '../../assets'
+import { arrowExpand, arrowExpanded, avatar, mailInput, phoneInput } from '../../assets'
 import axios from 'axios';
+import { ResponseContext } from '../../App';
 
-const DashboardPartner = ({ responseLogin, token }) => {
+const DashboardClient = ({ responseLogin, token }) => {
   console.log(token)
+
+  const { responseAuth, setResponseAuth } = useContext(ResponseContext);
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 560px)").matches
   )
@@ -85,7 +88,7 @@ const DashboardPartner = ({ responseLogin, token }) => {
             }
           });
           const responseState = response.data;
-          setState(oldItem => [...oldItem, responseState]);
+          setState(responseState);
         } catch(error) {
           console.log(error)
         }
@@ -166,7 +169,9 @@ const DashboardPartner = ({ responseLogin, token }) => {
           },
           })
           .then(function (response) {
-              console.log(response);
+            console.log(response);
+            // setResponseAuth({ nameAdded: responseLogin.fio })
+
           })
           .catch(function (response) {
               console.log(response);
@@ -401,4 +406,4 @@ const DashboardPartner = ({ responseLogin, token }) => {
   )
 }
 
-export default DashboardPartner
+export default DashboardClient
