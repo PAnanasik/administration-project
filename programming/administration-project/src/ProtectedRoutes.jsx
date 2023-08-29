@@ -6,6 +6,7 @@ const ProtectedRoutes = ({ logged }) => {
   return logged ? (
     <Outlet />
   ) : (
+    // <Outlet />
     <Navigate to="/" replace state={{ from: location }} />
   );
 };

@@ -2,13 +2,15 @@ import { useState, useEffect, useContext } from 'react'
 import { styles } from '../../styles'
 import { arrowExpand, arrowExpanded, nameInput, phoneInput, scan } from '../../assets'
 import { useForm } from 'react-hook-form';
-import { ResponseContext } from '../../App';
+import { PartnerContext, ResponseContext } from '../../App';
 import axios from 'axios';
 import ErrorMessage from '../common/ErrorMessage';
 
+
 const DashboardPartner = ({ token, responseLogin }) => {
     console.log(token)
-    const { responseAuth, setResponseAuth } = useContext(ResponseContext);
+    // const { responseAuth, setResponseAuth } = useContext(ResponseContext);
+    const { partnerData, setPartnerData } = useContext(PartnerContext);
     const [show, setShow] = useState(false)
     const [responseState, setState] = useState([])
 
@@ -35,12 +37,12 @@ const DashboardPartner = ({ token, responseLogin }) => {
         <div className="relative h-[60px] w-full">
             <input
             type='tel'
-            className={`${errors2?.phone ? styles.badInputStyles : styles.inputStyles} relative`}
+            className={`${errors2?.phone_client ? styles.badInputStyles : styles.inputStyles} relative`}
             placeholder="Номер телефона"
             onInput={handleInput}
             pattern="[+][7]\d{3}\d{3}\d{2}\d{2}"
             title="Используйте формат: +79046585851"
-            {...register2('phone', {
+            {...register2('phone_client', {
                 required: "Поле обязательно к заполнению",
                 minLength: 12,
                 maxLength: 12,
@@ -49,8 +51,8 @@ const DashboardPartner = ({ token, responseLogin }) => {
             />
             {active && <InputIcon prop={0} />}
             <div className="mt-1">
-              {errors2?.phone && <p className="text-red-500 text-[12px]">
-                {errors2?.phone?.message || "Длина номера 12 символов" || "Ошибка!"}
+              {errors2?.phone_client && <p className="text-red-500 text-[12px]">
+                {errors2?.phone_client?.message || "Длина номера 12 символов" || "Ошибка!"}
                 </p>}
             </div>
         </div>
@@ -295,7 +297,28 @@ const DashboardPartner = ({ token, responseLogin }) => {
             </div>
         </div>
     )
-  }
+}
+
+    const InputBonuses = () => {
+        const [inputBonus, setInputBonus] = useState(0)
+
+        return (
+            <div className="relative h-[60px] w-full">
+                <input
+                type='text'
+                className={`${styles.inputStyles}`}
+                placeholder="Бонусов для снятия"
+                // onInput={handleInput}
+                onInput={e => setInputBonus(e.target.value)}
+                {...register('bonuses_spent', {
+                    value: `${inputBonus}`
+                }  
+                )}
+                />
+            </div>
+        )
+    }
+
   const InputCardCategories = () => {
     const [selectedCategory, setSelectedCategory] = useState('')
 
@@ -322,6 +345,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
     )
   }
 
+
   const {
       register,
       formState: {
@@ -347,7 +371,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
   const onSubmitAddPurchase = async (data, event) => {
     event.preventDefault()
     axios({
-        method: "post",
+        method: "POST",
         url: "http://localhost:8000/api/v1/add_cheque/",
         data: data,
         headers: { "Authorization": `token ${token}` },
@@ -380,12 +404,13 @@ const DashboardPartner = ({ token, responseLogin }) => {
         .then(function (response) {
             console.log(response);
             setState(oldItem => [...oldItem, responseState])
+            setPartnerData({ dataPartner: data })
+            console.log(partnerData.dataPartner)
         })
         .catch(function (response) {
             console.log(response);
     });
 
-    console.log(data)
   }
 
     
@@ -415,6 +440,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
               <InputCardDate />
               <InputCardPurchaseName />
               <InputCardBonusPercent />
+              <InputBonuses />
               <InputCardCategories />
               <button type='submit' className='bg-primary p-4 rounded-[8px] text-white font-medium md:max-w-[400px] w-full 
               mt-[10px] flex justify-center relative ease duration-300 hover:bg-hover gap-[10px]'
@@ -459,7 +485,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
 
 
 
-  const ClientItem = ({ fio, phone, bonus }) => {
+  const ClientItem = ({ fio, phone, bonuses = 0 }) => {
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
             setModal(false);
@@ -478,43 +504,38 @@ const DashboardPartner = ({ token, responseLogin }) => {
     }, []);
 
     const ModalWindow = () => {
-        const [dataBonus, setDataBonus] = useState(bonus)
-        const [inputValue, setInputValue] = useState()
-        console.log(bonus, Number(inputValue))
+        const [dataBonus, setDataBonus] = useState(bonuses)
+        const [inputValue, setInputValue] = useState(0)
+        console.log(bonuses, Number(inputValue))
         const withdrawBonuses = async (event) => {
-            if (bonus && Number(inputValue)) {
-                event.preventDefault()
-                axios({
-                    method: "PUT",
-                    url: "http://localhost:8000/api/v1/withdraw_bonus/",
-                    headers: { 
-                        "Content-Type": "application/json",
-                        "Authorization": `token ${token}` 
-                    },
-                    withCredentials: true,
-                    data: {
-                        bonuses: `${inputValue}`,
-                        phone: `${phone}` 
-                    },
-                    })
-                    .then(function (response) {
-                        console.log(response.data.data.bonus)
-                        setDataBonus(response.data.data.bonus)
-                        // console.log(response);
-                        
-                    })
-                    .catch(function (response) {
-                        console.log(response)
-                        setShow(true)
-                        setResponseAuth({ error: {message: "Проверьте правильность введенных данных"} })
-                        setTimeout(() => setShow(false), 3000)
-                    });
-                }
-            // } else {
-            //     setShow(true)
-            //     setResponseAuth({ error: {message: "Количество списываемых бонусов должно быть меньше всего количества бонусов"} })
-            //     setTimeout(() => setShow(false), 3000)
-            // }
+            event.preventDefault()
+            axios({
+                method: "PUT",
+                url: "http://localhost:8000/api/v1/withdraw_bonus/",
+                headers: { 
+                    "Content-Type": "application/json",
+                    "Authorization": `token ${token}` 
+                },
+                withCredentials: true,
+                data: {
+                    bonuses: inputValue,
+                    phone: `${phone}` 
+                },
+                })
+                .then(function (response) {
+                    console.log(response.data.data.bonuses)
+                    setDataBonus(response.data.data.bonuses)
+                    // console.log(response);
+                    
+                })
+                .catch(function (response) {
+                    console.log(response);
+                    setShow(true);
+                    // error: {message: "Количество списываемых бонусов должно быть меньше всего количества бонусов"} })
+                    // <ErrorMessage error={{message: "У клиента нет бонусов"}} />
+                    setTimeout(() => setShow(false), 3000)
+                    // setTimeout(() => setShow(false), 3000)
+                });
         }
 
         const removeClient = async (event) => {
@@ -529,7 +550,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
                 withCredentials: true,
                 data: {
                     name_partner: `${responseLogin.name}`,
-                    phone: `${phone}`,
+                    phone_client: `${phone}`,
                     method: 'remove'
                 },
                 })
@@ -545,26 +566,25 @@ const DashboardPartner = ({ token, responseLogin }) => {
           
 
         return (
-            <div className='max-w-[600px] w-full h-[400px] bg-white fixed border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
-            top-[50%] left-[50%] translate-x-[-50%] translate-y-[100%] z-[10] p-[30px] before:w-full before:h-[60px] before:bg-primary
-            before:content-normal before:block before:absolute before:top-0 before:left-0 before:rounded-t-[12px]'>
-                <div className='mt-[50px] h-[300px] relative'>
+            <div className='max-w-[600px] w-full h-[350px] bg-white absolute left-0 right-0 mx-auto bottom-[200px] border-solid 
+            border-[1px] border-[#D2D2D2] rounded-[12px] px-[30px]'>
+                <div className='flex flex-col justify-center h-[300px] relative'>
                     <h2 className='font-medium text-[20px] pb-[15px]'>{fio}</h2>
                     <div className='pt-[20px] border-solid border-t-[1px] border-[#D2D2D2] flex flex-col'>
                         <>
                             <p>Бонусов: <span>{dataBonus}</span></p>
                            
                            <form action="" onSubmit={withdrawBonuses} className='flex flex-col'>
-                                <input type="text" name="" id="" className='bg-input mt-[15px] h-[40px] rounded-[8px] 
+                                <input type="text" name="" id="" className='bg-input mt-[15px] h-[60px] rounded-[8px] 
                                 md:max-w-[310px] w-full px-[15px] outline-primary' placeholder='Списать бонусы' 
                                 onInput={(e) => setInputValue(e.target.value)}/>
-                                <div className="flex items-center gap-[10px] h-full">
+                                <div className="flex items-center gap-[10px] h-full mt-[10px]">
                                     <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium md:max-w-[150px]
-                                        w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer outline-none' onClick={withdrawBonuses}>
+                                        w-full ease duration-300 hover:bg-red-400 cursor-pointer outline-none' onClick={withdrawBonuses}>
                                         Списать
                                     </button>
                                     <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium
-                                        md:max-w-[150px] w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer'
+                                        md:max-w-[150px] w-full ease duration-300 hover:bg-red-400 cursor-pointer'
                                         onClick={removeClient}>
                                         Удалить
                                     </button>
@@ -573,7 +593,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
                         </>
                     </div>
                     <button type="submit" className='bg-primary p-2 rounded-[8px] text-white font-medium
-                    w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer absolute bottom-0' onClick={() => setModal(false)}>
+                    w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer absolute bottom-[-20px]' onClick={() => setModal(false)}>
                         Закрыть
                     </button>
                 </div>
@@ -672,20 +692,20 @@ const DashboardPartner = ({ token, responseLogin }) => {
 
 
   return (
-    <section className='relative w-full h-full bgdashboard'>
-      <div className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px] '>
-        <Intro responseLogin={responseLogin} />
-        <div className='flex flex-col md:gap-[30px] gap-0'>
-            {/* <UserResponseContext.Provider value={{ userResponse, setUserResponse }} className='flex w-full flex-col h-full'> */}
-                <div>
-                    <AddPurchase responseLogin={responseLogin} />
-                    <AddClient responseLogin={responseLogin} />
-                    <ClientsList  />
-                </div>
-            {/* </UserResponseContext.Provider> */}
+    <section className='relative w-full h-full bgdashboard mt-[60px]'>
+        <div className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px] '>
+            <Intro responseLogin={responseLogin} />
+            <div className='flex flex-col md:gap-[30px] gap-0'>
+                {/* <UserResponseContext.Provider value={{ userResponse, setUserResponse }} className='flex w-full flex-col h-full'> */}
+                    <div>
+                        <AddPurchase responseLogin={responseLogin} />
+                        <AddClient responseLogin={responseLogin} />
+                        <ClientsList  />
+                    </div>
+                {/* </UserResponseContext.Provider> */}
+            </div>
         </div>
-      </div>
-      {show && <ErrorMessage error={responseAuth.error}/>}
+        {show && <ErrorMessage error={responseAuth.error}/>}
     </section>
   )
 }

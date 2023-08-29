@@ -211,7 +211,7 @@ const LoginForm = () => {
                     <input type="submit" value="Войти" className='bg-primary p-4 rounded-[8px] text-white font-medium
                     ease duration-300 hover:bg-hover cursor-pointer mt-[15px]' id='submit_btn'/>
                     <div className='flex mb-1 justify-center text-center'>
-                        <p>Еще нет аккаунта? <a href="/" className='text-primary underline underline-offset-4'>Зарегистрируйтесь</a></p>
+                        <p>Еще нет аккаунта? <a href="/registration" className='text-primary underline underline-offset-4'>Зарегистрируйтесь</a></p>
                     </div>
                 </form>
             </div>

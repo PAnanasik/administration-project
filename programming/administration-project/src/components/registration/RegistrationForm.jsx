@@ -58,25 +58,6 @@ const RegistrationForm = () => {
             });
         }
 
-    // useEffect(() => {
-    //     const registration = async () => {
-    //         var formdata = new FormData();
-    //         formdata.append("phone", "+79048517201");
-            
-    //         var requestOptions = {
-    //           method: 'PUT',
-    //           body: formdata,
-    //           redirect: 'follow'
-    //         };
-            
-    //         fetch("http://localhost:8000/auth/code/", requestOptions)
-    //           .then(response => response.text())
-    //           .then(result => console.log(result))
-    //           .catch(error => console.log('error', error));
-    //     }
-    //     registration()
-    // }, [])
-
     useEffect(() => {
         if (redirection) {
             navigate("/confirmation")
@@ -297,7 +278,7 @@ const RegistrationForm = () => {
                     ease duration-300 hover:bg-hover cursor-pointer relative z-10'
                     onClick={() => setValue("method", `${partner ? 'company' : 'client'}`)} id='submit_btn'>Зарегистрироваться</button>
                     <div className='flex mb-1 justify-center text-center'>
-                        <p>Уже есть аккаунт? <a href="/login" className='text-primary underline underline-offset-4'>Войдите</a></p>
+                        <p>Уже есть аккаунт? <a href="/" className='text-primary underline underline-offset-4'>Войдите</a></p>
                     </div>
                 </form>
             </div>

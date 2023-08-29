@@ -47,11 +47,11 @@ const ConfirmationForm = ({ dataUser }) => {
 
     const onSubmit = async (data, event) => {
         event.preventDefault()
-        // dataUser.code == data.code
         if (dataUser.code == data.code) {
+            if (dataUser.method == 'client') {
                 axios({
-                    method: "post",
-                    url: "http://localhost:8000/auth/registration/",
+                    method: "POST",
+                    url: "http://localhost:8000/auth/registration_client/",
                     data: dataUser
                     })
                     .then(function (response) {
@@ -59,13 +59,25 @@ const ConfirmationForm = ({ dataUser }) => {
                         setRedirection(true)
                     })
                     .catch(function (response) {
-                        // dataUser.code = data.code
                         console.log(response);
                 });
         
                 reset();
-                // console.log(data)
-                // console.log(dataUser)
+            } else if (dataUser.method == 'company') {
+                axios({
+                    method: "POST",
+                    url: "http://localhost:8000/auth/registration_partner/",
+                    data: dataUser
+                    })
+                    .then(function (response) {
+                        console.log(response);
+                        setRedirection(true)
+                    })
+                    .catch(function (response) {
+                        console.log(response);
+                });
+                reset();
+            }
         } else {
             setShow(true)
             setResponseAuth({ dataUser: dataUser, error: "Неправильный код" })

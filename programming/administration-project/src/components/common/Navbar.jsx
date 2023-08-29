@@ -1,23 +1,26 @@
 import { avatar, notification } from '../../assets'
 import { useContext, useState } from 'react';
-import { ResponseContext } from '../../App';
+import { PartnerContext, ResponseContext } from '../../App';
 
 
-const Navbar = ({ responseLogin }) => {
+const Navbar = ({ responseLogin, dataPartner }) => {
   const [notificationIcon, setNotificationIcon] = useState(true)
   const { user, setUser } = useContext(ResponseContext);
-  const { responseAuth, setResponseAuth } = useContext(ResponseContext);
+  // const { responseAuth, setResponseAuth } = useContext(ResponseContext);
+  const { partnerData, setPartnerData } = useContext(PartnerContext);
   const [menu, setMenu] = useState(false)
+
+
   const arrayNames = []
-  arrayNames.push(responseAuth.responseLogin.fio)
+  arrayNames.push(dataPartner)
   const arrayLength = arrayNames.length
   console.log(arrayNames)
 
   const Menu = () => {
-    const NotificationItem = ({ fio }) => {
+    const NotificationItem = ({name_partner}) => {
       return (
         <div className='w-full min-h-[60px] bg-white px-[10px] flex flex-col justify-center rounded-[8px]'>
-          <h2 className='font-medium text-[14px]'>Вас добавил {fio}</h2>
+          <h2 className='font-medium text-[14px]'>Вас добавил {name_partner}</h2>
           <p className='text-[12px]'>Просмотрите ваш список клиентов</p>
         </div>
       )
@@ -55,7 +58,7 @@ const Navbar = ({ responseLogin }) => {
 
   return (
     <>
-      <div className='h-[80px] bg-white'>
+      <div className='h-[80px] bg-white border-solid border-b-[1px] border-[#D2D2D2] fixed top-0 z-10 w-full'>
           <nav className='md:px-[30px] px-[15px] h-full max-w-[1640px] mx-auto'>
               <div className='h-full flex md:flex-row flex-col md:justify-between justify-center items-center'>
                   <h2 className='md:text-[16px] text-[14px]'>Личный кабинет клиента</h2>
@@ -64,7 +67,7 @@ const Navbar = ({ responseLogin }) => {
                           <img src={notification} alt="dfaafdfad" className='w-7 h-7'/>
                           {arrayNames.length && notificationIcon && <NotificationIcon />}
                       </a>
-                      <p className='md:text-[16px] text-[14px] font-medium'>{`${responseLogin.bonus || '0'} бонусов`}</p>
+                      <p className='md:text-[16px] text-[14px] font-medium'>{`${responseLogin.bonuses || '0'} бонусов`}</p>
                       <img src={avatar} alt="dfaafdfad" className='w-14 h-14 md:block hidden'/>
                       <a href="" className='md:text-[16px] text-[14px] font-normal' onClick={() => setUser({ loggedIn: false })}>Выйти</a>
                   </div>
