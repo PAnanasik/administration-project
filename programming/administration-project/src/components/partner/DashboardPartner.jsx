@@ -1,26 +1,37 @@
 import { useState, useEffect, useContext } from 'react'
 import { styles } from '../../styles'
-import { arrowExpand, arrowExpanded, nameInput, phoneInput, scan } from '../../assets'
+import { arrowExpand, arrowExpanded, nameInput, phoneInput, cash, date, receipt, percent, product  } from '../../assets'
 import { useForm } from 'react-hook-form';
-import { PartnerContext, ResponseContext } from '../../App';
+import { ResponseContext } from '../../App';
 import axios from 'axios';
 import ErrorMessage from '../common/ErrorMessage';
 
 
 const DashboardPartner = ({ token, responseLogin }) => {
+    console.log(responseLogin)
+    const [modal, setModal] = useState(false)
     console.log(token)
-    // const { responseAuth, setResponseAuth } = useContext(ResponseContext);
-    const { partnerData, setPartnerData } = useContext(PartnerContext);
+    const { responseAuth, setResponseAuth } = useContext(ResponseContext);
     const [show, setShow] = useState(false)
     const [responseState, setState] = useState([])
 
+    const useShowError = ({error}) => {
+        setShow(true);
+        setResponseAuth(prev => ({ 
+            ...prev,
+            errorMessage: `${error}` 
+        }))
+        setModal(false)
+        setTimeout(() => setShow(false), 5000)        
+    }
 
-  const InputIcon = ({ prop }) => {
-    const array = [phoneInput, nameInput]
-    return (
-        <img src={array[prop]} alt="phone" className='absolute right-[20px] top-[18px] w-6 h-6'/>
-    )
-  }
+
+    const InputIcon = ({ prop }) => {
+        const array = [phoneInput, nameInput, receipt, cash, date, product, percent]
+        return (
+            <img src={array[prop]} alt="phone" className='absolute right-[20px] top-[18px] w-6 h-6'/>
+        )
+    }
 
   const InputCardPhone = () => {
     const [active, setActive] = useState(true)
@@ -154,7 +165,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
             }  
             )}
             />
-            {active && <InputIcon prop={1} />}
+            {active && <InputIcon prop={2} />}
             <div className="mt-1">
             {errors?.number && <p className="text-red-500 text-[12px]">
                 {errors?.number?.message || "Длина чека должна быть больше 0 цифр" || "Ошибка!"}
@@ -188,7 +199,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
             }  
             )}
             />
-            {active && <InputIcon prop={2} />}
+            {active && <InputIcon prop={3} />}
             <div className="mt-1">
             {errors?.amount && <p className="text-red-500 text-[12px]">
                 {errors?.amount?.message || "Неверный формат" || "Ошибка!"}
@@ -222,7 +233,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
             }  
             )}
             />
-            {active && <InputIcon prop={2} />}
+            {active && <InputIcon prop={4} />}
             <div className="mt-1">
             {errors?.date && <p className="text-red-500 text-[12px]">
                 {errors?.date?.message || "Неверный формат" || "Ошибка!"}
@@ -256,7 +267,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
             }  
             )}
             />
-            {active && <InputIcon prop={2} />}
+            {active && <InputIcon prop={5} />}
             <div className="mt-1">
             {errors?.name_purchase && <p className="text-red-500 text-[12px]">
                 {errors?.name_purchase?.message || "Неверный формат" || "Ошибка!"}
@@ -289,7 +300,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
             }  
             )}
             />
-            {active && <InputIcon prop={2} />}
+            {active && <InputIcon prop={6} />}
             <div className="mt-1">
             {errors?.percent && <p className="text-red-500 text-[12px]">
                 {errors?.percent?.message || "Неверный формат" || "Ошибка!"}
@@ -404,8 +415,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
         .then(function (response) {
             console.log(response);
             setState(oldItem => [...oldItem, responseState])
-            setPartnerData({ dataPartner: data })
-            console.log(partnerData.dataPartner)
+            // setPartnerData({ dataPartner: data })
         })
         .catch(function (response) {
             console.log(response);
@@ -449,7 +459,6 @@ const DashboardPartner = ({ token, responseLogin }) => {
             }  
             )}
             >
-                <img src={scan} alt="" className='w-6 h-6'/>
                 <p>Добавить чек</p>
               </button>
             </form>
@@ -491,7 +500,6 @@ const DashboardPartner = ({ token, responseLogin }) => {
             setModal(false);
         }
     })
-    const [modal, setModal] = useState(false)
     const [expanded, setExpanded] = useState(false)
     const [matches, setMatches] = useState(
         window.matchMedia("(min-width: 560px)").matches
@@ -530,11 +538,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
                 })
                 .catch(function (response) {
                     console.log(response);
-                    setShow(true);
-                    // error: {message: "Количество списываемых бонусов должно быть меньше всего количества бонусов"} })
-                    // <ErrorMessage error={{message: "У клиента нет бонусов"}} />
-                    setTimeout(() => setShow(false), 3000)
-                    // setTimeout(() => setShow(false), 3000)
+                    useShowError({error: "Не удалось списать бонусы"})
                 });
         }
 
@@ -555,11 +559,11 @@ const DashboardPartner = ({ token, responseLogin }) => {
                 },
                 })
                 .then(function (response) {
-                    console.log(response);
                     setState(oldItem => [...oldItem, responseState])
                 })
                 .catch(function (response) {
                     console.log(response);
+                    useShowError({error: "Не удалось удалить пользователя"})
                 });
                 
             }
@@ -584,7 +588,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
                                         Списать
                                     </button>
                                     <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium
-                                        md:max-w-[150px] w-full ease duration-300 hover:bg-red-400 cursor-pointer'
+                                        md:max-w-[150px] w-full ease duration-300 hover:bg-red-400 cursor-pointer' id='btn-error-handled'
                                         onClick={removeClient}>
                                         Удалить
                                     </button>
@@ -692,20 +696,18 @@ const DashboardPartner = ({ token, responseLogin }) => {
 
 
   return (
-    <section className='relative w-full h-full bgdashboard mt-[60px]'>
+    <section className='relative w-full h-full bgdashboard mt-[60px] z-0'>
         <div className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px] '>
             <Intro responseLogin={responseLogin} />
             <div className='flex flex-col md:gap-[30px] gap-0'>
-                {/* <UserResponseContext.Provider value={{ userResponse, setUserResponse }} className='flex w-full flex-col h-full'> */}
-                    <div>
-                        <AddPurchase responseLogin={responseLogin} />
-                        <AddClient responseLogin={responseLogin} />
-                        <ClientsList  />
-                    </div>
-                {/* </UserResponseContext.Provider> */}
+                <div >
+                    <AddPurchase responseLogin={responseLogin} />
+                    <AddClient responseLogin={responseLogin} />
+                    <ClientsList  />
+                </div>
             </div>
         </div>
-        {show && <ErrorMessage error={responseAuth.error}/>}
+        {show && <ErrorMessage error={responseAuth.errorMessage}/>}
     </section>
   )
 }

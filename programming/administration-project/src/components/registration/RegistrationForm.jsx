@@ -6,17 +6,22 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import { ResponseContext } from '../../App';
 import ErrorMessage from '../common/ErrorMessage';
-import { showError } from '..';
 
 const RegistrationForm = () => {
     const [show, setShow] = useState(false)
-
-
     const navigate = useNavigate()
     const { responseAuth, setResponseAuth } = useContext(ResponseContext);
     const [partner, setPartner] = useState(false)
     const [redirection, setRedirection] = useState(false)
-    console.log(partner)
+
+    const useShowError = ( {error} ) => {
+        setShow(true);
+        setResponseAuth(prev => ({ 
+            ...prev,
+            errorMessage: `${error}` 
+        }))
+        setTimeout(() => setShow(false), 5000)
+    }
 
     const {
         register,
@@ -51,10 +56,7 @@ const RegistrationForm = () => {
                 console.log(response);
             })
             .catch(function (response) {
-                setShow(true)
-                setResponseAuth({ error: {message: "Пользователь с этим номером телефона уже существует"} })
-                setTimeout(() => setShow(false), 5000)
-                showError()
+                useShowError({error: 'Пользователь с этим номером телефона уже существует'})
             });
         }
 
@@ -282,7 +284,7 @@ const RegistrationForm = () => {
                     </div>
                 </form>
             </div>
-            {show && <ErrorMessage error={responseAuth.error} />}
+            {show && <ErrorMessage error={responseAuth.errorMessage} />}
         </section>
     )
 }

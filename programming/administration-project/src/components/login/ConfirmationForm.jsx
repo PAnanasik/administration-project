@@ -22,18 +22,6 @@ const ConfirmationForm = ({ dataUser }) => {
         )
     }
 
-    // useEffect(() => {
-    //     const getCode = async () => {
-    //       try {
-    //         const response = await axios.get('http://localhost:8000/auth/code/');
-    //       } catch(error) {
-    //         console.log(error)
-    //       }
-    //     };
-
-    //     getCode();
-    // }, []);
-
     const {
         register,
         formState: {
@@ -87,7 +75,7 @@ const ConfirmationForm = ({ dataUser }) => {
 
     useEffect(() => {
         if (redirection) {
-            navigate('/login')
+            navigate('/')
         }
     }, [redirection])
 

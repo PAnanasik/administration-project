@@ -1,14 +1,15 @@
 import { useState, useEffect, useContext } from 'react'
 import { styles } from '../../styles'
-import { arrowExpand, arrowExpanded, avatar, mailInput, phoneInput } from '../../assets'
+import { arrowExpand, arrowExpanded, avatar, mailInput, phoneInput, refresh } from '../../assets'
 import axios from 'axios';
 import { ResponseContext } from '../../App';
+import ErrorMessage from '../common/ErrorMessage';
 
-const DashboardClient = ({ responseLogin, token, dataPartner }) => {
+const DashboardClient = ({ responseLogin, token }) => {
+  console.log()
   const [modal, setModal] = useState(false)
-  console.log(dataPartner)
   console.log(token)
-  
+  const [show, setShow] = useState(false)
   const { responseAuth, setResponseAuth } = useContext(ResponseContext);
 
   const [matches, setMatches] = useState(
@@ -20,6 +21,16 @@ const DashboardClient = ({ responseLogin, token, dataPartner }) => {
       .matchMedia("(min-width: 560px)")
       .addEventListener('change', event => setMatches(event.matches));
   }, []);
+
+  const useShowError = ({error}) => {
+    setShow(true);
+    setResponseAuth(prev => ({ 
+        ...prev,
+        errorMessage: `${error}` 
+    }))
+    setModal(false)
+    setTimeout(() => setShow(false), 5000)        
+}
 
   
 
@@ -91,12 +102,17 @@ const DashboardClient = ({ responseLogin, token, dataPartner }) => {
           setState(responseState);
         } catch(error) {
           console.log(error)
+          useShowError({error: "Не удалось вывести список покупок"})
         }
       };
 
       getPurchases();
-    }, []);
 
+      // return () => {
+        
+      // }
+
+    }, []);
 
     const HistoryItem = ({ name, amount, number, date, is_confirmed, bonuses_spent, total_amount }) => {
       const [expanded, setExpanded] = useState(false)
@@ -111,7 +127,8 @@ const DashboardClient = ({ responseLogin, token, dataPartner }) => {
             phone_client: `${responseLogin.phone}`,
             number_cheque: number,
             reason_refund: `${selectedCategory}`,
-            date_cheque: date
+            date_cheque: date,
+            total_amount: total_amount
           },
           headers: { 
               "Content-Type": "application/json",
@@ -124,6 +141,7 @@ const DashboardClient = ({ responseLogin, token, dataPartner }) => {
           })
           .catch(function (response) {
               console.log(response);
+              useShowError({error: "Не удалось совершить возврат"})
         });
 
       }
@@ -131,7 +149,7 @@ const DashboardClient = ({ responseLogin, token, dataPartner }) => {
       const ModalWindow = () => {
         return (
           <div className='max-w-[600px] w-full h-[400px] bg-white fixed border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
-          top-[150px] left-0 right-0 mx-auto z-[10] p-[30px] before:w-full before:h-[60px] before:bg-primary
+          top-[350px] left-0 right-0 mx-auto z-[10] p-[30px] before:w-full before:h-[60px] before:bg-primary
           before:content-normal before:block before:absolute before:top-0 before:left-0 before:rounded-t-[12px]'>
               <div className='mt-[50px] h-[300px] relative'>
                   <h2 className='font-medium text-[20px] pb-[15px]'>{name}</h2>
@@ -148,8 +166,7 @@ const DashboardClient = ({ responseLogin, token, dataPartner }) => {
                           <option value="Гарантийный случай">Гарантийный случай</option>
                         </select>
                         <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium
-                            md:max-w-[150px] w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer'
-                            >
+                            md:max-w-[150px] w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer'>
                             Возврат
                         </button>
                     </form>
@@ -477,6 +494,7 @@ const DashboardClient = ({ responseLogin, token, dataPartner }) => {
             <PartnersListAll token={token} />
         </div>
       </div>
+      {show && <ErrorMessage error={responseAuth.errorMessage}/>}
     </section>
   )
 }

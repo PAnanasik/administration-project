@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 import { ResponseContext } from '../../App';
 import { useContext } from 'react';
 import ErrorMessage from '../common/ErrorMessage';
-import { showError } from '..';
 
 const LoginForm = () => {
     const url = 'http://127.0.0.1:8000'
@@ -21,6 +20,15 @@ const LoginForm = () => {
     const { responseAuth, setResponseAuth } = useContext(ResponseContext);
     const [redirection, setRedirection] = useState(false)
     const navigate = useNavigate()
+
+    const useShowError = ( {error} ) => {
+        setShow(true);
+        setResponseAuth(prev => ({ 
+            ...prev,
+            errorMessage: `${error}` 
+        }))
+        setTimeout(() => setShow(false), 5000)
+    }
 
 
 
@@ -55,19 +63,17 @@ const LoginForm = () => {
                     console.log(pcUrl);
                 })
                 .catch(function (response) {
-                    setShow(true)
-                    setResponseAuth({ error: {message: "Проверьте правильность выбранной роли"} })
-                    setTimeout(() => setShow(false), 5000)
-                    showError()
+                    console.log(response)
+                    setResponseAuth({ loggedIn: false })
+                    useShowError({error: "Проверьте правильность выбранной роли"})
                 });
               
             })
             
             .catch(function (response) {
-                setShow(true)
-                setResponseAuth({ error: {message: "Проверьте правильность введенных данных"} })
-                setTimeout(() => setShow(false), 5000)
-                showError()
+                console.log(response)
+                setResponseAuth({ loggedIn: false })
+                useShowError({error: "Проверьте правильность введенных данных"})
         });
     }
 
@@ -215,7 +221,7 @@ const LoginForm = () => {
                     </div>
                 </form>
             </div>
-            {show && <ErrorMessage error={responseAuth.error}/>}
+            {show && <ErrorMessage error={responseAuth.errorMessage}/>}
         </section>
     )
 }

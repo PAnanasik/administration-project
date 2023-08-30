@@ -2,12 +2,12 @@ import { Navbar, DashboardClient } from '../components'
 import Background from '../components/canvas/Background'
 
 
-const Client = ({ responseLogin, token, dataPartner }) => {
+const Client = ({ responseLogin, token }) => {
   return (
     <div>
-        <Navbar responseLogin={responseLogin} dataPartner={dataPartner} />
+        <Navbar responseLogin={responseLogin} token={token} />
         <div className='relative z-0'>
-            <DashboardClient responseLogin={responseLogin} token={token} dataPartner={dataPartner} />
+            <DashboardClient responseLogin={responseLogin} token={token} />
             <Background />
         </div>
     </div>
