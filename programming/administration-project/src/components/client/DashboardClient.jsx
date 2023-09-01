@@ -1,16 +1,17 @@
 import { useState, useEffect, useContext } from 'react'
 import { styles } from '../../styles'
-import { arrowExpand, arrowExpanded, avatar, mailInput, phoneInput, refresh } from '../../assets'
+import { arrowExpand, arrowExpanded, avatar, mailInput, phoneInput } from '../../assets'
 import axios from 'axios';
 import { ResponseContext } from '../../App';
 import ErrorMessage from '../common/ErrorMessage';
+import { partnersListUrl, purchasesUrl, remove_addUrl } from '../urls'
 
 const DashboardClient = ({ responseLogin, token }) => {
-  console.log()
+  const [modalInfo, setModalInfo] = useState('')
   const [modal, setModal] = useState(false)
-  console.log(token)
   const [show, setShow] = useState(false)
   const { responseAuth, setResponseAuth } = useContext(ResponseContext);
+  console.log(token)
 
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 560px)").matches
@@ -87,36 +88,8 @@ const DashboardClient = ({ responseLogin, token }) => {
     )
   }
 
-  const HistoryInfo = ({ token }) => {
-    const [state, setState] = useState([])
-
-    useEffect(() => {
-      const getPurchases = async () => {
-        try {
-          const response = await axios.get('http://localhost:8000/api/v1/partner_purchases/', {
-            headers: {
-                Authorization: `token ${token}`
-            }
-          });
-          const responseState = response.data;
-          setState(responseState);
-        } catch(error) {
-          console.log(error)
-          useShowError({error: "Не удалось вывести список покупок"})
-        }
-      };
-
-      getPurchases();
-
-      // return () => {
-        
-      // }
-
-    }, []);
-
-    const HistoryItem = ({ name, amount, number, date, is_confirmed, bonuses_spent, total_amount }) => {
-      const [expanded, setExpanded] = useState(false)
-      const [selectedCategory, setSelectedCategory] = useState('Товар не подошел')
+  const ModalWindow = () => {
+    const [selectedCategory, setSelectedCategory] = useState('Товар не подошел')
 
       const handleModal = (event) => {
         event.preventDefault()
@@ -137,6 +110,7 @@ const DashboardClient = ({ responseLogin, token }) => {
           withCredentials: true
           })
           .then(function (response) {
+
               console.log(response);
           })
           .catch(function (response) {
@@ -146,43 +120,77 @@ const DashboardClient = ({ responseLogin, token }) => {
 
       }
 
-      const ModalWindow = () => {
-        return (
-          <div className='max-w-[600px] w-full h-[400px] bg-white fixed border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
-          top-[350px] left-0 right-0 mx-auto z-[10] p-[30px] before:w-full before:h-[60px] before:bg-primary
-          before:content-normal before:block before:absolute before:top-0 before:left-0 before:rounded-t-[12px]'>
-              <div className='mt-[50px] h-[300px] relative'>
-                  <h2 className='font-medium text-[20px] pb-[15px]'>{name}</h2>
-                  <div className='pt-[20px] border-solid border-t-[1px] border-[#D2D2D2] flex flex-col'>
-                    <form action="" onSubmit={handleModal}  className='flex flex-col'>
-                        <select type="select"
-                        className={`${styles.inputStyles}`}
-                        placeholder="Категория товара"
-                        id='selection'
-                        defaultValue={selectedCategory}
-                        onChange={e => setSelectedCategory(e.target.value)}>
-                          <option value="Товар не подошел">Товар не подошел</option>
-                          <option value="Товар ненадлежащего качества">Товар ненадлежащего качества</option>
-                          <option value="Гарантийный случай">Гарантийный случай</option>
-                        </select>
-                        <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium
-                            md:max-w-[150px] w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer'>
-                            Возврат
-                        </button>
-                    </form>
-                  </div>
-                  <button type="submit" className='bg-primary p-2 rounded-[8px] text-white font-medium
-                  w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer absolute bottom-0' onClick={() => setModal(false)}>
-                      Закрыть
-                  </button>
+    return (
+      <div className='max-w-[560px] w-full h-[400px] bg-white fixed border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
+      lg:top-[100px] top-[100px] left-0 right-0 mx-auto z-10 px-[30px]'>
+          <div className='mt-[50px] h-[300px] relative'>
+              <h2 className='font-medium text-[20px] pb-[15px]'>Наименование товара: {modalInfo}</h2>
+              <div className='pt-[16px]  flex flex-col'>
+                <form action="" onSubmit={handleModal}  className='flex flex-col'>
+                    <label htmlFor='selection'>Причина возврата</label>
+                    <select type="select"
+                    className={`${styles.inputStyles}`}
+                    placeholder="Категория товара"
+                    id='selection'
+                    defaultValue={selectedCategory}
+                    onChange={e => setSelectedCategory(e.target.value)}>
+                      <option value="Товар не подошел">Товар не подошел</option>
+                      <option value="Товар ненадлежащего качества">Товар ненадлежащего качества</option>
+                      <option value="Гарантийный случай">Гарантийный случай</option>
+                    </select>
+                    <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium
+                        md:max-w-[150px] w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer'
+                        onClick={() => setModal(false)}>
+                        Возврат
+                    </button>
+                </form>
               </div>
+              <button type="submit" className='bg-primary p-2 rounded-[8px] text-white font-medium
+              w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer absolute bottom-0' onClick={() => setModal(false)}>
+                  Закрыть
+              </button>
           </div>
-        )
-      }
+      </div>
+    )
+  }
+
+  const HistoryInfo = ({ token }) => {
+    const [state, setState] = useState([])
+
+    useEffect(() => {
+      const getPurchases = async () => {
+        try {
+          const response = await axios.get(purchasesUrl, {
+            headers: {
+                Authorization: `token ${token}`
+            }
+          });
+          const responseState = response.data;
+          setState(responseState);
+        } catch(error) {
+          console.log(error)
+          useShowError({error: "Не удалось вывести список покупок"})
+        }
+      };
+
+      getPurchases();
+
+    }, [purchasesUrl]);
+    console.log(state)
+
+    const HistoryItem = ({ name, amount, date, is_confirmed, bonuses_spent, total_amount }) => {
+      const [expanded, setExpanded] = useState(false)
+      
 
       const HistoryItemDesc = () => {
+        function handleToModalScroll() {
+          setModalInfo(name)
+          setModal(true);
+          window.scrollTo(0, 0);
+        }
+
         return (
-          <div className='flex flex-col gap-[10px] py-[20px] px-[30px] border-solid border-b-[1px] border-[#D2D2D2]'>
+          <div className='flex flex-col gap-[10px] py-[20px] px-[30px] border-solid border-t-[1px] border-[#D2D2D2]'>
             <p>Цена: {amount}</p>
             <p>Списанные бонусы: {bonuses_spent}</p>
             <p>Дата покупки: {date}</p>
@@ -195,21 +203,19 @@ const DashboardClient = ({ responseLogin, token }) => {
                 <input type="checkbox" name="" id="" className='w-4 h-4 pointer-events-none' readOnly/>
               }
             </div>
-            {/* <div className=''> */}
             <button className='bg-red-500 p-1 rounded-[8px] text-white font-medium
                 md:max-w-[150px] w-full ease duration-300 hover:bg-red-400 cursor-pointer mt-[10px]'
-                onClick={() => setModal(true)}>
+                onClick={handleToModalScroll}>
                 Возврат
             </button>
-            {/* </div> */}
           </div>
         )
       }
       return (
         <>
-          <div className='rounded-[8px]'>
-              <div className={`border-solid border-b-[1px] border-[#D2D2D2]
-              w-full h-[60px] flex justify-between items-center px-[30px] last:border-b-transparent`}>
+          <div className='border-solid first:border-t-transparent border-t-[1px] border-[#D2D2D2]'>
+              <div className='
+              w-full h-[60px] flex justify-between items-center px-[30px] '>
                 <h2 className={`${styles.dashboardItemTitle}`}>{name}</h2>
                 <button onClick={() => setExpanded(!expanded)}>
                   <img src={expanded ? arrowExpanded : arrowExpand} alt="" className='w-4 h-4'/>
@@ -218,7 +224,6 @@ const DashboardClient = ({ responseLogin, token }) => {
 
               {expanded && <HistoryItemDesc/>}
           </div>
-          {modal && <ModalWindow />}
         </>
       )
     }
@@ -248,7 +253,7 @@ const DashboardClient = ({ responseLogin, token }) => {
     const removePartner = async () => {
       axios({
           method: "PUT",
-          url: "http://localhost:8000/api/v1/add_or_remove_client/",
+          url: `${remove_addUrl}`,
           headers: { 
             "Content-Type": "application/json",
             "Authorization": `token ${token}` 
@@ -313,7 +318,7 @@ const DashboardClient = ({ responseLogin, token }) => {
     useEffect(() => {
         const getPartners = async () => {
           try {
-            const response = await axios.get('http://localhost:8000/api/v1/client_partners/', {
+            const response = await axios.get(partnersListUrl, {
                 headers: {
                     Authorization: `token ${token}`
                 }
@@ -366,7 +371,7 @@ const DashboardClient = ({ responseLogin, token }) => {
     const addPartner = async () => {
       axios({
           method: "PUT",
-          url: "http://localhost:8000/api/v1/add_or_remove_client/",
+          url: `${remove_addUrl}`,
           headers: { 
             "Content-Type": "application/json",
             "Authorization": `token ${token}` 
@@ -433,7 +438,7 @@ const DashboardClient = ({ responseLogin, token }) => {
     useEffect(() => {
         const getAllPartners = async () => {
           try {
-            const response = await axios.get('http://localhost:8000/api/v1/partners/', {
+            const response = await axios.get(partnersListUrl, {
               headers: {
                   Authorization: `token ${token}`
               }
@@ -446,7 +451,7 @@ const DashboardClient = ({ responseLogin, token }) => {
         };
 
         getAllPartners();
-    }, []);
+    }, [partnersListUrl]);
 
     const [value, setValue] = useState('')
 
@@ -483,6 +488,8 @@ const DashboardClient = ({ responseLogin, token }) => {
 
   return (
     <section className='w-full h-full bgdashboard mt-[60px]'>
+      {modal && <div className='absolute w-full h-full bg-black bg-opacity-[0.3] z-10'></div>}
+      {modal && <ModalWindow />}
       <div className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px]'>
         <Intro responseLogin={responseLogin} />
         <div className='flex flex-col h-full'>

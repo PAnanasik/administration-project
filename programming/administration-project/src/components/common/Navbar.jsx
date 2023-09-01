@@ -2,6 +2,7 @@ import { avatar, notification, refresh } from '../../assets'
 import { useContext, useEffect, useState } from 'react';
 import { ResponseContext } from '../../App';
 import axios from 'axios';
+import { clientUrl } from '../urls';
 
 
 const Navbar = ({ responseLogin, token }) => {
@@ -17,18 +18,20 @@ const Navbar = ({ responseLogin, token }) => {
   const refreshBonuses = () => {
     axios({
       method: "GET",
-      url: 'http://localhost:8000/api/v1/client/',
+      url: `${clientUrl}`,
       headers: { "Authorization": `token ${token}` },
       withCredentials: true
       })
       .then(function (response) {
         console.log(response)
         setBonus(response.data[0].bonuses)
+        console.log(response)
       })
       .catch(function (response) {
         console.log(response)
     });
   } 
+  console.log(bonus)
   
   // const arrayNames = []
   // // arrayNames.push(dataPartner)

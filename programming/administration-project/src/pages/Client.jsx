@@ -1,5 +1,5 @@
 import { Navbar, DashboardClient } from '../components'
-import Background from '../components/canvas/Background'
+import Background from '../components/common/Background'
 
 
 const Client = ({ responseLogin, token }) => {

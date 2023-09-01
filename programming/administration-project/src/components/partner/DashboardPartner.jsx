@@ -1,16 +1,16 @@
 import { useState, useEffect, useContext } from 'react'
 import { styles } from '../../styles'
-import { arrowExpand, arrowExpanded, nameInput, phoneInput, cash, date, receipt, percent, product  } from '../../assets'
+import { arrowExpand, arrowExpanded, nameInput, phoneInput, cash, date, receipt, percent, product } from '../../assets'
 import { useForm } from 'react-hook-form';
 import { ResponseContext } from '../../App';
 import axios from 'axios';
 import ErrorMessage from '../common/ErrorMessage';
+import { addChequeUrl, getClientsListUrl, remove_addUrl, withdrawBonusesUrl } from '../urls';
 
 
 const DashboardPartner = ({ token, responseLogin }) => {
-    console.log(responseLogin)
+    const [modalInfo, setModalInfo] = useState({ name: '', bonuses: '', phone: '' })
     const [modal, setModal] = useState(false)
-    console.log(token)
     const { responseAuth, setResponseAuth } = useContext(ResponseContext);
     const [show, setShow] = useState(false)
     const [responseState, setState] = useState([])
@@ -128,7 +128,6 @@ const DashboardPartner = ({ token, responseLogin }) => {
               required
               {...register('phone', {
                 required: "Поле обязательно к заполнению",
-                // pattern: /^[А-Яа-я]+$/
               })}  
               />
               {active && <InputIcon prop={0} />}
@@ -161,7 +160,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
             onInput={handleInput}
             {...register('number', {
                 required: "Поле обязательно к заполнению",
-                // pattern: /^[0-9]+$/
+                pattern: /^[0-9]+$/
             }  
             )}
             />
@@ -195,6 +194,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
             onInput={handleInput}
             {...register('amount', {
                 required: "Поле обязательно к заполнению",
+                pattern: /^[0-9]+$/
                 // pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
             }  
             )}
@@ -226,10 +226,11 @@ const DashboardPartner = ({ token, responseLogin }) => {
             type='text'
             className={`${errors?.date ? styles.badInputStyles : styles.inputStyles}`}
             placeholder="Дата и время покупки"
+            pattern="^(19|20)\d{2}-(0[1-9]|1[1,2])-(0[1-9]|[12][0-9]|3[01])\s(0|1|2){1}[0-9]{1}:[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}[+][0-9]{1}[0]{1}:[0]{2}"
+            title="Используйте формат: 2023-08-23 07:58:53+00:00"
             onInput={handleInput}
             {...register('date', {
                 required: "Поле обязательно к заполнению",
-                // pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
             }  
             )}
             />
@@ -383,7 +384,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
     event.preventDefault()
     axios({
         method: "POST",
-        url: "http://localhost:8000/api/v1/add_cheque/",
+        url: `${addChequeUrl}`,
         data: data,
         headers: { "Authorization": `token ${token}` },
         withCredentials: true
@@ -404,7 +405,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
     data.method = "add"
     axios({
         method: "PUT",
-        url: "http://localhost:8000/api/v1/add_or_remove_client/",
+        url: `${remove_addUrl}`,
         data: data,
         headers: { 
             "Content-Type": "application/json",
@@ -492,6 +493,102 @@ const DashboardPartner = ({ token, responseLogin }) => {
     )
   }
 
+  const ModalWindow = () => {
+    const [dataBonus, setDataBonus] = useState(modalInfo.bonuses)
+    const [inputValue, setInputValue] = useState(0)
+    // console.log(bonuses, Number(inputValue))
+    const withdrawBonuses = async (event) => {
+        event.preventDefault()
+        axios({
+            method: "PUT",
+            url: `${withdrawBonusesUrl}`,
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": `token ${token}` 
+            },
+            withCredentials: true,
+            data: {
+                bonuses: inputValue,
+                phone: `${modalInfo.phone}` 
+            },
+            })
+            .then(function (response) {
+                console.log(response.data.data.bonuses)
+                setDataBonus(response.data.data.bonuses)
+                // console.log(response);
+                
+            })
+            .catch(function (response) {
+                console.log(response);
+                useShowError({error: "Не удалось списать бонусы"})
+            });
+    }
+
+    const removeClient = async (event) => {
+        event.preventDefault()
+        axios({
+            method: "PUT",
+            url: `${remove_addUrl}`,
+            headers: { 
+                "Content-Type": "application/json",
+                "Authorization": `token ${token}` 
+            },
+            withCredentials: true,
+            data: {
+                name_partner: `${responseLogin.name}`,
+                phone_client: `${modalInfo.phone}`,
+                method: 'remove'
+            },
+            })
+            .then(function (response) {
+                setState(oldItem => [...oldItem, responseState])
+                setModal(false)
+            })
+            .catch(function (response) {
+                console.log(response);
+                useShowError({error: "Не удалось удалить пользователя"})
+            });
+            
+        }
+      
+
+    return (
+        <div className='max-w-[560px] w-full h-[360px] bg-white fixed border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
+        lg:bottom-[250px] bottom-[150px] left-0 right-0 mx-auto z-10 px-[30px]'>
+            <div className='mt-[40px] h-[260px] relative'>
+                <h2 className='font-medium text-[20px]'>Имя клиента: {modalInfo.name}</h2>
+                <div className='pt-[16px] flex flex-col'>
+                    <>
+                        {/* <p className='text-[20px]'>Бонусов: <span>{dataBonus}</span></p> */}
+                       
+                       <form action="" onSubmit={withdrawBonuses} className='flex flex-col'>
+                            <label htmlFor="bonuses">Количество бонусов: {dataBonus}</label>
+                            <input type="text" name="" id="bonuses" className='bg-input mb-[15px] h-[50px] rounded-[8px] 
+                            md:max-w-[310px] w-full px-[15px] outline-primary' placeholder='Списать бонусы' 
+                            onInput={(e) => setInputValue(e.target.value)}/>
+                            <div className="flex items-center gap-[10px] h-full mt-[10px]">
+                                <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium md:max-w-[150px]
+                                    w-full ease duration-300 hover:bg-red-400 cursor-pointer outline-none' onClick={withdrawBonuses}>
+                                    Списать
+                                </button>
+                                <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium
+                                    md:max-w-[150px] w-full ease duration-300 hover:bg-red-400 cursor-pointer' id='btn-error-handled'
+                                    onClick={removeClient}>
+                                    Удалить
+                                </button>
+                            </div>
+                       </form>
+                    </>
+                </div>
+                <button type="submit" className='bg-primary p-2 rounded-[8px] text-white font-medium
+                w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer absolute bottom-[-20px]' onClick={() => setModal(false)}>
+                    Закрыть
+                </button>
+            </div>
+        </div>
+    )
+}
+
 
 
   const ClientItem = ({ fio, phone, bonuses = 0 }) => {
@@ -511,99 +608,6 @@ const DashboardPartner = ({ token, responseLogin }) => {
         .addEventListener('change', event => setMatches(event.matches));
     }, []);
 
-    const ModalWindow = () => {
-        const [dataBonus, setDataBonus] = useState(bonuses)
-        const [inputValue, setInputValue] = useState(0)
-        console.log(bonuses, Number(inputValue))
-        const withdrawBonuses = async (event) => {
-            event.preventDefault()
-            axios({
-                method: "PUT",
-                url: "http://localhost:8000/api/v1/withdraw_bonus/",
-                headers: { 
-                    "Content-Type": "application/json",
-                    "Authorization": `token ${token}` 
-                },
-                withCredentials: true,
-                data: {
-                    bonuses: inputValue,
-                    phone: `${phone}` 
-                },
-                })
-                .then(function (response) {
-                    console.log(response.data.data.bonuses)
-                    setDataBonus(response.data.data.bonuses)
-                    // console.log(response);
-                    
-                })
-                .catch(function (response) {
-                    console.log(response);
-                    useShowError({error: "Не удалось списать бонусы"})
-                });
-        }
-
-        const removeClient = async (event) => {
-            event.preventDefault()
-            axios({
-                method: "PUT",
-                url: "http://localhost:8000/api/v1/add_or_remove_client/",
-                headers: { 
-                    "Content-Type": "application/json",
-                    "Authorization": `token ${token}` 
-                },
-                withCredentials: true,
-                data: {
-                    name_partner: `${responseLogin.name}`,
-                    phone_client: `${phone}`,
-                    method: 'remove'
-                },
-                })
-                .then(function (response) {
-                    setState(oldItem => [...oldItem, responseState])
-                })
-                .catch(function (response) {
-                    console.log(response);
-                    useShowError({error: "Не удалось удалить пользователя"})
-                });
-                
-            }
-          
-
-        return (
-            <div className='max-w-[600px] w-full h-[350px] bg-white absolute left-0 right-0 mx-auto bottom-[200px] border-solid 
-            border-[1px] border-[#D2D2D2] rounded-[12px] px-[30px]'>
-                <div className='flex flex-col justify-center h-[300px] relative'>
-                    <h2 className='font-medium text-[20px] pb-[15px]'>{fio}</h2>
-                    <div className='pt-[20px] border-solid border-t-[1px] border-[#D2D2D2] flex flex-col'>
-                        <>
-                            <p>Бонусов: <span>{dataBonus}</span></p>
-                           
-                           <form action="" onSubmit={withdrawBonuses} className='flex flex-col'>
-                                <input type="text" name="" id="" className='bg-input mt-[15px] h-[60px] rounded-[8px] 
-                                md:max-w-[310px] w-full px-[15px] outline-primary' placeholder='Списать бонусы' 
-                                onInput={(e) => setInputValue(e.target.value)}/>
-                                <div className="flex items-center gap-[10px] h-full mt-[10px]">
-                                    <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium md:max-w-[150px]
-                                        w-full ease duration-300 hover:bg-red-400 cursor-pointer outline-none' onClick={withdrawBonuses}>
-                                        Списать
-                                    </button>
-                                    <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium
-                                        md:max-w-[150px] w-full ease duration-300 hover:bg-red-400 cursor-pointer' id='btn-error-handled'
-                                        onClick={removeClient}>
-                                        Удалить
-                                    </button>
-                                </div>
-                           </form>
-                        </>
-                    </div>
-                    <button type="submit" className='bg-primary p-2 rounded-[8px] text-white font-medium
-                    w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer absolute bottom-[-20px]' onClick={() => setModal(false)}>
-                        Закрыть
-                    </button>
-                </div>
-            </div>
-        )
-    }
 
     const ItemDesc = () => {
         return (
@@ -611,14 +615,20 @@ const DashboardPartner = ({ token, responseLogin }) => {
             <p className='font-medium'>Номер: <span>{phone}</span></p>
           </div>
         )
-      }
+    }  
+
+    function handleModalInfo() {
+        setModal(!modal)
+        window.scrollTo(0, document.body.scrollHeight);
+        setModalInfo({ name: fio, bonuses: bonuses, phone: phone })
+    }
 
     return (
         <>
             <div className='border-solid border-b-[1px] border-[#D2D2D2]'>
                 <div className='w-full h-[80px] flex flex-row justify-between items-center 
                 font-medium relative px-[30px]'>
-                    <div className='flex gap-[10px] items-center cursor-pointer' onClick={() => setModal(!modal)}>
+                    <div className='flex gap-[10px] items-center cursor-pointer' onClick={handleModalInfo}>
                         <div className='w-[40px] h-[40px] rounded-full bg-primary'></div>
                         <h2>{fio || 'Без имени'}</h2>
                     </div>
@@ -635,7 +645,6 @@ const DashboardPartner = ({ token, responseLogin }) => {
                 </div>
                 {expanded && <ItemDesc/>}
             </div>
-            {modal && <ModalWindow /> }
         </>
     )
   }
@@ -646,7 +655,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
     useEffect(() => {
         const dataFetch = async () => {
           try {
-            const response = await axios.get('http://localhost:8000/api/v1/partner_clients/', {
+            const response = await axios.get(`${getClientsListUrl}`, {
                 headers: {
                     Authorization: `token ${token}`
                 }
@@ -697,6 +706,8 @@ const DashboardPartner = ({ token, responseLogin }) => {
 
   return (
     <section className='relative w-full h-full bgdashboard mt-[60px] z-0'>
+        {modal && <div className='absolute w-full h-full bg-black bg-opacity-[0.3] z-10'></div>}
+        {modal && <ModalWindow /> }
         <div className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px] '>
             <Intro responseLogin={responseLogin} />
             <div className='flex flex-col md:gap-[30px] gap-0'>

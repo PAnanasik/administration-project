@@ -29,3 +29,8 @@ html {
   background-size: cover;
   background-repeat: no-repeat;
 }
+
+.stop-scrolling {
+  height: 100%;
+  overflow-y: hidden;
+}

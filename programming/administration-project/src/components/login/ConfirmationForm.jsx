@@ -6,6 +6,7 @@ import { useContext, useState, useEffect } from 'react';
 import { mailInput, nameInput, passwordInput, phoneInput } from '../../assets';
 import axios from 'axios';
 import ErrorMessage from '../common/ErrorMessage';
+import { registrationClientUrl, registrationPartnerUrl } from '../urls';
 
 const ConfirmationForm = ({ dataUser }) => {
     console.log(dataUser)
@@ -39,7 +40,7 @@ const ConfirmationForm = ({ dataUser }) => {
             if (dataUser.method == 'client') {
                 axios({
                     method: "POST",
-                    url: "http://localhost:8000/auth/registration_client/",
+                    url: `${registrationClientUrl}`,
                     data: dataUser
                     })
                     .then(function (response) {
@@ -54,7 +55,7 @@ const ConfirmationForm = ({ dataUser }) => {
             } else if (dataUser.method == 'company') {
                 axios({
                     method: "POST",
-                    url: "http://localhost:8000/auth/registration_partner/",
+                    url: `${registrationPartnerUrl}`,
                     data: dataUser
                     })
                     .then(function (response) {

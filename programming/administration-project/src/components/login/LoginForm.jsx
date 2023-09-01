@@ -7,13 +7,9 @@ import { useNavigate } from 'react-router-dom';
 import { ResponseContext } from '../../App';
 import { useContext } from 'react';
 import ErrorMessage from '../common/ErrorMessage';
+import { clientUrl, loginUrl, partnerUrl } from '../urls';
 
 const LoginForm = () => {
-    const url = 'http://127.0.0.1:8000'
-    const clientUrl = `http://localhost:8000/api/v1/client/`
-    const partnerUrl = `http://localhost:8000/api/v1/partner/`
-
-
     const [show, setShow] = useState(false)
     const [partner, setPartner] = useState(false)
 
@@ -42,7 +38,7 @@ const LoginForm = () => {
     function requestFunction(data, pcUrl) {
         axios({
             method: "post",
-            url: `${url}/auth/token/login/`,
+            url: `${loginUrl}`,
             data: data,
             headers: { "Content-Type": "application/json" },
             withCredentials: true
@@ -100,18 +96,10 @@ const LoginForm = () => {
 
     useEffect(() => {
         if (redirection && !partner) {
-            // setResponseAuth({ loggedIn: true });
-            console.log(responseAuth.loggedIn)
-            console.log(partner)
-            // setUser({ token: `${token}` });
             navigate('/dashboardclient')
             console.log('1111')
         }
         else if (redirection && partner) {
-            // setResponseAuth({ loggedIn: true });
-            console.log(responseAuth.loggedIn)
-            console.log(partner)
-            // setUser({ token: `${token}` });
             navigate('/dashboardpartner')
             console.log('2222')
         }

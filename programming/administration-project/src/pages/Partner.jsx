@@ -1,5 +1,5 @@
 import { NavbarPartner, DashboardPartner } from '../components'
-import Background from '../components/canvas/Background'
+import Background from '../components/common/Background'
 
 
 const Partner = ({ token, responseLogin }) => {

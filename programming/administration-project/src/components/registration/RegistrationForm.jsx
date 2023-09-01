@@ -6,6 +6,7 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import { ResponseContext } from '../../App';
 import ErrorMessage from '../common/ErrorMessage';
+import { registrationCodeUrl } from '../urls';
 
 const RegistrationForm = () => {
     const [show, setShow] = useState(false)
@@ -41,7 +42,7 @@ const RegistrationForm = () => {
     const registration = async (dataMain) => {
         await axios({
             method: "POST",
-            url: "http://localhost:8000/auth/send_code/",
+            url: `${registrationCodeUrl}`,
             headers: { 
               "Content-Type": "application/json"
             },
