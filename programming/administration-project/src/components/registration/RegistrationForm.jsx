@@ -16,12 +16,14 @@ const RegistrationForm = () => {
     const [redirection, setRedirection] = useState(false)
 
     const useShowError = ( {error} ) => {
+        document.querySelector("#submit_btn").disabled = true;
         setShow(true);
         setResponseAuth(prev => ({ 
             ...prev,
             errorMessage: `${error}` 
         }))
         setTimeout(() => setShow(false), 5000)
+        setTimeout(() => document.querySelector("#submit_btn").disabled = false, 5000);
     }
 
     const {
@@ -258,7 +260,7 @@ const RegistrationForm = () => {
         <section className={`bg-white w-full lg:h-full h-[100vh] flex justify-center ${matches ? 'items-center' : 'items-start'} px-[20px] my-[30px]`}>
             <div className='lg:min-w-[600px] min-w-[200px]'>
                 <h1 className={`${styles.sectionHeadText} text-center`}>Зарегистрироваться</h1>
-                <div className='flex w-full justify-center my-[30px]'>
+                <div className='flex w-full justify-center mt-[15px] mb-[30px]'>
                     <button className={`${partner ? 'bg-input text-black' : 'bg-primary text-white'} p-2 
                     rounded-l-[8px] max-w-[150px] w-full`}
                     onClick={() => setPartner(!partner)}

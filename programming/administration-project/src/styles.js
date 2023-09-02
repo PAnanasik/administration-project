@@ -13,7 +13,7 @@ const styles = {
   dashboardItemTitle:
     "text-[16px] text-black font-medium",
   dashboardItemSubtitle:
-  "text-[16px] text-black font-normal",
+    "text-[16px] text-black font-normal",
 
   inputStyles:
     "relative h-[60px] w-full bg-[#F5F5F5] px-[20px] rounded-[8px] focus:outline-primary text-[18px]",

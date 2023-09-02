@@ -6,6 +6,7 @@ import { ResponseContext } from '../../App';
 import axios from 'axios';
 import ErrorMessage from '../common/ErrorMessage';
 import { addChequeUrl, getClientsListUrl, remove_addUrl, withdrawBonusesUrl } from '../urls';
+import { InView } from 'react-intersection-observer';
 
 
 const DashboardPartner = ({ token, responseLogin }) => {
@@ -693,11 +694,15 @@ const DashboardPartner = ({ token, responseLogin }) => {
                 <h2>Клиент</h2>
                 <h2>Номер</h2>
             </div>
-            <div className='[&>*:nth-child(10)]:border-transparent'>
-                {filteredClients.map((item, index) => (
-                    <ClientItem key={index} {...item}/>
-                ))}
-            </div>
+            <InView>
+                {({ inView, ref }) => (
+                <div className='' ref={ref}>
+                    {filteredClients.map((item, index) => (
+                        inView && <ClientItem key={index} {...item}/>
+                    ))}
+                </div>
+                )}
+            </InView>
         </div>
       </section>
     )

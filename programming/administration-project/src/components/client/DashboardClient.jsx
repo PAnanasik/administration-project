@@ -5,12 +5,16 @@ import axios from 'axios';
 import { ResponseContext } from '../../App';
 import ErrorMessage from '../common/ErrorMessage';
 import { partnersListUrl, purchasesUrl, remove_addUrl } from '../urls'
+import { InView } from 'react-intersection-observer';
+
 
 const DashboardClient = ({ responseLogin, token }) => {
+  console.log(token)
   const [modalInfo, setModalInfo] = useState('')
   const [modal, setModal] = useState(false)
   const [show, setShow] = useState(false)
   const { responseAuth, setResponseAuth } = useContext(ResponseContext);
+  
   console.log(token)
 
   const [matches, setMatches] = useState(
@@ -355,11 +359,15 @@ const DashboardClient = ({ responseLogin, token }) => {
                 <h2>Партнер</h2>
                 <h2>Информация</h2>
             </div>
-            <div className=''>
-                {filteredPartners.map((item, index) => (
-                  <PartnersItem key={index} {...item} token={token}/>
-                ))}
-            </div>
+            <InView>
+                {({ inView, ref }) => (
+                  <div className='' ref={ref}>
+                      {filteredPartners.map((item, index) => (
+                        inView && <PartnersItem key={index} {...item} token={token}/>
+                      ))}
+                  </div>
+                )}
+            </InView>
         </div>
       </section>
     )
@@ -433,6 +441,7 @@ const DashboardClient = ({ responseLogin, token }) => {
   }
 
   const PartnersListAll = ({ token }) => {
+
     const [state, setState] = useState([]);
 
     useEffect(() => {
@@ -475,11 +484,15 @@ const DashboardClient = ({ responseLogin, token }) => {
                 <h2>Партнер</h2>
                 <h2>Информация</h2>
             </div>
-            <div className=''>
-                {filteredPartners.map((item, index) => (
-                  <PartnersItemAll key={index} {...item} token={token}/>
-                ))}
-            </div>
+              <InView>
+                {({ inView, ref }) => (
+                <div className='' ref={ref}>
+                    {filteredPartners.map((item, index) => (
+                      inView && <PartnersItemAll key={index} {...item} token={token}/>
+                    ))}
+                </div>
+                )}
+              </InView>
         </div>
       </section>
     )

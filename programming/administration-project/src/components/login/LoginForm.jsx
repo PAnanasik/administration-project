@@ -18,22 +18,15 @@ const LoginForm = () => {
     const navigate = useNavigate()
 
     const useShowError = ( {error} ) => {
+        document.querySelector("#submit_btn").disabled = true;
         setShow(true);
         setResponseAuth(prev => ({ 
             ...prev,
             errorMessage: `${error}` 
         }))
         setTimeout(() => setShow(false), 5000)
+        setTimeout(() => document.querySelector("#submit_btn").disabled = false, 5000);
     }
-
-
-
-    // function handleButtonChange() {
-    //     setPartner(!partner)
-    //     setUser({ client: partner })
-    //     console.log(partner)
-    // }
-
 
     function requestFunction(data, pcUrl) {
         axios({
@@ -44,7 +37,6 @@ const LoginForm = () => {
             withCredentials: true
             })
             .then(function (response) {
-                //handle success
                 const token = response.data.auth_token;
                 axios({
                 method: "GET",
@@ -189,7 +181,8 @@ const LoginForm = () => {
         <section className='bg-white w-full lg:h-full h-[100vh] flex justify-center items-center px-[20px]'>
             <div className='lg:min-w-[600px] min-w-[200px]'>
                 <h1 className={`${styles.sectionHeadText} text-center`}>Войти в аккаунт</h1>
-                <div className='flex w-full justify-center my-[30px]'>
+                <h1 className={`${styles.sectionSubText} text-center`}>Мы вновь вас приветствуем!</h1>
+                <div className='flex w-full justify-center mt-[15px] mb-[30px]'>
                     <button className={`${partner ? 'bg-input text-black' : 'bg-primary text-white'} p-2 
                     rounded-l-[8px] max-w-[150px] w-full`}
                     onClick={() => setPartner(!partner)}>Клиент</button>
@@ -197,7 +190,6 @@ const LoginForm = () => {
                     rounded-r-[8px] max-w-[150px] w-full`}
                     onClick={() => setPartner(!partner)}>Партнер</button>
                 </div>
-                <h1 className={`${styles.sectionSubText} text-center`}>Мы вновь вас приветствуем!</h1>
                 <form className='flex flex-col gap-[40px] mt-[30px]'
                 onSubmit={handleSubmit(onSubmit)}>
                     <InputCardPhone />
