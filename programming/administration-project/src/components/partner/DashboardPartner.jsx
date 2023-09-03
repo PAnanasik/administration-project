@@ -7,6 +7,7 @@ import axios from 'axios';
 import ErrorMessage from '../common/ErrorMessage';
 import { addChequeUrl, getClientsListUrl, remove_addUrl, withdrawBonusesUrl } from '../urls';
 import { InView } from 'react-intersection-observer';
+import greetings from '../greetings';
 
 
 const DashboardPartner = () => {
@@ -266,7 +267,6 @@ const DashboardPartner = () => {
             onInput={handleInput}
             {...register('name_purchase', {
                 required: "Поле обязательно к заполнению",
-                // pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
             }  
             )}
             />
@@ -299,7 +299,6 @@ const DashboardPartner = () => {
             onInput={handleInput}
             {...register('percent', {
                 required: "Поле обязательно к заполнению",
-                // pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
             }  
             )}
             />
@@ -322,7 +321,6 @@ const DashboardPartner = () => {
                 type='text'
                 className={`${styles.inputStyles}`}
                 placeholder="Бонусов для снятия"
-                // onInput={handleInput}
                 onInput={e => setInputBonus(e.target.value)}
                 {...register('bonuses_spent', {
                     value: `${inputBonus}`
@@ -334,7 +332,7 @@ const DashboardPartner = () => {
     }
 
   const InputCardCategories = () => {
-    const [selectedCategory, setSelectedCategory] = useState('')
+    const [selectedCategory, setSelectedCategory] = useState('Электроника')
 
     return (
         <div className="relative h-[60px] w-full">
@@ -352,7 +350,6 @@ const DashboardPartner = () => {
             >
               <option value="Электроника">Электроника</option>
               <option value="Одежда и обувь">Одежда и обувь</option>
-              {/* <option value="">4314</option> */}
             </select>
              
         </div>
@@ -418,7 +415,6 @@ const DashboardPartner = () => {
         .then(function (response) {
             console.log(response);
             setState(oldItem => [...oldItem, responseState])
-            // setPartnerData({ dataPartner: data })
         })
         .catch(function (response) {
             console.log(response);
@@ -432,7 +428,7 @@ const DashboardPartner = () => {
     return (
       <div className='w-full h-[200px] flex md:justify-between justify-center items-center md:text-left text-center 
       bg-white rounded-[12px] md:pl-[40px] pl-0 relative'>
-        <h2 className={`${styles.sectionHeadText}`}>Добрый день, <br /><span>{responseLogin.name}</span></h2>
+        <h2 className={`${styles.sectionHeadText}`}>{greetings()}<br /><span>{responseLogin.name}</span></h2>
         <div className='md:block hidden absolute w-[600px] right-0 h-full bg-rectangle'>
         </div>
       </div>
