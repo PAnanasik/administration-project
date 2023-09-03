@@ -39,18 +39,4 @@ select {
   -webkit-appearance: none;
   appearance: none;
   border: none;
-}
-
-select {
-  position: relative;
-}
-select::after {
-  content: "arrow";
-  font-size: 16px;
-  color: black;
-  width: 20px;
-  height: 20px;
-  display: block;
-  right: 40px;
-  position: absolute;
-}
+} 

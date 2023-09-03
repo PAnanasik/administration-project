@@ -198,7 +198,6 @@ const DashboardPartner = () => {
             {...register('amount', {
                 required: "Поле обязательно к заполнению",
                 pattern: /^[0-9]+$/
-                // pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
             }  
             )}
             />
@@ -266,7 +265,7 @@ const DashboardPartner = () => {
             placeholder="Название товара"
             onInput={handleInput}
             {...register('name_purchase', {
-                required: "Поле обязательно к заполнению",
+                required: "Поле обязательно к заполнению"
             }  
             )}
             />
@@ -298,6 +297,7 @@ const DashboardPartner = () => {
             placeholder="Бонусный процент"
             onInput={handleInput}
             {...register('percent', {
+                pattern: /^[0-9]$/,
                 required: "Поле обязательно к заполнению",
             }  
             )}
@@ -305,7 +305,7 @@ const DashboardPartner = () => {
             {active && <InputIcon prop={6} />}
             <div className="mt-1">
             {errors?.percent && <p className="text-red-500 text-[12px]">
-                {errors?.percent?.message || "Неверный формат" || "Ошибка!"}
+                {errors?.percent?.message || "Только цифры" || "Ошибка!"}
                 </p>}
             </div>
         </div>
@@ -313,7 +313,7 @@ const DashboardPartner = () => {
 }
 
     const InputBonuses = () => {
-        const [inputBonus, setInputBonus] = useState(0)
+        const [inputBonus, setInputBonus] = useState('')
 
         return (
             <div className="relative h-[60px] w-full">
@@ -323,10 +323,17 @@ const DashboardPartner = () => {
                 placeholder="Бонусов для снятия"
                 onInput={e => setInputBonus(e.target.value)}
                 {...register('bonuses_spent', {
-                    value: `${inputBonus}`
+                    value: `${inputBonus}`,
+                    pattern: /^[0-9]$/,
+                    required: "Поле обязательно к заполнению"
                 }  
                 )}
                 />
+                <div className="mt-1">
+                {errors?.bonuses_spent && <p className="text-red-500 text-[12px]">
+                    {errors?.bonuses_spent?.message || "Только цифры" ||  "Ошибка!"}
+                    </p>}
+                </div>
             </div>
         )
     }
@@ -348,10 +355,9 @@ const DashboardPartner = () => {
             }  
             )}
             >
-              <option value="Электроника">Электроника</option>
-              <option value="Одежда и обувь">Одежда и обувь</option>
+            <option value="Электроника">Электроника</option>
+            <option value="Одежда и обувь">Одежда и обувь</option>
             </select>
-             
         </div>
     )
   }
@@ -495,7 +501,6 @@ const DashboardPartner = () => {
   const ModalWindow = () => {
     const [dataBonus, setDataBonus] = useState(modalInfo.bonuses)
     const [inputValue, setInputValue] = useState(0)
-    // console.log(bonuses, Number(inputValue))
     const withdrawBonuses = async (event) => {
         event.preventDefault()
         axios({
@@ -514,7 +519,6 @@ const DashboardPartner = () => {
             .then(function (response) {
                 console.log(response.data.data.bonuses)
                 setDataBonus(response.data.data.bonuses)
-                // console.log(response);
                 
             })
             .catch(function (response) {
@@ -557,27 +561,23 @@ const DashboardPartner = () => {
             <div className='mt-[40px] h-[260px] relative'>
                 <h2 className='font-medium text-[20px]'>Имя клиента: {modalInfo.name}</h2>
                 <div className='pt-[16px] flex flex-col'>
-                    <>
-                        {/* <p className='text-[20px]'>Бонусов: <span>{dataBonus}</span></p> */}
-                       
-                       <form action="" onSubmit={withdrawBonuses} className='flex flex-col'>
-                            <label htmlFor="bonuses">Количество бонусов: {dataBonus}</label>
-                            <input type="text" name="" id="bonuses" className='bg-input mb-[15px] h-[50px] rounded-[8px] 
-                            md:max-w-[310px] w-full px-[15px] outline-primary' placeholder='Списать бонусы' 
-                            onInput={(e) => setInputValue(e.target.value)}/>
-                            <div className="flex items-center gap-[10px] h-full mt-[10px]">
-                                <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium md:max-w-[150px]
-                                    w-full ease duration-300 hover:bg-red-400 cursor-pointer outline-none' onClick={withdrawBonuses}>
-                                    Списать
-                                </button>
-                                <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium
-                                    md:max-w-[150px] w-full ease duration-300 hover:bg-red-400 cursor-pointer' id='btn-error-handled'
-                                    onClick={removeClient}>
-                                    Удалить
-                                </button>
-                            </div>
-                       </form>
-                    </>
+                    <form action="" className='flex flex-col'>
+                        <label htmlFor="bonuses">Количество бонусов: {dataBonus}</label>
+                        <input type="text" name="" id="bonuses" className='bg-input mb-[15px] h-[50px] rounded-[8px] 
+                        md:max-w-[310px] w-full px-[15px] outline-primary' placeholder='Списать бонусы' 
+                        onInput={(e) => setInputValue(e.target.value)}/>
+                        <div className="flex items-center gap-[10px] h-full">
+                            <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium md:max-w-[150px]
+                                w-full ease duration-300 hover:bg-red-400 cursor-pointer outline-none' onClick={withdrawBonuses}>
+                                Списать
+                            </button>
+                            <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium
+                                md:max-w-[150px] w-full ease duration-300 hover:bg-red-400 cursor-pointer' id='btn-error-handled'
+                                onClick={removeClient}>
+                                Удалить
+                            </button>
+                        </div>
+                    </form>
                 </div>
                 <button type="submit" className='bg-primary p-2 rounded-[8px] text-white font-medium
                 w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer absolute bottom-[-20px]' onClick={() => setModal(false)}>
