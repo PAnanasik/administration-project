@@ -114,32 +114,36 @@ const RegistrationForm = () => {
         )
     }
     const InputCardName = () => {
-        const [active, setActive] = useState(true)
+        const [fullName, setFullName] = useState('');
+        const [active, setActive] = useState(true);
 
         function handleInput(event) {
             if (event.target.value == 0) {
-                setActive(true)
+                setActive(true);
             } 
             else {
-                setActive(false)
+                setActive(false);
             }
         }
         return (
             <div className="relative h-[60px] w-full">
                 <input
                 type='text'
-                className={`${errors?.fio ? styles.badInputStyles : styles.inputStyles}`}
+                className={`${styles.inputStyles}`}
                 placeholder="ФИО"
+                maxLength={100}
+                onChange={(event) => setFullName(event.target.value)}
+                title="Максимальная длина 100 символов"
                 onInput={handleInput}
                 {...register('fio', {
-                    pattern: /^[А-Яа-я]+$/
+                    required: 'Поле обязательно к заполнению'
                 }  
                 )}
                 />
                 {active && <InputIcon prop={1} />}
                 <div className="mt-1">
                 {errors?.fio && <p className="text-red-500 text-[12px]">
-                    {errors?.fio?.message || "Только буквы русского алфавита" || "Ошибка!"}
+                    {errors?.fio?.message || "Ошибка!"}
                     </p>}
                 </div>
             </div>
@@ -166,14 +170,14 @@ const RegistrationForm = () => {
                 onInput={handleInput}
                 {...register('name', {
                     required: "Поле обязательно к заполнению",
-                    pattern: /^[А-Яа-я]+$/
+                    maxLength: 100
                 }  
                 )}
                 />
                 {active && <InputIcon prop={1} />}
                 <div className="mt-1">
                 {errors?.name && <p className="text-red-500 text-[12px]">
-                    {errors?.name?.message || "Только буквы русского алфавита" || "Ошибка!"}
+                    {errors?.name?.message || "Максимальная длина 100 символов" || "Ошибка!"}
                     </p>}
                 </div>
             </div>

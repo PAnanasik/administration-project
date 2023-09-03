@@ -17,10 +17,7 @@ const ConfirmationForm = ({ dataUser }) => {
     const useShowError = ( {error} ) => {
         document.querySelector("#submit_btn").disabled = true;
         setShow(true);
-        setResponseAuth(prev => ({ 
-            ...prev,
-            errorMessage: `${error}` 
-        }))
+        setResponseAuth({errorMessage: `${error}`})
         setTimeout(() => setShow(false), 5000)
         setTimeout(() => document.querySelector("#submit_btn").disabled = false, 5000);
     }
@@ -137,7 +134,7 @@ const ConfirmationForm = ({ dataUser }) => {
                 <input type="submit" value="Ввести" className='bg-primary p-4 rounded-[8px] text-white font-medium
                 ease duration-300 hover:bg-hover cursor-pointer mt-[15px]' id='submit_btn'/>
                 <div className='flex mb-1 justify-center text-center'>
-                    <p>Еще нет аккаунта? <a href="/" className='text-primary underline underline-offset-4'>Зарегистрируйтесь</a></p>
+                    <p>Еще нет аккаунта? <a href="/registration" className='text-primary underline underline-offset-4'>Зарегистрируйтесь</a></p>
                 </div>
             </form>
         </div>

@@ -2,16 +2,23 @@ import { Navbar, DashboardClient } from '../components'
 import Background from '../components/common/Background'
 
 
-const Client = ({ responseLogin, token }) => {
-  return (
-    <div>
-        <Navbar responseLogin={responseLogin} token={token} />
-        <div className='relative z-0'>
-            <DashboardClient responseLogin={responseLogin} token={token} />
-            <Background />
-        </div>
-    </div>
-  )
+const Client = () => {
+  const method = window.localStorage.getItem("method");
+  
+  if (method == "true") {
+    localStorage.clear()
+    window.location.pathname = "/"
+  } else {
+    return (
+      <div>
+        <Navbar />
+          <div className='relative z-0'>
+              <DashboardClient />
+              <Background />
+          </div>
+      </div>
+    )
+  }
 }
 
 export default Client

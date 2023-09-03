@@ -48,9 +48,8 @@ const LoginForm = () => {
                     window.localStorage.setItem("token", token)
                     window.localStorage.setItem("loggedIn", true)
                     window.localStorage.setItem("userData", JSON.stringify(response.data[0]))
+                    window.localStorage.setItem("method", partner);
                     setRedirection(true);
-                    console.log(response.data[0]);
-                    console.log(pcUrl);
                 })
                 .catch(function (response) {
                     console.log(response)
@@ -73,7 +72,6 @@ const LoginForm = () => {
             errors
         },
         handleSubmit,
-        reset,
     } = useForm({
         mode: "onBlur"
     });

@@ -7,10 +7,6 @@ const NavbarPartner = ({ }) => {
   const { user, setUser } = useContext(ResponseContext);
   const { responseAuth, setResponseAuth } = useContext(ResponseContext);
   const [menu, setMenu] = useState(false)
-  // const arrayNames = []
-  // arrayNames.push(responseAuth.responseLogin.fio)
-  // const arrayLength = arrayNames.length
-  // console.log(arrayNames)
 
   const Menu = () => {
     const NotificationItem = () => {
@@ -27,8 +23,6 @@ const NavbarPartner = ({ }) => {
       <div className='fixed md:max-w-[400px] w-full h-[500px] bg-input top-[80px] md:right-[40px] right-0 sm:left-auto sm:mx-0 left-0 mx-auto 
       z-11 border-solid border-[1px] border-[#D2D2D2] border-t-transparent p-4'>
         <NotificationItem />
-        {/* {arrayNames.map((item, index) => (
-        ))} */}
       </div>
     )
   }
@@ -47,20 +41,12 @@ const NavbarPartner = ({ }) => {
     if (menu == false) {
       setNotificationIcon(false)
     }
-    // if (arrayLength < arrayNames.length) {
-    //   setNotificationIcon(true)
-    // }
   }
 
   function handleLogout() {
     localStorage.clear();
-    window.location.pathname = '/';
+    // window.location.pathname = '/';
   }
-
-  // const isLoggedIn = window.localStorage.getItem("loggedIn")
-  // const token = window.localStorage.getItem("token")
-  // const userDataJSON = window.localStorage.getItem("userData")
-  // const userData = JSON.parse(userDataJSON)
 
   return (
       <div className='h-[80px] bg-white border-solid border-[1px] border-b-[#D2D2D2] fixed top-0 z-10 w-full'>

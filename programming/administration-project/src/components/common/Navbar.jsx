@@ -1,17 +1,16 @@
 import { avatar, notification, refresh } from '../../assets'
-import { useContext, useEffect, useState } from 'react';
-import { ResponseContext } from '../../App';
+import { useState } from 'react';
 import axios from 'axios';
 import { clientUrl } from '../urls';
 
 
-const Navbar = ({ responseLogin, token }) => {
+const Navbar = () => {
+  const token = window.localStorage.getItem("token")
+  const userData = JSON.parse(window.localStorage.getItem("userData"))
+
   const [notificationIcon, setNotificationIcon] = useState(true)
-  const { user, setUser } = useContext(ResponseContext);
-  const { responseAuth, setResponseAuth } = useContext(ResponseContext);
-  const [bonus, setBonus] = useState(responseLogin.bonuses)
+  const [bonus, setBonus] = useState(userData.bonuses)
   const [menu, setMenu] = useState(false)
-  // console.log(dataPartner)
 
 
 
@@ -34,9 +33,7 @@ const Navbar = ({ responseLogin, token }) => {
   console.log(bonus)
 
   function handleLogout() {
-    window.localStorage.removeItem("loggedIn");
-    window.localStorage.removeItem("token");
-    window.localStorage.removeItem("userData");
+    localStorage.clear()
   }
 
   const Menu = () => {

@@ -28,8 +28,8 @@ function App() {
               <Route path='/' element={<Login />} />
               <Route path='/confirmation' element={<Confirmation dataUser={userData} />} />
               <Route element={<ProtectedRoutes logged={isLoggedIn} />}>
-                <Route path='/dashboardclient' element={<Client responseLogin={userData} token={token} />} />
-                <Route path='/dashboardpartner' element={<Partner token={token} responseLogin={userData} />} />
+                <Route path='/dashboardclient' element={<Client />} />
+                <Route path='/dashboardpartner' element={<Partner />} />
               </Route>
             </Routes>
       </ResponseContext.Provider>
