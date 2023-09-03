@@ -6,13 +6,19 @@ import ProtectedRoutes from './ProtectedRoutes.jsx';
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { createContext, useState } from 'react';
 import Confirmation from './pages/Confirmation.jsx';
+import { DashboardClient } from './components/index.js';
 
 export const ResponseContext = createContext();
 
 
 function App() {
+  const isLoggedIn = window.localStorage.getItem("loggedIn")
+  const token = window.localStorage.getItem("token")
+  const userDataJSON = window.localStorage.getItem("userData")
+  const userData = JSON.parse(userDataJSON)
+  console.log(userData)
 
-  const [responseAuth, setResponseAuth] = useState({ dataUser: {}, loggedIn: false, responseLogin: '', token: '', errorMessage: {} });
+  const [responseAuth, setResponseAuth] = useState({ errorMessage: {} });
 
   return (
     <BrowserRouter>
@@ -20,10 +26,10 @@ function App() {
             <Routes>
               <Route path='/registration' element={<Registration />} />
               <Route path='/' element={<Login />} />
-              <Route path='/confirmation' element={<Confirmation dataUser={responseAuth.dataUser} />} />
-              <Route element={<ProtectedRoutes logged={responseAuth.loggedIn} />}>
-                <Route path='/dashboardclient' element={<Client responseLogin={responseAuth.responseLogin} token={responseAuth.token} />} />
-                <Route path='/dashboardpartner' element={<Partner token={responseAuth.token} responseLogin={responseAuth.responseLogin} />} />
+              <Route path='/confirmation' element={<Confirmation dataUser={userData} />} />
+              <Route element={<ProtectedRoutes logged={isLoggedIn} />}>
+                <Route path='/dashboardclient' element={<Client responseLogin={userData} token={token} />} />
+                <Route path='/dashboardpartner' element={<Partner token={token} responseLogin={userData} />} />
               </Route>
             </Routes>
       </ResponseContext.Provider>

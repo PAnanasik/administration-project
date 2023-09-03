@@ -52,6 +52,16 @@ const NavbarPartner = ({ }) => {
     // }
   }
 
+  function handleLogout() {
+    localStorage.clear();
+    window.location.pathname = '/';
+  }
+
+  // const isLoggedIn = window.localStorage.getItem("loggedIn")
+  // const token = window.localStorage.getItem("token")
+  // const userDataJSON = window.localStorage.getItem("userData")
+  // const userData = JSON.parse(userDataJSON)
+
   return (
       <div className='h-[80px] bg-white border-solid border-[1px] border-b-[#D2D2D2] fixed top-0 z-10 w-full'>
           <nav className='md:px-[30px] px-[15px] h-full max-w-[1640px] mx-auto'>
@@ -63,7 +73,7 @@ const NavbarPartner = ({ }) => {
                         <NotificationIcon />
                       </a>
                       <img src={avatar} alt="dfaafdfad" className='w-14 h-14 md:block hidden'/>
-                      <a href="" className='md:text-[16px] text-[14px] font-normal' onClick={() => setUser({ loggedIn: false })}>Выйти</a>
+                      <a href="" className='md:text-[16px] text-[14px] font-normal' onClick={handleLogout}>Выйти</a>
                   </div>
               </div>
           </nav>

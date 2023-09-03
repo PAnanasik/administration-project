@@ -45,14 +45,16 @@ const LoginForm = () => {
                 withCredentials: true
                 })
                 .then(function (response) {
-                    setResponseAuth({ loggedIn: true, responseLogin: response.data[0], token: token });
+                    window.localStorage.setItem("token", token)
+                    window.localStorage.setItem("loggedIn", true)
+                    window.localStorage.setItem("userData", JSON.stringify(response.data[0]))
                     setRedirection(true);
                     console.log(response.data[0]);
                     console.log(pcUrl);
                 })
                 .catch(function (response) {
                     console.log(response)
-                    setResponseAuth({ loggedIn: false })
+                    window.localStorage.removeItem("loggedIn")
                     useShowError({error: "Проверьте правильность выбранной роли"})
                 });
               

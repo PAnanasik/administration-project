@@ -4,13 +4,18 @@ import { arrowExpand, arrowExpanded, avatar, mailInput, phoneInput } from '../..
 import axios from 'axios';
 import { ResponseContext } from '../../App';
 import ErrorMessage from '../common/ErrorMessage';
-import { partnersListUrl, purchasesUrl, remove_addUrl } from '../urls'
+import { partnersListUrl, purchasesUrl, refundUrl, remove_addUrl } from '../urls'
 import { InView } from 'react-intersection-observer';
 
 
-const DashboardClient = ({ responseLogin, token }) => {
-  console.log(token)
-  const [modalInfo, setModalInfo] = useState('')
+const DashboardClient = () => {
+
+  const token = window.localStorage.getItem("token")
+  const userData = JSON.parse(window.localStorage.getItem("userData"))
+
+  console.log(userData)
+
+  const [modalInfo, setModalInfo] = useState({ name: '', amount: '', date: '', total_amount: '' })
   const [modal, setModal] = useState(false)
   const [show, setShow] = useState(false)
   const { responseAuth, setResponseAuth } = useContext(ResponseContext);
@@ -39,11 +44,11 @@ const DashboardClient = ({ responseLogin, token }) => {
 
   
 
-  const Intro = ({ responseLogin }) => {
+  const Intro = () => {
     return (
       <div className='relative w-full h-[200px] flex md:justify-between justify-center items-center md:text-left text-center 
       bg-white rounded-[12px] md:pl-[40px] pl-0'>
-        <h2 className={`${styles.sectionHeadText}`}>Добрый день, <br /><span>{responseLogin.fio || 'Без имени'}</span></h2>
+        <h2 className={`${styles.sectionHeadText}`}>Добрый день, <br /><span>{userData.fio || 'Без имени'}</span></h2>
         <div className='md:block hidden absolute w-[600px] right-0 h-full bg-rectangle'>
         </div>
       </div>
@@ -61,7 +66,7 @@ const DashboardClient = ({ responseLogin, token }) => {
             <div className='flex flex-col items-center'>
               <img src={avatar} alt="" className='w-[100px] h-[100px]'/>
               <div className='relative'>
-                <h2 className='font-medium text-[24px] mt-[15px]'>{responseLogin.fio || 'Без имени'}</h2>
+                <h2 className='font-medium text-[24px] mt-[15px]'>{userData.fio || 'Без имени'}</h2>
               </div>
             </div>
             <div className='py-[20px] w-full h-full flex flex-col gap-[20px]'>
@@ -69,7 +74,7 @@ const DashboardClient = ({ responseLogin, token }) => {
                 <input
                   type='text'
                   className={`${styles.dashboardInputAvatarStyles} relative text-center`}
-                  value={responseLogin.email || 'Без почты'}
+                  value={userData.email || 'Без почты'}
                   disabled
                   />
                 <img src={mailInput} alt="name-icon" className='absolute left-[20px] top-[18px] w-6 h-6'/>
@@ -79,7 +84,7 @@ const DashboardClient = ({ responseLogin, token }) => {
                 <input
                   type='text'
                   className={`${styles.dashboardInputAvatarStyles} relative text-center`}
-                  value={responseLogin.phone || 'Без телефона'}
+                  value={userData.phone || 'Без телефона'}
                   disabled
                   />
                 <img src={phoneInput} alt="name-icon" className='absolute left-[20px] top-[18px] w-6 h-6'/>
@@ -99,13 +104,13 @@ const DashboardClient = ({ responseLogin, token }) => {
         event.preventDefault()
         axios({
           method: "POST",
-          url: "http://localhost:8000/api/v1/add_refund/",
+          url: `${refundUrl}`,
           data: {
-            phone_client: `${responseLogin.phone}`,
-            number_cheque: number,
+            phone_client: `${userData.phone}`,
+            number_cheque: modalInfo.amount,
             reason_refund: `${selectedCategory}`,
-            date_cheque: date,
-            total_amount: total_amount
+            date_cheque: modalInfo.date,
+            total_amount: modalInfo.total_amount
           },
           headers: { 
               "Content-Type": "application/json",
@@ -128,7 +133,7 @@ const DashboardClient = ({ responseLogin, token }) => {
       <div className='max-w-[560px] w-full h-[400px] bg-white fixed border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
       lg:top-[100px] top-[100px] left-0 right-0 mx-auto z-10 px-[30px]'>
           <div className='mt-[50px] h-[300px] relative'>
-              <h2 className='font-medium text-[20px] pb-[15px]'>Наименование товара: {modalInfo}</h2>
+              <h2 className='font-medium text-[20px] pb-[15px]'>Наименование товара: {modalInfo.name}</h2>
               <div className='pt-[16px]  flex flex-col'>
                 <form action="" onSubmit={handleModal}  className='flex flex-col'>
                     <label htmlFor='selection'>Причина возврата</label>
@@ -143,8 +148,7 @@ const DashboardClient = ({ responseLogin, token }) => {
                       <option value="Гарантийный случай">Гарантийный случай</option>
                     </select>
                     <button type="submit" className='bg-red-500 p-2 rounded-[8px] text-white font-medium
-                        md:max-w-[150px] w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer'
-                        onClick={() => setModal(false)}>
+                        md:max-w-[150px] w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer'>
                         Возврат
                     </button>
                 </form>
@@ -188,7 +192,8 @@ const DashboardClient = ({ responseLogin, token }) => {
 
       const HistoryItemDesc = () => {
         function handleToModalScroll() {
-          setModalInfo(name)
+          setModalInfo({ name: name, amount: amount, date: date, total_amount: total_amount })
+          console.log(modalInfo)
           setModal(true);
           window.scrollTo(0, 0);
         }
@@ -265,7 +270,7 @@ const DashboardClient = ({ responseLogin, token }) => {
           withCredentials: true,
           data: {
             name_partner: `${name}`,
-            phone_client: `${responseLogin.phone}`,
+            phone_client: `${userData.phone}`,
             method: 'remove'
           },
           })
@@ -387,13 +392,12 @@ const DashboardClient = ({ responseLogin, token }) => {
           withCredentials: true,
           data: {
             name_partner: `${name}`,
-            phone_client: `${responseLogin.phone}`,
+            phone_client: `${userData.phone}`,
             method: 'add'
           },
           })
           .then(function (response) {
             console.log(response);
-            // setResponseAuth({ nameAdded: responseLogin.fio })
 
           })
           .catch(function (response) {
@@ -504,7 +508,7 @@ const DashboardClient = ({ responseLogin, token }) => {
       {modal && <div className='absolute w-full h-full bg-black bg-opacity-[0.3] z-10'></div>}
       {modal && <ModalWindow />}
       <div className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px]'>
-        <Intro responseLogin={responseLogin} />
+        <Intro />
         <div className='flex flex-col h-full'>
           <div className='flex md:flex-row flex-col md:gap-[30px] gap-0'> 
             <ContactInfo />

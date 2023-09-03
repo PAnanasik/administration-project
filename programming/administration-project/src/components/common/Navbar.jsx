@@ -32,11 +32,12 @@ const Navbar = ({ responseLogin, token }) => {
     });
   } 
   console.log(bonus)
-  
-  // const arrayNames = []
-  // // arrayNames.push(dataPartner)
-  // const arrayLength = arrayNames.length
-  // console.log(arrayNames)
+
+  function handleLogout() {
+    window.localStorage.removeItem("loggedIn");
+    window.localStorage.removeItem("token");
+    window.localStorage.removeItem("userData");
+  }
 
   const Menu = () => {
     const NotificationItem = () => {
@@ -73,9 +74,6 @@ const Navbar = ({ responseLogin, token }) => {
     if (menu == false) {
       setNotificationIcon(false)
     }
-    // if (arrayLength < arrayNames.length) {
-    //   setNotificationIcon(true)
-    // }
   }
 
   return (
@@ -96,7 +94,7 @@ const Navbar = ({ responseLogin, token }) => {
                         </button>
                       </div>
                       <img src={avatar} alt="dfaafdfad" className='w-14 h-14 md:block hidden'/>
-                      <a href="" className='md:text-[16px] text-[14px] font-normal' onClick={() => setUser({ loggedIn: false })}>Выйти</a>
+                      <a href="" className='md:text-[16px] text-[14px] font-normal' onClick={handleLogout}>Выйти</a>
                   </div>
               </div>
           </nav>

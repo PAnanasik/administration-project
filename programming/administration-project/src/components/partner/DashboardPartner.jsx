@@ -9,7 +9,9 @@ import { addChequeUrl, getClientsListUrl, remove_addUrl, withdrawBonusesUrl } fr
 import { InView } from 'react-intersection-observer';
 
 
-const DashboardPartner = ({ token, responseLogin }) => {
+const DashboardPartner = () => {
+    const token = window.localStorage.getItem("token")
+    const userData = JSON.parse(window.localStorage.getItem("userData"))
     const [modalInfo, setModalInfo] = useState({ name: '', bonuses: '', phone: '' })
     const [modal, setModal] = useState(false)
     const { responseAuth, setResponseAuth } = useContext(ResponseContext);
@@ -18,10 +20,9 @@ const DashboardPartner = ({ token, responseLogin }) => {
 
     const useShowError = ({error}) => {
         setShow(true);
-        setResponseAuth(prev => ({ 
-            ...prev,
+        setResponseAuth({
             errorMessage: `${error}` 
-        }))
+        })
         setModal(false)
         setTimeout(() => setShow(false), 5000)        
     }
@@ -426,7 +427,8 @@ const DashboardPartner = ({ token, responseLogin }) => {
   }
 
     
-  const Intro = () => {
+  const Intro = ({ responseLogin }) => {
+    console.log(responseLogin)
     return (
       <div className='w-full h-[200px] flex md:justify-between justify-center items-center md:text-left text-center 
       bg-white rounded-[12px] md:pl-[40px] pl-0 relative'>
@@ -457,7 +459,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
               <button type='submit' className='bg-primary p-4 rounded-[8px] text-white font-medium md:max-w-[400px] w-full 
               mt-[10px] flex justify-center relative ease duration-300 hover:bg-hover gap-[10px]'
               {...register('name_partner', {
-                value: `${responseLogin.name}`
+                value: `${userData.name}`
             }  
             )}
             >
@@ -482,7 +484,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
               <button type="submit" className='bg-primary p-4 rounded-[8px] text-white font-medium md:max-w-[400px]
                 w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer'
                 {...register2('name_partner', {
-                    value: `${responseLogin.name}`
+                    value: `${userData.name}`
                 }  
                 )}>
                     Добавить клиента
@@ -536,7 +538,7 @@ const DashboardPartner = ({ token, responseLogin }) => {
             },
             withCredentials: true,
             data: {
-                name_partner: `${responseLogin.name}`,
+                name_partner: `${userData.name}`,
                 phone_client: `${modalInfo.phone}`,
                 method: 'remove'
             },
@@ -714,11 +716,11 @@ const DashboardPartner = ({ token, responseLogin }) => {
         {modal && <div className='absolute w-full h-full bg-black bg-opacity-[0.3] z-10'></div>}
         {modal && <ModalWindow /> }
         <div className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px] '>
-            <Intro responseLogin={responseLogin} />
+            <Intro responseLogin={userData} />
             <div className='flex flex-col md:gap-[30px] gap-0'>
                 <div >
-                    <AddPurchase responseLogin={responseLogin} />
-                    <AddClient responseLogin={responseLogin} />
+                    <AddPurchase responseLogin={userData} />
+                    <AddClient responseLogin={userData} />
                     <ClientsList  />
                 </div>
             </div>

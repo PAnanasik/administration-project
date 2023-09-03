@@ -34,3 +34,26 @@ html {
   height: 100%;
   overflow-y: hidden;
 }
+
+select {
+  -webkit-appearance: none;
+  appearance: none;
+  border: none;
+}
+
+select {
+  position: relative;
+  border: 1px solid black;
+  border-radius: 2px;
+  padding: 5px;
+}
+select::after {
+  content: "f";
+  font-size: 16px;
+  color: black;
+  width: 20px;
+  height: 20px;
+  display: block;
+  right: 10px;
+  position: absolute;
+}
