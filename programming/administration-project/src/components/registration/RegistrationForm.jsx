@@ -53,7 +53,10 @@ const RegistrationForm = () => {
             },
             })
             .then(function (response) {
-                setResponseAuth({ dataUser: dataMain });
+                setResponseAuth(prev => ({ 
+                    ...prev,
+                    dataUser: dataMain 
+                }));
                 setRedirection(true);
                 dataMain.code = response.data.code
                 console.log(response);

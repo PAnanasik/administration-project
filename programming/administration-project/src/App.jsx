@@ -19,7 +19,7 @@ function App() {
   const method = window.localStorage.getItem("method")
   console.log(userData)
 
-  const [responseAuth, setResponseAuth] = useState({ errorMessage: {} });
+  const [responseAuth, setResponseAuth] = useState({ errorMessage: {}, dataUser: {} });
 
   // if (method == "false" && isLoggedIn) {
   //   window.location.pathname = "/dashboardclient"
@@ -43,7 +43,7 @@ function App() {
             <Routes>
               <Route path='/registration' element={<Registration />} />
               <Route path='/' element={(isLoggedIn && method == "true" && token) ? <Partner /> : (isLoggedIn && method == "false" && token) ? <Client /> : <Login />} />
-              <Route path='/confirmation' element={<Confirmation dataUser={userData} />} />
+              <Route path='/confirmation' element={<Confirmation dataUser={responseAuth.dataUser} />} />
               <Route element={<ProtectedRoutes logged={isLoggedIn} />}>
                 <Route path='/dashboardclient' element={<Client />} />
                 <Route path='/dashboardpartner' element={<Partner />} />

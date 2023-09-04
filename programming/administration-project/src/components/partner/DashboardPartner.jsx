@@ -618,7 +618,7 @@ const DashboardPartner = () => {
 
     function handleModalInfo() {
         setModal(!modal)
-        window.scrollTo(0, document.body.scrollHeight);
+        window.scrollTo(0, 1350);
         setModalInfo({ name: fio, bonuses: bonuses, phone: phone })
     }
 

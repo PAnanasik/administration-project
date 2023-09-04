@@ -1,7 +1,7 @@
 import { avatar, notification, refresh } from '../../assets'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { clientUrl } from '../urls';
+import { clientUrl, notificationUrl, removeNotificationUrl } from '../urls';
 
 
 const Navbar = () => {
@@ -9,10 +9,32 @@ const Navbar = () => {
   const userData = JSON.parse(window.localStorage.getItem("userData"))
 
   const [notificationIcon, setNotificationIcon] = useState(true)
+  const [state, setState] = useState('')
   const [bonus, setBonus] = useState(userData.bonuses)
   const [menu, setMenu] = useState(false)
+  const [notificationArray, setNotificationArray] = useState([])
 
 
+  useEffect(() => {
+    const getNotifications = async () => {
+      try {
+        const response = await axios.get(notificationUrl, {
+          headers: {
+              Authorization: `token ${token}`
+          }
+        });
+        const responseState = response.data[0].notifications;
+        setNotificationArray(responseState);
+      } catch(error) {
+        console.log(error)
+        useShowError({error: "Не удалось вывести список покупок"})
+      }
+    };
+
+    getNotifications();  
+    
+    console.log(notificationArray)
+  }, [menu, state]);
 
   const refreshBonuses = () => {
     axios({
@@ -37,22 +59,45 @@ const Navbar = () => {
   }
 
   const Menu = () => {
-    const NotificationItem = () => {
+    let i = 0;
+    const NotificationItem = ({ text }) => {
+      const removeNotification = (event) => {
+        axios({
+          method: "DELETE",
+          url: `${removeNotificationUrl}`,
+          headers: { "Authorization": `token ${token}` },
+          data: {
+            notification_id: event.target.id
+          },
+          withCredentials: true
+          })
+          .then(function (response) {
+            setState(response)
+          })
+          .catch(function (response) {
+            console.log(response)
+        });
+      } 
+
       return (
-        <div className='w-full min-h-[60px] bg-white px-[10px] flex flex-col justify-center rounded-[8px]'>
-          <h2 className='font-medium text-[14px]'>Вас добавил </h2>
-          <p className='text-[12px]'>Просмотрите ваш список клиентов</p>
+        <div className='relative w-full min-h-[60px] bg-white pl-[10px] flex flex-col justify-center rounded-[8px]'>
+          <>
+            <h2 className='font-medium text-[14px]'>{text}</h2>
+            <p className='text-[12px]'>Просмотрите ваш список клиентов</p>
+          </>
+          <button className='absolute right-[10px]' id={i++} onClick={removeNotification}>закрыть</button>
         </div>
       )
     }
 
-
     return (
       <div className='fixed md:max-w-[400px] w-full h-[500px] bg-input top-[80px] md:right-[40px] right-0 sm:left-auto sm:mx-0 left-0 mx-auto 
-      z-20 border-solid border-[1px] border-[#D2D2D2] border-t-transparent p-4'>
-        <NotificationItem />
-        {/* {arrayNames.map((item, index) => (
-        ))} */}
+      z-20 border-solid border-[1px] border-[#D2D2D2] border-t-transparent p-4 flex flex-col gap-[15px]'>
+        {notificationArray.map((item, index) => (
+          // <div key={index}>{item}</div>
+          
+          <NotificationItem key={index} text={item}/>
+        ))}
       </div>
     )
   }

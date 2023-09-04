@@ -18,6 +18,9 @@ const getClientsListUrl = `${API_KEY}/api/v1/partner_clients/`
 const withdrawBonusesUrl = `${API_KEY}/api/v1/withdraw_bonus/`
 const refundUrl = `${API_KEY}/api/v1/add_refund/`
 
+const notificationUrl = `${API_KEY}/api/v1/get_notifications/`
+const removeNotificationUrl = `${API_KEY}/api/v1/delete_notification/`
+
 export {
     purchasesUrl,
     partnersListUrl,
@@ -32,5 +35,7 @@ export {
     addChequeUrl,
     getClientsListUrl,
     withdrawBonusesUrl,
-    refundUrl
+    refundUrl,
+    notificationUrl,
+    removeNotificationUrl
 }
