@@ -1,9 +1,7 @@
 const Background = () => {
   return (
-    <div className='absolute inset-0 z-[-1] bgdashboard w-full h-[100vh]'>
+    <div className="absolute inset-0 z-[-1] bgdashboard w-full h-[100vh]"></div>
+  );
+};
 
-    </div>
-  )
-}
-
-export default Background
+export default Background;
