@@ -3,10 +3,9 @@ import Login from './pages/Login.jsx';
 import Client from './pages/Client.jsx';
 import Partner from './pages/Partner.jsx';
 import ProtectedRoutes from './ProtectedRoutes.jsx';
-import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom'
-import { createContext, useState } from 'react';
 import Confirmation from './pages/Confirmation.jsx';
-import { DashboardClient } from './components/index.js';
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { createContext, useState } from 'react';
 
 export const ResponseContext = createContext();
 

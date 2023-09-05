@@ -9,7 +9,6 @@ import ErrorMessage from '../common/ErrorMessage';
 import { registrationClientUrl, registrationPartnerUrl } from '../urls';
 
 const ConfirmationForm = ({ dataUser }) => {
-    console.log(dataUser)
     const [show, setShow] = useState(false)
     const { responseAuth, setResponseAuth } = useContext(ResponseContext);
     const [redirection, setRedirection] = useState(false)

@@ -143,7 +143,7 @@ const Navbar = () => {
                   <div className='flex items-center gap-[20px]'>
                       <button className='relative' onClick={handleMenu}>
                           <img src={notification} alt="notification-menu" className='w-7 h-7'/>
-                          {notificationArray.length >= 1 && notificationIcon && <NotificationIcon />}
+                          {notificationArray?.length >= 1 && notificationIcon && <NotificationIcon />}
                       </button>
                       <div className='flex gap-[5px] items-center'>
                         <p className='md:text-[16px] text-[14px] font-medium'>{`${bonus || '0'} бонусов`}</p>

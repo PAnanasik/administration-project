@@ -1,13 +1,9 @@
 import { avatar, notification } from '../../assets'
 import { useEffect, useState } from 'react';
-import { ResponseContext } from '../../App';
 import { notificationUrl, removeNotificationUrl } from '../urls';
 
 const NavbarPartner = () => {
-
   const token = window.localStorage.getItem("token")
-  const userData = JSON.parse(window.localStorage.getItem("userData"))
-
   const [notificationIcon, setNotificationIcon] = useState(true)
   const [state, setState] = useState('')
   const [menu, setMenu] = useState(false)
@@ -106,7 +102,6 @@ const NavbarPartner = () => {
 
   function handleLogout() {
     localStorage.clear();
-    // window.location.pathname = '/';
   }
 
   return (

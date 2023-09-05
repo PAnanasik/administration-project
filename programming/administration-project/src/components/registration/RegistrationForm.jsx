@@ -10,10 +10,10 @@ import { registrationCodeUrl } from '../urls';
 
 const RegistrationForm = () => {
     const [show, setShow] = useState(false)
-    const navigate = useNavigate()
     const { responseAuth, setResponseAuth } = useContext(ResponseContext);
     const [partner, setPartner] = useState(false)
     const [redirection, setRedirection] = useState(false)
+    const navigate = useNavigate()
 
     const useShowError = ( {error} ) => {
         document.querySelector("#submit_btn").disabled = true;
