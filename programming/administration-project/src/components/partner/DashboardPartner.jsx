@@ -10,6 +10,7 @@ import {
   receipt,
   percent,
   product,
+  withdraw,
 } from "../../assets";
 import { useForm } from "react-hook-form";
 import { ResponseContext } from "../../App";
@@ -58,12 +59,13 @@ const DashboardPartner = () => {
       date,
       product,
       percent,
+      withdraw
     ];
     return (
       <img
         src={array[prop]}
         alt="phone"
-        className="absolute right-[20px] top-[18px] w-6 h-6"
+        className="absolute right-[20px] top-[18px] w-6 h-6 opacity-[0.6]"
       />
     );
   };
@@ -368,6 +370,15 @@ const DashboardPartner = () => {
 
   const InputBonuses = () => {
     const [inputBonus, setInputBonus] = useState("");
+    const [active, setActive] = useState(true);
+
+    function handleInput(event) {
+      if (event.target.value == 0) {
+        setActive(true);
+      } else {
+        setActive(false);
+      }
+    }
 
     return (
       <div className="relative h-[60px] w-full">
@@ -382,6 +393,7 @@ const DashboardPartner = () => {
             required: "Поле обязательно (если вы не хотите снимать бонусы, напишите 0)"
           })}
         />
+        {active && <InputIcon prop={7} />}
         <div className="mt-1">
           {errors?.bonuses_spent && (
             <p className="text-red-500 text-[12px]">

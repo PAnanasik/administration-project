@@ -14,7 +14,8 @@ import percent from './dashboard/percent.png';
 import product from './dashboard/product.png';
 import receipt from './dashboard/receipt.png';
 import refresh from './dashboard/refresh.png';
-import close from './dashboard/close.png'
+import close from './dashboard/close.png';
+import withdraw from './dashboard/withdraw.png';
 
 export {
     phoneInput,
@@ -32,5 +33,6 @@ export {
     product,
     receipt,
     refresh,
-    close
+    close,
+    withdraw
 }

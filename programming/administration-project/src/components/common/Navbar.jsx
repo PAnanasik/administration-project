@@ -133,8 +133,7 @@ const Navbar = () => {
         {notificationArray?.map((item, index) => (
           <NotificationItem key={index} text={item} />
         ))}
-        {notificationArray?.length == null ||
-          (notificationArray?.length == 0 && <NoNotificationsText />)}
+        {(notificationArray?.length == null || notificationArray?.length == 0) && <NoNotificationsText />}
       </div>
     );
   };

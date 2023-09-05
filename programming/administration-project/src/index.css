@@ -30,12 +30,7 @@ html {
   background-repeat: no-repeat;
 }
 
-.stop-scrolling {
-  height: 100%;
-  overflow-y: hidden;
-}
-
-select {
+#selection {
   -webkit-appearance: none;
   appearance: none;
   border: none;
