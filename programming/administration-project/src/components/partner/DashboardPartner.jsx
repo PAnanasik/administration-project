@@ -377,8 +377,9 @@ const DashboardPartner = () => {
           placeholder="Бонусов для снятия"
           onInput={(e) => setInputBonus(e.target.value)}
           {...register("bonuses_spent", {
-            value: `${inputBonus || 0}`,
+            value: `${inputBonus}`,
             pattern: /^[0-9]+$/,
+            required: "Поле обязательно (если вы не хотите снимать бонусы, напишите 0)"
           })}
         />
         <div className="mt-1">

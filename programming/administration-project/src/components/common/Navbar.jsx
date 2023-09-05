@@ -99,12 +99,12 @@ const Navbar = () => {
           },
           withCredentials: true,
         })
-          .then(function (response) {
-            setState(response);
-          })
-          .catch(function (response) {
-            console.log(response);
-          });
+        .then(function (response) {
+          setState(response);
+        })
+        .catch(function (response) {
+          console.log(response);
+        });
       };
 
       return (
