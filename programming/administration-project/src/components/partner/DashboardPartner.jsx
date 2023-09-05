@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { ResponseContext } from '../../App';
 import axios from 'axios';
 import ErrorMessage from '../common/ErrorMessage';
-import { addChequeUrl, getClientsListUrl, remove_addUrl, withdrawBonusesUrl } from '../urls';
+import { addChequeUrl, addNotificationClientUrl, getClientsListUrl, remove_addUrl, withdrawBonusesUrl } from '../urls';
 import { InView } from 'react-intersection-observer';
 import greetings from '../greetings';
 
@@ -13,11 +13,13 @@ import greetings from '../greetings';
 const DashboardPartner = () => {
     const token = window.localStorage.getItem("token")
     const userData = JSON.parse(window.localStorage.getItem("userData"))
+
     const [modalInfo, setModalInfo] = useState({ name: '', bonuses: '', phone: '' })
     const [modal, setModal] = useState(false)
     const { responseAuth, setResponseAuth } = useContext(ResponseContext);
     const [show, setShow] = useState(false)
     const [responseState, setState] = useState([])
+    const [clientPhone, setClientPhone] = useState('');
 
     const useShowError = ({error}) => {
         setShow(true);
@@ -399,7 +401,9 @@ const DashboardPartner = () => {
         })
         .catch(function (response) {
             console.log(response);
-    });
+            useShowError({error: "Не удалось добавить покупку"})
+
+        });
 
     reset();
     console.log(data)
@@ -421,10 +425,29 @@ const DashboardPartner = () => {
         .then(function (response) {
             console.log(response);
             setState(oldItem => [...oldItem, responseState])
+            axios({
+                method: "PUT",
+                url: `${addNotificationClientUrl}`,
+                headers: { "Authorization": `token ${token}` },
+                data: {
+                notification: `Вас добавил ${userData.name}`,
+                phone_client: `${clientPhone}`
+                },
+                withCredentials: true
+                })
+                .then(function (response) {
+                console.log(response)
+                })
+                .catch(function (response) {
+                console.log(response)
+                useShowError({error: "Не удалось отправить уведомление"})
+            });
+            
         })
         .catch(function (response) {
             console.log(response);
-    });
+            useShowError({error: "Не удалось добавить клиентта"})
+        });
 
   }
 
@@ -441,7 +464,7 @@ const DashboardPartner = () => {
     )
   }
 
-   const AddPurchase = ({ responseLogin }) => {
+   const AddPurchase = () => {
 
     return (
       <section className='mt-[15px] flex-1'>
@@ -473,7 +496,7 @@ const DashboardPartner = () => {
     )
   }
 
-  const AddClient = ({ responseLogin }) => {
+  const AddClient = () => {
     return (
       <section className='mt-[15px] flex-1'>
         <h2 className={`${styles.dashboardItemSubtitle}`}>Добавить клиента</h2>
@@ -591,6 +614,9 @@ const DashboardPartner = () => {
 
 
   const ClientItem = ({ fio, phone, bonuses = 0 }) => {
+    setClientPhone(phone)
+
+
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape') {
             setModal(false);
@@ -717,7 +743,7 @@ const DashboardPartner = () => {
                 <div >
                     <AddPurchase responseLogin={userData} />
                     <AddClient responseLogin={userData} />
-                    <ClientsList  />
+                    <ClientsList />
                 </div>
             </div>
         </div>

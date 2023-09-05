@@ -17,25 +17,9 @@ function App() {
   const userDataJSON = window.localStorage.getItem("userData")
   const userData = JSON.parse(userDataJSON)
   const method = window.localStorage.getItem("method")
-  console.log(userData)
 
   const [responseAuth, setResponseAuth] = useState({ errorMessage: {}, dataUser: {} });
-
-  // if (method == "false" && isLoggedIn) {
-  //   window.location.pathname = "/dashboardclient"
-  // } else if (method == "true" && isLoggedIn) {
-  //   window.location.pathname = "/dashboardpartner"
-  // }
-
-  const checkRole = () => {
-    if (isLoggedIn && method == "true") {
-      <Partner />
-    } else if (isLoggedIn && method == "false") {
-      <Client />
-    } else {
-      <Login />
-    }
-  }
+  console.log(responseAuth.dataUser)
 
   return (
     <BrowserRouter>

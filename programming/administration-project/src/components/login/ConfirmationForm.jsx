@@ -9,6 +9,7 @@ import ErrorMessage from '../common/ErrorMessage';
 import { registrationClientUrl, registrationPartnerUrl } from '../urls';
 
 const ConfirmationForm = ({ dataUser }) => {
+    console.log(dataUser)
     const [show, setShow] = useState(false)
     const { responseAuth, setResponseAuth } = useContext(ResponseContext);
     const [redirection, setRedirection] = useState(false)
@@ -17,7 +18,10 @@ const ConfirmationForm = ({ dataUser }) => {
     const useShowError = ( {error} ) => {
         document.querySelector("#submit_btn").disabled = true;
         setShow(true);
-        setResponseAuth({errorMessage: `${error}`})
+        setResponseAuth(prev => ({
+            ...prev,
+            errorMessage: `${error}`
+        }))
         setTimeout(() => setShow(false), 5000)
         setTimeout(() => document.querySelector("#submit_btn").disabled = false, 5000);
     }
@@ -41,7 +45,7 @@ const ConfirmationForm = ({ dataUser }) => {
     });
 
     const onSubmit = async (data, event) => {
-        event.preventDefault()
+        console.log(dataUser)
         if (dataUser.code == data.code) {
             if (dataUser.method == 'client') {
                 axios({

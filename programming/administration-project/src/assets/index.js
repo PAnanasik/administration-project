@@ -13,7 +13,8 @@ import date from './dashboard/date.png';
 import percent from './dashboard/percent.png';
 import product from './dashboard/product.png';
 import receipt from './dashboard/receipt.png';
-import refresh from './dashboard/refresh.png'
+import refresh from './dashboard/refresh.png';
+import close from './dashboard/close.png'
 
 export {
     phoneInput,
@@ -30,5 +31,6 @@ export {
     percent,
     product,
     receipt,
-    refresh
+    refresh,
+    close
 }

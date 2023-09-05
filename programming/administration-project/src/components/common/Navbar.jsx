@@ -1,4 +1,4 @@
-import { avatar, notification, refresh } from '../../assets'
+import { avatar, close, notification, refresh } from '../../assets'
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { clientUrl, notificationUrl, removeNotificationUrl } from '../urls';
@@ -34,7 +34,13 @@ const Navbar = () => {
     getNotifications();  
     
     console.log(notificationArray)
-  }, [menu, state]);
+  }, [state, notificationUrl, menu]);
+
+
+  // const arr = [];
+  // arr.push("Вы дурак", "причем реальный")
+  
+  // notificationArray.push("Вы дурак")
 
   const refreshBonuses = () => {
     axios({
@@ -59,6 +65,16 @@ const Navbar = () => {
   }
 
   const Menu = () => {
+    const NoNotificationsText = () => {
+      return (
+        <div className='w-full h-full flex justify-center items-center flex-col'>
+          <h2 className='font-medium text-[20px]'>Пока никаких уведомлений нет</h2>
+          <p className='font-medium text-[20px]'>;(</p>
+        </div>
+      )
+    }
+
+
     let i = 0;
     const NotificationItem = ({ text }) => {
       const removeNotification = (event) => {
@@ -83,9 +99,12 @@ const Navbar = () => {
         <div className='relative w-full min-h-[60px] bg-white pl-[10px] flex flex-col justify-center rounded-[8px]'>
           <>
             <h2 className='font-medium text-[14px]'>{text}</h2>
-            <p className='text-[12px]'>Просмотрите ваш список клиентов</p>
+            <p className='text-[12px]'>Просмотрите ваш список партнеров</p>
           </>
-          <button className='absolute right-[10px]' id={i++} onClick={removeNotification}>закрыть</button>
+          <button className='absolute right-[20px] ease duration-300 p-2 rounded-full hover:bg-primary
+          hover:bg-opacity-[0.2]' id={i++} onClick={removeNotification}>
+            <img src={close} alt="" className='w-4 h-4 pointer-events-none'/>
+          </button>
         </div>
       )
     }
@@ -93,11 +112,10 @@ const Navbar = () => {
     return (
       <div className='fixed md:max-w-[400px] w-full h-[500px] bg-input top-[80px] md:right-[40px] right-0 sm:left-auto sm:mx-0 left-0 mx-auto 
       z-20 border-solid border-[1px] border-[#D2D2D2] border-t-transparent p-4 flex flex-col gap-[15px]'>
-        {notificationArray.map((item, index) => (
-          // <div key={index}>{item}</div>
-          
+        {notificationArray?.map((item, index) => (          
           <NotificationItem key={index} text={item}/>
         ))}
+        {notificationArray?.length == 0 && <NoNotificationsText />}
       </div>
     )
   }
@@ -113,9 +131,7 @@ const Navbar = () => {
 
   function handleMenu() {
     setMenu(!menu)
-    if (menu == false) {
-      setNotificationIcon(false)
-    }
+    setNotificationIcon(false)
   }
 
   return (
@@ -125,10 +141,10 @@ const Navbar = () => {
               <div className='h-full flex md:flex-row flex-col md:justify-between justify-center items-center'>
                   <h2 className='md:text-[16px] text-[14px]'>Личный кабинет клиента</h2>
                   <div className='flex items-center gap-[20px]'>
-                      <a href="#" className='relative' onClick={handleMenu}>
-                          <img src={notification} alt="dfaafdfad" className='w-7 h-7'/>
-                          <NotificationIcon />
-                      </a>
+                      <button className='relative' onClick={handleMenu}>
+                          <img src={notification} alt="notification-menu" className='w-7 h-7'/>
+                          {notificationArray.length >= 1 && notificationIcon && <NotificationIcon />}
+                      </button>
                       <div className='flex gap-[5px] items-center'>
                         <p className='md:text-[16px] text-[14px] font-medium'>{`${bonus || '0'} бонусов`}</p>
                         <button onClick={refreshBonuses}>

@@ -1,19 +1,79 @@
 import { avatar, notification } from '../../assets'
-import { useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ResponseContext } from '../../App';
+import { notificationUrl, removeNotificationUrl } from '../urls';
 
-const NavbarPartner = ({ }) => {
+const NavbarPartner = () => {
+
+  const token = window.localStorage.getItem("token")
+  const userData = JSON.parse(window.localStorage.getItem("userData"))
+
   const [notificationIcon, setNotificationIcon] = useState(true)
-  const { user, setUser } = useContext(ResponseContext);
-  const { responseAuth, setResponseAuth } = useContext(ResponseContext);
+  const [state, setState] = useState('')
   const [menu, setMenu] = useState(false)
+  const [notificationArray, setNotificationArray] = useState([])
+
+  useEffect(() => {
+    const getNotifications = async () => {
+      try {
+        const response = await axios.get(notificationUrl, {
+          headers: {
+              Authorization: `token ${token}`
+          }
+        });
+        const responseState = response.data[0].notifications;
+        setNotificationArray(responseState);
+      } catch(error) {
+        console.log(error)
+        useShowError({error: "Не удалось вывести список покупок"})
+      }
+    };
+
+    getNotifications();  
+    
+    console.log(notificationArray)
+  }, [state, notificationUrl, menu]);
 
   const Menu = () => {
-    const NotificationItem = () => {
+    const NoNotificationsText = () => {
       return (
-        <div className='w-full min-h-[60px] bg-white px-[10px] flex flex-col justify-center rounded-[8px]'>
-          <h2 className='font-medium text-[14px]'>Вас добавил </h2>
-          <p className='text-[12px]'>Просмотрите ваш список клиентов</p>
+        <div className='w-full h-full flex justify-center items-center flex-col'>
+          <h2 className='font-medium text-[20px]'>Пока никаких уведомлений нет</h2>
+          <p className='font-medium text-[20px]'>;(</p>
+        </div>
+      )
+    }
+
+    let i = 0;
+    const NotificationItem = ({ text }) => {
+      const removeNotification = (event) => {
+        axios({
+          method: "DELETE",
+          url: `${removeNotificationUrl}`,
+          headers: { "Authorization": `token ${token}` },
+          data: {
+            notification_id: event.target.id
+          },
+          withCredentials: true
+          })
+          .then(function (response) {
+            setState(response)
+          })
+          .catch(function (response) {
+            console.log(response)
+        });
+      } 
+
+      return (
+        <div className='relative w-full min-h-[60px] bg-white pl-[10px] flex flex-col justify-center rounded-[8px]'>
+          <>
+            <h2 className='font-medium text-[14px]'>{text}</h2>
+            <p className='text-[12px]'>Просмотрите ваш список партнеров</p>
+          </>
+          <button className='absolute right-[20px] ease duration-300 p-2 rounded-full hover:bg-primary
+          hover:bg-opacity-[0.2]' id={i++} onClick={removeNotification}>
+            <img src={close} alt="" className='w-4 h-4 pointer-events-none'/>
+          </button>
         </div>
       )
     }
@@ -22,7 +82,10 @@ const NavbarPartner = ({ }) => {
     return (
       <div className='fixed md:max-w-[400px] w-full h-[500px] bg-input top-[80px] md:right-[40px] right-0 sm:left-auto sm:mx-0 left-0 mx-auto 
       z-11 border-solid border-[1px] border-[#D2D2D2] border-t-transparent p-4'>
-        <NotificationItem />
+        {notificationArray?.map((item, index) => (          
+          <NotificationItem key={index} text={item}/>
+        ))}
+        {notificationArray?.length == 0 && <NoNotificationsText />}
       </div>
     )
   }
@@ -38,9 +101,7 @@ const NavbarPartner = ({ }) => {
 
   function handleMenu() {
     setMenu(!menu)
-    if (menu == false) {
-      setNotificationIcon(false)
-    }
+    setNotificationIcon(false)
   }
 
   function handleLogout() {
@@ -54,10 +115,10 @@ const NavbarPartner = ({ }) => {
               <div className='h-full flex md:flex-row flex-col md:justify-between justify-center items-center'>
                   <h2 className='md:text-[16px] text-[14px]'>Личный кабинет партнера</h2>
                   <div className='flex items-center gap-[20px]'>
-                      <a href="#" className='relative' onClick={handleMenu}>
-                        <img src={notification} alt="dfaafdfad" className='w-7 h-7'/>
-                        <NotificationIcon />
-                      </a>
+                      <button className='relative' onClick={handleMenu}>
+                          <img src={notification} alt="notification-menu" className='w-7 h-7'/>
+                          {notificationArray.length >= 1 && notificationIcon && <NotificationIcon />}
+                      </button>
                       <img src={avatar} alt="dfaafdfad" className='w-14 h-14 md:block hidden'/>
                       <a href="" className='md:text-[16px] text-[14px] font-normal' onClick={handleLogout}>Выйти</a>
                   </div>
