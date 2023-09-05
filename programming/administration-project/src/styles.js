@@ -22,7 +22,7 @@ const styles = {
   dashboardInputStyles:
     "relative h-[60px] w-full bg-[#F5F5F5] pl-[60px] rounded-[8px] focus:outline-primary text-[18px]",
   dashboardInputAvatarStyles:
-    "relative h-[60px] w-full bg-[#F5F5F5] rounded-[8px] focus:outline-primary text-[18px]",
+    "relative h-[60px] w-full bg-[#F5F5F5] rounded-[8px] focus:outline-primary text-[14px]",
 };
 
 export { styles }

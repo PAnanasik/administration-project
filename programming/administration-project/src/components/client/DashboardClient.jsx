@@ -56,48 +56,6 @@ const DashboardClient = () => {
     )
   }
 
-  const ContactInfo = () => {
-
-    return (
-      <section className='relative mt-[15px] flex-1'>
-        <h2 className={`${styles.dashboardItemSubtitle}`}>Контактная информация</h2>
-        <div className='bg-white w-full h-[460px] mt-[15px] rounded-[12px] md:px-[30px] px-[10px] py-[30px]
-        border-solid border-[1px] border-[#D2D2D2]'>
-          <div className='flex flex-col w-full h-full items-center py-[10px]'>
-            <div className='flex flex-col items-center'>
-              <img src={avatar} alt="" className='w-[100px] h-[100px]'/>
-              <div className='relative'>
-                <h2 className='font-medium text-[24px] mt-[15px]'>{userData.fio || 'Без имени'}</h2>
-              </div>
-            </div>
-            <div className='py-[20px] w-full h-full flex flex-col gap-[20px]'>
-              <div className='relative'>
-                <input
-                  type='text'
-                  className={`${styles.dashboardInputAvatarStyles} relative text-center`}
-                  value={userData.email || 'Без почты'}
-                  disabled
-                  />
-                <img src={mailInput} alt="name-icon" className='absolute left-[20px] top-[18px] w-6 h-6'/>
-              </div>
-
-              <div className='relative'>
-                <input
-                  type='text'
-                  className={`${styles.dashboardInputAvatarStyles} relative text-center`}
-                  value={userData.phone || 'Без телефона'}
-                  disabled
-                  />
-                <img src={phoneInput} alt="name-icon" className='absolute left-[20px] top-[18px] w-6 h-6'/>
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </section>
-    )
-  }
-
   const ModalWindow = () => {
     const [selectedCategory, setSelectedCategory] = useState('Товар не подошел')
 
@@ -238,9 +196,21 @@ const DashboardClient = () => {
       )
     }
 
+    const [value, setValue] = useState('')
+
+    const filteredPartners = state.filter((item) => {
+        return item.name?.toLowerCase()?.includes(value.toLowerCase())
+    })
+
     return (
       <section className='mt-[15px] flex-1'>
         <h2 className={`${styles.dashboardItemSubtitle}`}>История покупок</h2>
+        <div className='mt-[10px] mb-[15px]'>
+            <input type="text" className='max-w-[400px] w-full h-[40px] rounded-[8px]  border-solid border-[1px] border-[#D2D2D2]
+            px-[15px] outline-primary'
+            placeholder='Поиск по покупкам'
+            onChange={(event) => setValue(event.target.value)}/>
+        </div>
         <div className='bg-white w-full min-h-[460px] mt-[15px] rounded-[12px] border-solid border-[1px] border-[#D2D2D2]'>
             <div className='bg-input w-full h-[60px] rounded-t-[12px] flex justify-between items-center px-[30px] font-medium
             border-solid border-b-[1px] border-[#D2D2D2]'>
@@ -248,7 +218,7 @@ const DashboardClient = () => {
                 <h2>Информация</h2>
             </div>
             <div className=''>
-                {state.map((item, index) => (
+                {filteredPartners.map((item, index) => (
                   <HistoryItem key={index} {...item}/>
                 ))}
             </div>
@@ -479,7 +449,7 @@ const DashboardClient = () => {
         <div className='mt-[10px] mb-[15px]'>
             <input type="text" className='max-w-[400px] w-full h-[40px] rounded-[8px]  border-solid border-[1px] border-[#D2D2D2]
             px-[15px] outline-primary'
-            placeholder='Поиск по партнерам'
+            placeholder='Поиск по всем партнерам'
             onChange={(event) => setValue(event.target.value)}/>
         </div>
         <div className='bg-white w-full min-h-[460px] mt-[15px] rounded-[12px] h-full 
@@ -511,10 +481,7 @@ const DashboardClient = () => {
       <div className='max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px]'>
         <Intro />
         <div className='flex flex-col h-full'>
-          <div className='flex md:flex-row flex-col md:gap-[30px] gap-0'> 
-            <ContactInfo />
             <HistoryInfo token={token} />
-          </div>
             <PartnersList token={token} />
             <PartnersListAll token={token} />
         </div>
