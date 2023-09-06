@@ -18,9 +18,8 @@ function App() {
 
   const [responseAuth, setResponseAuth] = useState({
     errorMessage: {},
-    dataUser: {},
+    dataUser: {}
   });
-  console.log(responseAuth.dataUser);
 
   return (
     <BrowserRouter>

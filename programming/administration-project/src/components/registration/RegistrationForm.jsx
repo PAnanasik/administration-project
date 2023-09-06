@@ -147,9 +147,7 @@ const RegistrationForm = () => {
           onChange={(event) => setFullName(event.target.value)}
           title="Максимальная длина 100 символов"
           onInput={handleInput}
-          {...register("fio", {
-            required: "Поле обязательно к заполнению",
-          })}
+          {...register("fio")}
         />
         {active && <InputIcon prop={1} />}
         <div className="mt-1">

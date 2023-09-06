@@ -11,6 +11,8 @@ import axios from "axios";
 import { ResponseContext } from "../../App";
 import ErrorMessage from "../common/ErrorMessage";
 import {
+  addNotificationClientUrl,
+  partnersListAll,
   partnersListUrl,
   purchasesUrl,
   refundUrl,
@@ -84,7 +86,7 @@ const DashboardClient = () => {
         url: `${refundUrl}`,
         data: {
           phone_client: `${userData.phone}`,
-          number_cheque: modalInfo.amount,
+          number_cheque: modalInfo.number,
           reason_refund: `${selectedCategory}`,
           date_cheque: modalInfo.date,
           total_amount: modalInfo.total_amount,
@@ -97,6 +99,23 @@ const DashboardClient = () => {
       })
         .then(function (response) {
           console.log(response);
+          // axios({
+          //   method: "PUT",
+          //   url: `${addNotificationClientUrl}`,
+          //   headers: { Authorization: `token ${token}` },
+          //   data: {
+          //     notification: `Клиент ${userData?.phone || "Неизвестен"} запросил возврат`,
+          //     phone_client: `${userData.phone}`,
+          //   },
+          //   withCredentials: true,
+          // })r
+          //   .then(function (response) {
+          //     console.log(response);
+          //   })
+          //   .catch(function (response) {
+          //     console.log(response);
+          //     useShowError({ error: "Не удалось отправить уведомление" });
+          //   });
         })
         .catch(function (response) {
           console.log(response);
@@ -178,6 +197,7 @@ const DashboardClient = () => {
     const HistoryItem = ({
       name,
       amount,
+      number,
       date,
       is_confirmed,
       bonuses_spent,
@@ -189,7 +209,7 @@ const DashboardClient = () => {
         function handleToModalScroll() {
           setModalInfo({
             name: name,
-            amount: amount,
+            number: number,
             date: date,
             total_amount: total_amount,
           });
@@ -515,22 +535,21 @@ const DashboardClient = () => {
     const [state, setState] = useState([]);
 
     useEffect(() => {
-      const getAllPartners = async () => {
-        try {
-          const response = await axios.get(partnersListUrl, {
-            headers: {
-              Authorization: `token ${token}`,
-            },
-          });
+      axios({
+          method: "GET",
+          url: `${partnersListAll}`,
+          headers: { Authorization: `token ${token}` },
+          withCredentials: true,
+        })
+        .then(function (response) {
           const responseState = response.data;
           setState(responseState);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      getAllPartners();
-    }, [partnersListUrl]);
+        })
+        .catch(function (response) {
+          console.log(response);
+          useShowError({ error: "Не удалось вывести список всех партнеров" });
+        });
+    }, [])
 
     const [value, setValue] = useState("");
 

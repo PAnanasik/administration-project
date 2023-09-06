@@ -12,7 +12,7 @@ import {
   product,
   withdraw,
 } from "../../assets";
-import { useForm } from "react-hook-form";
+import { get, useForm } from "react-hook-form";
 import { ResponseContext } from "../../App";
 import axios from "axios";
 import ErrorMessage from "../common/ErrorMessage";
@@ -27,9 +27,10 @@ import { InView } from "react-intersection-observer";
 import greetings from "../greetings";
 
 const DashboardPartner = () => {
+
   const token = window.localStorage.getItem("token");
   const userData = JSON.parse(window.localStorage.getItem("userData"));
-
+  
   const [modalInfo, setModalInfo] = useState({
     name: "",
     bonuses: "",
@@ -39,7 +40,6 @@ const DashboardPartner = () => {
   const { responseAuth, setResponseAuth } = useContext(ResponseContext);
   const [show, setShow] = useState(false);
   const [responseState, setState] = useState([]);
-  const [clientPhone, setClientPhone] = useState("");
 
   const useShowError = ({ error }) => {
     setShow(true);
@@ -126,21 +126,19 @@ const DashboardPartner = () => {
         <input
           type="text"
           className={`${
-            errors2?.fio ? styles.badInputStyles : styles.inputStyles
+            errors2?.fio_client ? styles.badInputStyles : styles.inputStyles
           }`}
           placeholder="ФИО"
           onInput={handleInput}
-          {...register2("fio", {
-            required: "Поле обязательно к заполнению",
-            pattern: /^[А-Яа-я]+$/,
+          {...register2("fio_client", {
+            required: "Поле обязательно к заполнению"
           })}
         />
         {active && <InputIcon prop={1} />}
         <div className="mt-1">
-          {errors2?.fio && (
+          {errors2?.fio_client && (
             <p className="text-red-500 text-[12px]">
-              {errors2?.fio?.message ||
-                "Только буквы русского алфавита" ||
+              {errors2?.fio_client?.message ||
                 "Ошибка!"}
             </p>
           )}
@@ -332,6 +330,7 @@ const DashboardPartner = () => {
       </div>
     );
   };
+
   const InputCardBonusPercent = () => {
     const [active, setActive] = useState(true);
 
@@ -423,7 +422,36 @@ const DashboardPartner = () => {
         >
           <option value="Электроника">Электроника</option>
           <option value="Одежда и обувь">Одежда и обувь</option>
+          <option value="Одежда и обувь">Красота и здоровье</option>
+          <option value="Одежда и обувь">Спорт и отдых</option>
+          <option value="Одежда и обувь">Дом и сад</option>
+          <option value="Одежда и обувь">Авто и мото</option>
+          <option value="Одежда и обувь">Продукты питания</option>
+          <option value="Одежда и обувь">Книги и развлечения</option>
         </select>
+      </div>
+    );
+  };
+
+  const InputOrdered = () => {
+    const [isChecked, setIsChecked] = useState(false)
+    
+    const handleChange = (event) => {
+      console.log(isChecked)
+      setIsChecked(event.target.checked);
+    }
+
+    return (
+      <div className="flex gap-[10px] items-center">
+        <input type="checkbox" className="w-4 h-4"
+        onChange={handleChange}
+        {...register("to_order", {
+          value: isChecked,
+        })}
+        />
+        <p>
+          Товар на заказ
+        </p>
       </div>
     );
   };
@@ -457,6 +485,23 @@ const DashboardPartner = () => {
     })
       .then(function (response) {
         console.log(response);
+        axios({
+          method: "PUT",
+          url: `${addNotificationClientUrl}`,
+          headers: { Authorization: `token ${token}` },
+          data: {
+            notification: `Вы совершили покупку у ${userData.name}`,
+            phone_client: `${data.phone}`,
+          },
+          withCredentials: true,
+        })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (response) {
+            console.log(response);
+            useShowError({ error: "Не удалось отправить уведомление" });
+          });
       })
       .catch(function (response) {
         console.log(response);
@@ -489,7 +534,7 @@ const DashboardPartner = () => {
           headers: { Authorization: `token ${token}` },
           data: {
             notification: `Вас добавил ${userData.name}`,
-            phone_client: `${clientPhone}`,
+            phone_client: `${data.phone_client}`,
           },
           withCredentials: true,
         })
@@ -545,6 +590,7 @@ const DashboardPartner = () => {
             <InputCardBonusPercent />
             <InputBonuses />
             <InputCardCategories />
+            <InputOrdered />
             <button
               type="submit"
               className="bg-primary p-4 rounded-[8px] text-white font-medium md:max-w-[400px] w-full 
@@ -705,8 +751,6 @@ const DashboardPartner = () => {
   };
 
   const ClientItem = ({ fio, phone, bonuses = 0 }) => {
-    setClientPhone(phone);
-
     document.addEventListener("keydown", (event) => {
       if (event.key === "Escape") {
         setModal(false);
@@ -772,7 +816,7 @@ const DashboardPartner = () => {
     );
   };
 
-  const ClientsList = ({}) => {
+  const ClientsList = () => {
     const [state, setState] = useState([]);
 
     useEffect(() => {
