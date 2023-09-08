@@ -58,7 +58,6 @@ const DashboardReceipts = () => {
 
       getOrders();
     }, [ordersUrl]);
-    console.log(state);
 
     // uploadInput.addEventListener('change', onSelectFile, false);
 
@@ -80,7 +79,6 @@ const DashboardReceipts = () => {
       };
 
       const [file, setFile] = useState(null);
-      console.log(file);
 
       const submitFile = async (event) => {
         event.preventDefault();
@@ -100,11 +98,9 @@ const DashboardReceipts = () => {
           processData: false,
         })
           .then(function (response) {
-            console.log(response)
             
           })
           .catch(function (response) {
-            console.log(response);
             useShowError({ error: "Не удалось добавить файл" });
             alert("Не удалось добавить файл");
           });

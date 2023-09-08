@@ -37,8 +37,6 @@ const DashboardClient = () => {
   const [show, setShow] = useState(false);
   const { responseAuth, setResponseAuth } = useContext(ResponseContext);
 
-  console.log(token);
-
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 560px)").matches
   );
@@ -98,7 +96,6 @@ const DashboardClient = () => {
         withCredentials: true,
       })
         .then(function (response) {
-          console.log(response);
         })
         .catch(function (response) {
           console.log(response);
@@ -177,7 +174,6 @@ const DashboardClient = () => {
 
       getPurchases();
     }, [purchasesUrl]);
-    console.log(state);
 
     const HistoryItem = ({
       name,
@@ -198,7 +194,6 @@ const DashboardClient = () => {
             date: date,
             total_amount: total_amount,
           });
-          console.log(modalInfo);
           setModal(true);
           window.scrollTo(0, 0);
         }
@@ -318,7 +313,6 @@ const DashboardClient = () => {
         },
       })
         .then(function (response) {
-          console.log(response);
         })
         .catch(function (response) {
           console.log(response);
@@ -460,7 +454,6 @@ const DashboardClient = () => {
         },
       })
         .then(function (response) {
-          console.log(response);
         })
         .catch(function (response) {
           console.log(response);

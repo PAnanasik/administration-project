@@ -439,7 +439,6 @@ const DashboardPartner = () => {
     const [isChecked, setIsChecked] = useState(false);
 
     const handleChange = (event) => {
-      console.log(isChecked);
       setIsChecked(event.target.checked);
     };
 
@@ -486,7 +485,6 @@ const DashboardPartner = () => {
       withCredentials: true,
     })
       .then(function (response) {
-        console.log(response);
         axios({
           method: "PUT",
           url: `${addNotificationClientUrl}`,
@@ -498,7 +496,6 @@ const DashboardPartner = () => {
           withCredentials: true,
         })
           .then(function (response) {
-            console.log(response);
           })
           .catch(function (response) {
             console.log(response);
@@ -506,13 +503,11 @@ const DashboardPartner = () => {
           });
       })
       .catch(function (response) {
-        console.log(response);
         useShowError({ error: "Не удалось добавить покупку" });
         alert("Не удалось добавить покупку");
       });
 
     reset();
-    console.log(data);
   };
 
   const onSubmitAddClient = async (data, event) => {
@@ -529,7 +524,6 @@ const DashboardPartner = () => {
       withCredentials: true,
     })
       .then(function (response) {
-        console.log(response);
         setState((oldItem) => [...oldItem, responseState]);
         axios({
           method: "PUT",
@@ -542,7 +536,6 @@ const DashboardPartner = () => {
           withCredentials: true,
         })
           .then(function (response) {
-            console.log(response);
           })
           .catch(function (response) {
             console.log(response);
@@ -556,7 +549,6 @@ const DashboardPartner = () => {
   };
 
   const Intro = ({ responseLogin }) => {
-    console.log(responseLogin);
     return (
       <div
         className="w-full h-[200px] flex md:justify-between justify-center items-center md:text-left text-center 
@@ -597,7 +589,6 @@ const DashboardPartner = () => {
         processData: false,
       })
         .then(function (response) {
-          console.log(response);
         })
         .catch(function (response) {
           console.log(response);
@@ -654,7 +645,6 @@ const DashboardPartner = () => {
   };
 
   const Stats = ({ responseLogin }) => {
-    console.log(responseLogin);
     return (
       <section className="mt-[15px] flex-1">
         <h2 className={`${styles.dashboardItemSubtitle}`}>Статистика</h2>
@@ -781,7 +771,6 @@ const DashboardPartner = () => {
         },
       })
         .then(function (response) {
-          console.log(response.data.data.bonuses);
           setDataBonus(response.data.data.bonuses);
         })
         .catch(function (response) {
@@ -948,7 +937,6 @@ const DashboardPartner = () => {
               Authorization: `token ${token}`,
             },
           });
-          console.log(response);
           const responseState = response.data;
           setState(responseState);
         } catch (error) {

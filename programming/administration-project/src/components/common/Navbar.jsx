@@ -45,7 +45,6 @@ const Navbar = () => {
 
     getNotifications();
 
-    console.log(notificationArray);
   }, [state, notificationUrl, menu]);
 
   // const arr = [];
@@ -61,14 +60,12 @@ const Navbar = () => {
       withCredentials: true,
     })
       .then(function (response) {
-        console.log(response);
         setBonus(response.data[0].bonuses);
-        console.log(response);
       })
       .catch(function (response) {
         console.log(response);
       });
-  },[bonus]);
+  }, [bonus]);
 
   const refreshBonuses = () => {
     axios({
@@ -78,14 +75,12 @@ const Navbar = () => {
       withCredentials: true,
     })
       .then(function (response) {
-        console.log(response);
         setBonus(response.data[0].bonuses);
-        console.log(response);
       })
       .catch(function (response) {
         console.log(response);
       });
-  }
+  };
 
   function handleLogout() {
     localStorage.clear();
@@ -115,12 +110,12 @@ const Navbar = () => {
           },
           withCredentials: true,
         })
-        .then(function (response) {
-          setState(response);
-        })
-        .catch(function (response) {
-          console.log(response);
-        });
+          .then(function (response) {
+            setState(response);
+          })
+          .catch(function (response) {
+            console.log(response);
+          });
       };
 
       return (
@@ -146,7 +141,8 @@ const Navbar = () => {
         {notificationArray?.map((item, index) => (
           <NotificationItem key={index} text={item} />
         ))}
-        {(notificationArray?.length == null || notificationArray?.length == 0) && <NoNotificationsText />}
+        {(notificationArray?.length == null ||
+          notificationArray?.length == 0) && <NoNotificationsText />}
       </div>
     );
   };

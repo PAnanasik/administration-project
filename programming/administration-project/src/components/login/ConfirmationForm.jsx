@@ -49,7 +49,7 @@ const ConfirmationForm = ({ dataUser }) => {
   });
 
   const onSubmit = async (data, event) => {
-    console.log(dataUser);
+    event.preventDefault();
     if (dataUser.code == data.code) {
       if (dataUser.method == "client") {
         axios({
@@ -58,11 +58,10 @@ const ConfirmationForm = ({ dataUser }) => {
           data: dataUser,
         })
           .then(function (response) {
-            console.log(response);
             setRedirection(true);
           })
           .catch(function (response) {
-            console.log(response)
+            console.log(response);
             useShowError({ error: "Произошла ошибка" });
           });
 
@@ -74,7 +73,6 @@ const ConfirmationForm = ({ dataUser }) => {
           data: dataUser,
         })
           .then(function (response) {
-            console.log(response);
             setRedirection(true);
           })
           .catch(function (response) {

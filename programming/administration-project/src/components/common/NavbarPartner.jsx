@@ -30,8 +30,7 @@ const NavbarPartner = () => {
     };
 
     getNotifications();
-
-    console.log(notificationArray);
+    
   }, [state, notificationUrl, menu]);
 
   const Menu = () => {

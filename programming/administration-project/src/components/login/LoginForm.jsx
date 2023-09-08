@@ -91,10 +91,8 @@ const LoginForm = () => {
   useEffect(() => {
     if (redirection && !partner) {
       navigate("/dashboardclient");
-      console.log("1111");
     } else if (redirection && partner) {
       navigate("/dashboardpartner");
-      console.log("2222");
     }
   }, [redirection, partner]);
 
