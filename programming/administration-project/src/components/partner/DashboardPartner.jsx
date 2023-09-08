@@ -495,14 +495,14 @@ const DashboardPartner = () => {
           },
           withCredentials: true,
         })
-          .then(function (response) {
-          })
+          .then(function (response) {})
           .catch(function (response) {
             console.log(response);
             useShowError({ error: "Не удалось отправить уведомление" });
           });
       })
       .catch(function (response) {
+        console.log(response);
         useShowError({ error: "Не удалось добавить покупку" });
         alert("Не удалось добавить покупку");
       });
@@ -535,8 +535,7 @@ const DashboardPartner = () => {
           },
           withCredentials: true,
         })
-          .then(function (response) {
-          })
+          .then(function (response) {})
           .catch(function (response) {
             console.log(response);
             useShowError({ error: "Не удалось отправить уведомление" });
@@ -589,7 +588,9 @@ const DashboardPartner = () => {
         processData: false,
       })
         .then(function (response) {
+          alert("Файл отправлен успешно!");
         })
+        
         .catch(function (response) {
           console.log(response);
           useShowError({ error: "Не удалось добавить файл" });
@@ -626,7 +627,7 @@ const DashboardPartner = () => {
                   type="file"
                   id="uploadInput"
                   className="fileInput"
-                  accept=".pdf"
+                  accept=".pdf, .doc, .docx"
                   onChange={handleFileChange}
                 />
               </div>
@@ -659,10 +660,10 @@ const DashboardPartner = () => {
               <p className="text-[18px]">
                 Клиентов: <span>{responseLogin.clients.length || 0}</span>
               </p>
-
             </div>
             <p className="text-[#cfcfcf] max-w-[400px]">
-              Чтобы увеличить количество клиентов, пользуйтесь сервисом чаще
+              Чтобы увеличить количество клиентов, пользуйтесь сервисом чаще:
+              добавляйте клиентов, начисляйте им бонусы и т.д.
             </p>
           </div>
           <img

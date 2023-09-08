@@ -25,8 +25,6 @@ const DashboardClient = () => {
   const token = window.localStorage.getItem("token");
   const userData = JSON.parse(window.localStorage.getItem("userData"));
 
-  console.log(userData);
-
   const [modalInfo, setModalInfo] = useState({
     name: "",
     amount: "",

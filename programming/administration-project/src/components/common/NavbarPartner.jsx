@@ -45,7 +45,8 @@ const NavbarPartner = () => {
       );
     };
 
-    let i = 0;
+    let i = notificationArray.length;
+
     const NotificationItem = ({ text }) => {
       const removeNotification = (event) => {
         axios({
@@ -73,7 +74,7 @@ const NavbarPartner = () => {
           <button
             className="absolute right-[20px] ease duration-300 p-2 rounded-full hover:bg-primary
           hover:bg-opacity-[0.2]"
-            id={i++}
+          id={i != 1 ? i-- - 1 : i = 0}
             onClick={removeNotification}
           >
             <img src={close} alt="" className="w-4 h-4 pointer-events-none" />

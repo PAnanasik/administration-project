@@ -98,7 +98,8 @@ const Navbar = () => {
       );
     };
 
-    let i = 0;
+    let i = notificationArray.length;
+
     const NotificationItem = ({ text }) => {
       const removeNotification = (event) => {
         axios({
@@ -120,11 +121,11 @@ const Navbar = () => {
 
       return (
         <div className="relative w-full min-h-[60px] bg-white pl-[10px] flex flex-col justify-center rounded-[8px]">
-          <p className="font-medium text-[14px] max-w-[350px] w-full">{text}</p>
+          <p className="font-medium text-[14px] md:max-w-[350px] xs:max-w-[380px] max-w-[210px] w-full">{text}</p>
           <button
             className="absolute right-[20px] ease duration-300 p-2 rounded-full hover:bg-primary
           hover:bg-opacity-[0.2]"
-            id={i++}
+            id={i != 1 ? i-- - 1 : i = 0}
             onClick={removeNotification}
           >
             <img src={close} alt="" className="w-4 h-4 pointer-events-none" />

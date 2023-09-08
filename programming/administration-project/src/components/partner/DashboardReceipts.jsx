@@ -81,7 +81,6 @@ const DashboardReceipts = () => {
       const [file, setFile] = useState(null);
 
       const submitFile = async (event) => {
-        event.preventDefault();
 
         var formData = new FormData();
         formData.append("cheque_number", number);
@@ -98,7 +97,7 @@ const DashboardReceipts = () => {
           processData: false,
         })
           .then(function (response) {
-            
+            alert("Файл отправлен успешно!");
           })
           .catch(function (response) {
             useShowError({ error: "Не удалось добавить файл" });
