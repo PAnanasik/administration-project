@@ -6,6 +6,7 @@ import ProtectedRoutes from "./ProtectedRoutes.jsx";
 import Confirmation from "./pages/Confirmation.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { createContext, useState } from "react";
+import PartnerReceipts from "./pages/PartnerReceipts.jsx";
 
 export const ResponseContext = createContext();
 
@@ -45,6 +46,7 @@ function App() {
           <Route element={<ProtectedRoutes logged={isLoggedIn} />}>
             <Route path="/dashboardclient" element={<Client />} />
             <Route path="/dashboardpartner" element={<Partner />} />
+            <Route path="/partnerreceipts" element={<PartnerReceipts />} />
           </Route>
         </Routes>
       </ResponseContext.Provider>

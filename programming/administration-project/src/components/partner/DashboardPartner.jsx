@@ -27,10 +27,9 @@ import { InView } from "react-intersection-observer";
 import greetings from "../greetings";
 
 const DashboardPartner = () => {
-
   const token = window.localStorage.getItem("token");
   const userData = JSON.parse(window.localStorage.getItem("userData"));
-  
+
   const [modalInfo, setModalInfo] = useState({
     name: "",
     bonuses: "",
@@ -59,7 +58,7 @@ const DashboardPartner = () => {
       date,
       product,
       percent,
-      withdraw
+      withdraw,
     ];
     return (
       <img
@@ -131,15 +130,14 @@ const DashboardPartner = () => {
           placeholder="ФИО"
           onInput={handleInput}
           {...register2("fio_client", {
-            required: "Поле обязательно к заполнению"
+            required: "Поле обязательно к заполнению",
           })}
         />
         {active && <InputIcon prop={1} />}
         <div className="mt-1">
           {errors2?.fio_client && (
             <p className="text-red-500 text-[12px]">
-              {errors2?.fio_client?.message ||
-                "Ошибка!"}
+              {errors2?.fio_client?.message || "Ошибка!"}
             </p>
           )}
         </div>
@@ -389,7 +387,8 @@ const DashboardPartner = () => {
           {...register("bonuses_spent", {
             value: `${inputBonus}`,
             pattern: /^[0-9]+$/,
-            required: "Поле обязательно (если вы не хотите снимать бонусы, напишите 0)"
+            required:
+              "Поле обязательно (если вы не хотите снимать бонусы, напишите 0)",
           })}
         />
         {active && <InputIcon prop={7} />}
@@ -434,24 +433,24 @@ const DashboardPartner = () => {
   };
 
   const InputOrdered = () => {
-    const [isChecked, setIsChecked] = useState(false)
-    
+    const [isChecked, setIsChecked] = useState(false);
+
     const handleChange = (event) => {
-      console.log(isChecked)
+      console.log(isChecked);
       setIsChecked(event.target.checked);
-    }
+    };
 
     return (
       <div className="flex gap-[10px] items-center">
-        <input type="checkbox" className="w-4 h-4"
-        onChange={handleChange}
-        {...register("to_order", {
-          value: isChecked,
-        })}
+        <input
+          type="checkbox"
+          className="w-4 h-4"
+          onChange={handleChange}
+          {...register("to_order", {
+            value: isChecked,
+          })}
         />
-        <p>
-          Товар на заказ
-        </p>
+        <p>Товар на заказ</p>
       </div>
     );
   };
@@ -572,7 +571,12 @@ const DashboardPartner = () => {
   const AddPurchase = () => {
     return (
       <section className="mt-[15px] flex-1">
-        <h2 className={`${styles.dashboardItemSubtitle}`}>Добавить покупку</h2>
+        <div className="flex w-full justify-between">
+          <h2 className={`${styles.dashboardItemSubtitle}`}>
+            Добавить покупку
+          </h2>
+          <a href="/partnerreceipts">История заказов</a>
+        </div>
         <div
           className="bg-white w-full max-h-[900px] md:py-[30px] py-[10px] mt-[15px] rounded-[12px] md:px-[30px] px-[10px]
         border-solid border-[1px] border-[#D2D2D2]"
@@ -606,6 +610,115 @@ const DashboardPartner = () => {
       </section>
     );
   };
+
+  // const ReceiptInfo = ({ token }) => {
+  //   const [state, setState] = useState([]);
+
+  //   // useEffect(() => {
+  //   //   const getPurchases = async () => {
+  //   //     try {
+  //   //       const response = await axios.get(purchasesUrl, {
+  //   //         headers: {
+  //   //           Authorization: `token ${token}`,
+  //   //         },
+  //   //       });
+  //   //       const responseState = response.data;
+  //   //       setState(responseState);
+  //   //     } catch (error) {
+  //   //       console.log(error);
+  //   //       useShowError({ error: "Не удалось вывести список покупок" });
+  //   //     }
+  //   //   };
+
+  //   //   getPurchases();
+  //   // }, [purchasesUrl]);
+  //   // console.log(state);
+
+  //   const HistoryItem = ({}) => {
+  //     const [expanded, setExpanded] = useState(false);
+
+  //     const HistoryItemDesc = () => {
+  //       function handleToModalScroll() {
+  //         setModalInfo({
+  //           name: name,
+  //           number: number,
+  //           date: date,
+  //           total_amount: total_amount,
+  //         });
+  //         console.log(modalInfo);
+  //         setModal(true);
+  //         window.scrollTo(0, 0);
+  //       }
+
+  //       return (
+  //         <div className="flex flex-col gap-[10px] py-[20px] px-[30px] border-solid border-t-[1px] border-[#D2D2D2]">
+  //           <button
+  //             className="bg-red-500 p-1 rounded-[8px] text-white font-medium
+  //               md:max-w-[150px] w-full ease duration-300 hover:bg-red-400 cursor-pointer mt-[10px]"
+  //           >
+  //             Прикрепить
+  //           </button>
+  //         </div>
+  //       );
+  //     };
+  //     return (
+  //       <>
+  //         <div className="border-solid first:border-t-transparent border-t-[1px] border-[#D2D2D2]">
+  //           <div
+  //             className="
+  //             w-full h-[60px] flex justify-between items-center px-[30px] "
+  //           >
+  //             <h2 className={`${styles.dashboardItemTitle}`}>чек</h2>
+  //             <button onClick={() => setExpanded(!expanded)}>
+  //               <img
+  //                 src={expanded ? arrowExpanded : arrowExpand}
+  //                 alt=""
+  //                 className="w-4 h-4"
+  //               />
+  //             </button>
+  //           </div>
+
+  //           {expanded && <HistoryItemDesc />}
+  //         </div>
+  //       </>
+  //     );
+  //   };
+
+  //   const [value, setValue] = useState("");
+
+  //   const filteredPartners = state.filter((item) => {
+  //     return item.name?.toLowerCase()?.includes(value.toLowerCase());
+  //   });
+
+  //   return (
+  //     <section className="mt-[15px] flex-1">
+  //       <h2 className={`${styles.dashboardItemSubtitle}`}>История покупок</h2>
+  //       <div className="mt-[10px] mb-[15px]">
+  //         <input
+  //           type="text"
+  //           className="max-w-[400px] w-full h-[40px] rounded-[8px]  border-solid border-[1px] border-[#D2D2D2]
+  //           px-[15px] outline-primary"
+  //           placeholder="Поиск по покупкам"
+  //           onChange={(event) => setValue(event.target.value)}
+  //         />
+  //       </div>
+  //       <div className="bg-white w-full min-h-[460px] mt-[15px] rounded-[12px] border-solid border-[1px] border-[#D2D2D2]">
+  //         <div
+  //           className="bg-input w-full h-[60px] rounded-t-[12px] flex justify-between items-center px-[30px] font-medium
+  //           border-solid border-b-[1px] border-[#D2D2D2]"
+  //         >
+  //           <h2>Товар</h2>
+  //           <h2>Информация</h2>
+  //         </div>
+  //         <div className="">
+  //           {filteredPartners.map((item, index) => (
+  //             <HistoryItem key={index} {...item} />
+  //           ))}
+  //         </div>
+  //       </div>
+  //     </section>
+  //   );
+  // };
 
   const AddClient = () => {
     return (
@@ -702,7 +815,7 @@ const DashboardPartner = () => {
       >
         <div className="mt-[40px] h-[260px] relative">
           <h2 className="font-medium text-[20px]">
-            Имя клиента: {modalInfo.name}
+            Имя клиента: {modalInfo.name || "Без имени"}
           </h2>
           <div className="pt-[16px] flex flex-col">
             <form action="" className="flex flex-col">
@@ -893,6 +1006,7 @@ const DashboardPartner = () => {
         <div className="flex flex-col md:gap-[30px] gap-0">
           <div>
             <AddPurchase responseLogin={userData} />
+            {/* <ReceiptInfo /> */}
             <AddClient responseLogin={userData} />
             <ClientsList />
           </div>

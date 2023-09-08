@@ -53,6 +53,23 @@ const Navbar = () => {
 
   // notificationArray.push("Вы дурак")
 
+  useEffect(() => {
+    axios({
+      method: "GET",
+      url: `${clientUrl}`,
+      headers: { Authorization: `token ${token}` },
+      withCredentials: true,
+    })
+      .then(function (response) {
+        console.log(response);
+        setBonus(response.data[0].bonuses);
+        console.log(response);
+      })
+      .catch(function (response) {
+        console.log(response);
+      });
+  },[bonus]);
+
   const refreshBonuses = () => {
     axios({
       method: "GET",
@@ -68,8 +85,7 @@ const Navbar = () => {
       .catch(function (response) {
         console.log(response);
       });
-  };
-  console.log(bonus);
+  }
 
   function handleLogout() {
     localStorage.clear();
@@ -109,10 +125,7 @@ const Navbar = () => {
 
       return (
         <div className="relative w-full min-h-[60px] bg-white pl-[10px] flex flex-col justify-center rounded-[8px]">
-          <>
-            <h2 className="font-medium text-[14px]">{text}</h2>
-            <p className="text-[12px]">Просмотрите ваш список партнеров</p>
-          </>
+          <p className="font-medium text-[14px] max-w-[350px] w-full">{text}</p>
           <button
             className="absolute right-[20px] ease duration-300 p-2 rounded-full hover:bg-primary
           hover:bg-opacity-[0.2]"
@@ -127,7 +140,7 @@ const Navbar = () => {
 
     return (
       <div
-        className="fixed md:max-w-[400px] w-full min-h-[400px] bg-input top-[80px] md:right-[40px] right-0 sm:left-auto sm:mx-0 left-0 mx-auto 
+        className="fixed md:max-w-[450px] w-full min-h-[400px] bg-input top-[80px] md:right-[40px] right-0 sm:left-auto sm:mx-0 left-0 mx-auto 
       z-20 border-solid border-[1px] border-[#D2D2D2] border-t-transparent p-4 flex flex-col gap-[15px]"
       >
         {notificationArray?.map((item, index) => (
@@ -240,7 +253,7 @@ const Navbar = () => {
                 <p className="md:text-[16px] text-[14px] font-medium">{`${
                   bonus || "0"
                 } бонусов`}</p>
-                <button onClick={refreshBonuses}>
+                <button onClick={refreshBonuses} id="refresh_bonuses">
                   <img src={refresh} alt="" className="w-4 h-4" />
                 </button>
               </div>

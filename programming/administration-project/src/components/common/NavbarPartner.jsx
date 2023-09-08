@@ -1,4 +1,4 @@
-import { avatar, notification } from "../../assets";
+import { avatar, close, notification } from "../../assets";
 import { useEffect, useState, useContext } from "react";
 import { notificationUrl, removeNotificationUrl } from "../urls";
 import { ResponseContext } from "../../App";
@@ -7,23 +7,12 @@ import axios from "axios";
 const NavbarPartner = () => {
   const token = window.localStorage.getItem("token");
   const userData = JSON.parse(window.localStorage.getItem("userData"));
-  const { responseAuth, setResponseAuth } = useContext(ResponseContext);
 
   const [notificationIcon, setNotificationIcon] = useState(true);
   const [state, setState] = useState("");
   const [menu, setMenu] = useState(false);
   const [profileMenu, setProfileMenu] = useState(false);
   const [notificationArray, setNotificationArray] = useState([]);
-  const [show, setShow] = useState(false);
-
-  const useShowError = ({ error }) => {
-    setShow(true);
-    setResponseAuth({
-      errorMessage: `${error}`,
-    });
-    setModal(false);
-    setTimeout(() => setShow(false), 5000);
-  };
 
   useEffect(() => {
     const getNotifications = async () => {
@@ -37,7 +26,6 @@ const NavbarPartner = () => {
         setNotificationArray(responseState);
       } catch (error) {
         console.log(error);
-        useShowError({ error: "Не удалось вывести список покупок" });
       }
     };
 
@@ -82,7 +70,6 @@ const NavbarPartner = () => {
         <div className="relative w-full min-h-[60px] bg-white pl-[10px] flex flex-col justify-center rounded-[8px]">
           <>
             <h2 className="font-medium text-[14px]">{text}</h2>
-            <p className="text-[12px]">Просмотрите ваш список клиентов</p>
           </>
           <button
             className="absolute right-[20px] ease duration-300 p-2 rounded-full hover:bg-primary
@@ -98,8 +85,8 @@ const NavbarPartner = () => {
 
     return (
       <div
-        className="fixed md:max-w-[400px] w-full min-h-[400px] bg-input top-[80px] md:right-[40px] right-0 sm:left-auto sm:mx-0 left-0 mx-auto 
-      z-11 border-solid border-[1px] border-[#D2D2D2] border-t-transparent p-4"
+        className="fixed md:max-w-[450px] w-full min-h-[400px] bg-input top-[80px] md:right-[40px] right-0 sm:left-auto sm:mx-0 left-0 mx-auto 
+        z-20 border-solid border-[1px] border-[#D2D2D2] border-t-transparent p-4 flex flex-col gap-[15px]"
       >
         {notificationArray?.map((item, index) => (
           <NotificationItem key={index} text={item} />
@@ -227,7 +214,6 @@ const NavbarPartner = () => {
         </div>
       </nav>
       {menu && <Menu />}
-      {/* {profileMenu && <ProfileMenu />} */}
     </div>
   );
 };

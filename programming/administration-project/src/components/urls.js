@@ -1,8 +1,11 @@
 const API_KEY = "http://localhost:8000";
 
-const purchasesUrl = `${API_KEY}/api/v1/partner_purchases/`;
+const purchasesUrl = `${API_KEY}/api/v1/client_purchases/`;
 const partnersListUrl = `${API_KEY}/api/v1/client_partners/`;
 const partnersListAll = `${API_KEY}/api/v1/partners/`;
+
+const ordersUrl = `${API_KEY}/api/v1/partner_purchases_order/`
+const sendActUrl = `${API_KEY}/api/v1/send_act/`
 
 const registrationCodeUrl = `${API_KEY}/auth/send_code/`;
 const registrationClientUrl = `${API_KEY}/auth/registration_client/`;
@@ -41,4 +44,6 @@ export {
   notificationUrl,
   removeNotificationUrl,
   addNotificationClientUrl,
+  ordersUrl,
+  sendActUrl
 };
