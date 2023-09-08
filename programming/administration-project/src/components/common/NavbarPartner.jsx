@@ -120,54 +120,6 @@ const NavbarPartner = () => {
     localStorage.clear();
   }
 
-  // const ContactInfo = () => {
-
-  //   return (
-  //     <section className='relative flex'>
-  //       <div className='bg-white w-full rounded-[12px] px-[10px] py-[30px]
-  //       border-solid border-[1px] border-[#D2D2D2]'>
-  //         <div className='flex flex-col w-full h-full items-center py-[10px]'>
-  //           <div className='flex flex-col items-center justify-center'>
-  //             <img src={avatar} alt="" className='w-[80px] h-[80px]'/>
-  //             <div className='relative'>
-  //               <h2 className='font-medium text-[18px] mt-[15px] text-center'>{userData.name || 'Без названия'}</h2>
-  //             </div>
-  //           </div>
-  //           <div className='pt-[20px] w-full h-full flex flex-col gap-[20px]'>
-  //             <div className='relative'>
-  //               {/* <input
-  //                 type='text'
-  //                 className={`${styles.dashboardInputAvatarStyles} relative text-center`}
-  //                 value={userData.email || 'Без почты'}
-  //                 disabled
-  //                 /> */}
-  //             </div>
-
-  //             <div className='relative'>
-  //               {/* <input
-  //                 type='text'
-  //                 className={`${styles.dashboardInputAvatarStyles} relative text-center`}
-  //                 value={userData.phone || 'Без телефона'}
-  //                 disabled
-  //                 /> */}
-  //             </div>
-
-  //           </div>
-  //         </div>
-  //       </div>
-  //     </section>
-  //   )
-  // }
-
-  // const ProfileMenu = () => {
-  //   return (
-  //     <div className='fixed md:max-w-[400px] w-full min-h-[400px] bg-input top-[80px] md:right-[40px] right-0 sm:left-auto sm:mx-0 left-0 mx-auto
-  //     z-20 border-solid border-[1px] border-[#D2D2D2] border-t-transparent p-4 flex flex-col gap-[15px] justify-center'>
-  //       <ContactInfo />
-  //     </div>
-  //   )
-  // }
-
   return (
     <div className="h-[80px] bg-white border-solid border-[1px] border-b-[#D2D2D2] fixed top-0 z-10 w-full">
       <nav className="md:px-[30px] px-[15px] h-full max-w-[1640px] mx-auto">
@@ -196,11 +148,7 @@ const NavbarPartner = () => {
             <img
               src={avatar}
               alt="dfaafdfad"
-              className={`${
-                profileMenu
-                  ? "bg-primary bg-opacity-[0.2] rounded-full"
-                  : "bg-none"
-              } relative w-11 h-11 p-1 cursor-pointer`}
+              className={`relative w-11 h-11 p-1`}
               onClick={handleProfileMenu}
             />
             <a

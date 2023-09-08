@@ -81,16 +81,14 @@ const DashboardReceipts = () => {
       const [file, setFile] = useState(null);
       console.log(file);
 
-      const submitForm = async (event) => {
+      const submitFile = async (event) => {
         event.preventDefault();
 
         var formData = new FormData();
-        formData.append("percent", "11");
-        formData.append("payment_order", "Электроника");
         formData.append("cheque_number", number);
         formData.append("act", file);
 
-        let response = await axios("http://localhost:8000/api/v1/send_act/", {
+        axios(sendActUrl, {
           method: "PUT",
           headers: {
             Authorization: `token ${token}`,
@@ -99,34 +97,15 @@ const DashboardReceipts = () => {
           type: "POST",
           contentType: false,
           processData: false,
-        });
-
-        console.log(formData)
-
-        let result = response;
-
-        console.log(result);
-
-        // axios({
-        //   method: "PUT",
-        //   url: `${sendActUrl}`,
-        //   body: {
-        //     act: file,
-        //     cheque_number: number,
-        //   },
-        //   headers: {
-        //     Authorization: `token ${token}`,
-        //     "content-type": file.type,
-        //   },
-        //   withCredentials: true,
-        // })
-        //   .then(function (response) {
-        //     const responseState = response.data;
-        //     setState(responseState);
-        //   })
-        //   .catch(function (response) {
-        //     console.log(response);
-        //   });
+        })
+          .then(function (response) {
+            console.log(response)
+            
+          })
+          .catch(function (response) {
+            console.log(response);
+            useShowError({ error: "Не удалось добавить покупку" });
+          });
       };
 
       const HistoryItemDesc = () => {
@@ -157,11 +136,11 @@ const DashboardReceipts = () => {
                 />
               )}
             </div>
-            <form onSubmit={submitForm} id="form-order">
+            <form onSubmit={submitFile} id="form-order">
               <label htmlFor="uploadInput">
                 <div
                   className="md:max-w-[450px] w-full h-[40px] border-primary border-[1px] border-solid rounded-[8px] flex items-center
-                        justify-center relative"
+                        justify-center relative ease duration-300 hover:border-[#9dbefc]"
                 >
                   {(file && `${file.name}`) || "Выберите файл"}
                   <input

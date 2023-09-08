@@ -16,6 +16,8 @@ import receipt from './dashboard/receipt.png';
 import refresh from './dashboard/refresh.png';
 import close from './dashboard/close.png';
 import withdraw from './dashboard/withdraw.png';
+import sendDocument from './dashboard/send-document.svg'
+import stats from './dashboard/stats.svg'
 
 export {
     phoneInput,
@@ -34,5 +36,7 @@ export {
     receipt,
     refresh,
     close,
-    withdraw
+    withdraw,
+    sendDocument,
+    stats
 }

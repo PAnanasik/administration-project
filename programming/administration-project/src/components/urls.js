@@ -6,6 +6,7 @@ const partnersListAll = `${API_KEY}/api/v1/partners/`;
 
 const ordersUrl = `${API_KEY}/api/v1/partner_purchases_order/`
 const sendActUrl = `${API_KEY}/api/v1/send_act/`
+const sendDocumentUrl = `${API_KEY}/api/v1/send_document/`
 
 const registrationCodeUrl = `${API_KEY}/auth/send_code/`;
 const registrationClientUrl = `${API_KEY}/auth/registration_client/`;
@@ -45,5 +46,6 @@ export {
   removeNotificationUrl,
   addNotificationClientUrl,
   ordersUrl,
-  sendActUrl
+  sendActUrl,
+  sendDocumentUrl
 };

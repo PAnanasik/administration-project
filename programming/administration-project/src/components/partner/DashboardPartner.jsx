@@ -11,6 +11,8 @@ import {
   percent,
   product,
   withdraw,
+  sendDocument,
+  stats,
 } from "../../assets";
 import { get, useForm } from "react-hook-form";
 import { ResponseContext } from "../../App";
@@ -21,6 +23,7 @@ import {
   addNotificationClientUrl,
   getClientsListUrl,
   remove_addUrl,
+  sendDocumentUrl,
   withdrawBonusesUrl,
 } from "../urls";
 import { InView } from "react-intersection-observer";
@@ -568,6 +571,118 @@ const DashboardPartner = () => {
     );
   };
 
+  const SendDocument = () => {
+    const [file, setFile] = useState(null);
+    const handleFileChange = (e) => {
+      if (e.target.files) {
+        setFile(e.target.files[0]);
+      }
+    };
+
+    const submitFile = async (event) => {
+      event.preventDefault();
+
+      var formData = new FormData();
+      formData.append("document", file);
+
+      axios(sendDocumentUrl, {
+        method: "POST",
+        headers: {
+          Authorization: `token ${token}`,
+        },
+        data: formData,
+        type: "POST",
+        contentType: false,
+        processData: false,
+      })
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (response) {
+          console.log(response);
+          useShowError({ error: "Не удалось добавить файл" });
+        });
+    };
+
+    return (
+      <section className="mt-[15px] flex-1">
+        <h2 className={`${styles.dashboardItemSubtitle}`}>
+          Отправить поручение
+        </h2>
+        <div
+          className="bg-white w-full md:h-[300px] mt-[15px] rounded-[12px] md:px-[30px] px-[10px] h-full
+        border-solid border-[1px] border-[#D2D2D2] flex md:flex-row flex-col py-4 items-center justify-between relative"
+        >
+          <img
+            src={sendDocument}
+            alt=""
+            className="sm:w-1/2 w-full md:h-full h-[300px] object-cover py-2"
+          />
+          <form
+            onSubmit={submitFile}
+            id="form-order"
+            className="md:w-1/2 w-full"
+          >
+            <label htmlFor="uploadInput">
+              <div
+                className="md:max-w-[450px] w-full h-[40px] border-primary border-[1px] border-solid rounded-[8px] flex items-center
+                    justify-center relative ease duration-300 hover:border-[#9dbefc]"
+              >
+                {(file && `${file.name}`) || "Выберите файл"}
+                <input
+                  type="file"
+                  id="uploadInput"
+                  className="fileInput"
+                  accept=".pdf"
+                  onChange={handleFileChange}
+                />
+              </div>
+            </label>
+            <button
+              type="submit"
+              className="bg-primary p-2 rounded-[8px] text-white font-medium
+            md:max-w-[450px] w-full ease duration-300 hover:bg-hover cursor-pointer mt-[10px]"
+            >
+              Прикрепить платежное поручение
+            </button>
+          </form>
+        </div>
+      </section>
+    );
+  };
+
+  const Stats = ({ responseLogin }) => {
+    console.log(responseLogin);
+    return (
+      <section className="mt-[15px] flex-1">
+        <h2 className={`${styles.dashboardItemSubtitle}`}>Статистика</h2>
+        <div
+          className="bg-white w-full md:h-[300px] mt-[15px] rounded-[12px] px-[30px] h-full
+          border-solid border-[1px] border-[#D2D2D2] flex sm:flex-row flex-col-reverse py-4 sm:text-start text-center 
+          lg:items-start items-center justify-between relative"
+        >
+          <div className="max-w-[400px] w-full flex flex-col gap-[20px] md:mt-[15px]">
+            <div>
+              <h2 className="font-medium text-[24px]">Ваша статистика</h2>
+              <p className="text-[18px]">
+                Клиентов: <span>{responseLogin.clients.length || 0}</span>
+              </p>
+
+            </div>
+            <p className="text-[#cfcfcf] max-w-[400px]">
+              Чтобы увеличить количество клиентов, пользуйтесь сервисом чаще
+            </p>
+          </div>
+          <img
+            src={stats}
+            alt=""
+            className="sm:w-1/2 w-full md:h-full h-[300px] object-cover py-2"
+          />
+        </div>
+      </section>
+    );
+  };
+
   const AddPurchase = () => {
     return (
       <section className="mt-[15px] flex-1">
@@ -575,7 +690,7 @@ const DashboardPartner = () => {
           <h2 className={`${styles.dashboardItemSubtitle}`}>
             Добавить покупку
           </h2>
-          <a href="/partnerreceipts">История заказов</a>
+          <a href="/partnerreceipts">История</a>
         </div>
         <div
           className="bg-white w-full max-h-[900px] md:py-[30px] py-[10px] mt-[15px] rounded-[12px] md:px-[30px] px-[10px]
@@ -892,7 +1007,7 @@ const DashboardPartner = () => {
 
     function handleModalInfo() {
       setModal(!modal);
-      window.scrollTo(0, 1350);
+      window.scrollTo(0, document.body.scrollHeight);
       setModalInfo({ name: fio, bonuses: bonuses, phone: phone });
     }
 
@@ -1003,6 +1118,10 @@ const DashboardPartner = () => {
       {modal && <ModalWindow />}
       <div className="max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px] ">
         <Intro responseLogin={userData} />
+        <div className="flex lg:flex-row flex-col lg:gap-[30px] gap-0 w-full justify-between">
+          <SendDocument />
+          <Stats responseLogin={userData} />
+        </div>
         <div className="flex flex-col md:gap-[30px] gap-0">
           <div>
             <AddPurchase responseLogin={userData} />
