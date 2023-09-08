@@ -283,7 +283,7 @@ const RegistrationForm = () => {
 
   return (
     <section
-      className={`bg-white w-full lg:h-full h-[100vh] flex justify-center ${
+      className={`md:w-3/5 w-full lg:h-full h-[100vh] flex justify-center items-center px-[20px] absolute right-0 top-0 ${
         matches ? "items-center" : "items-start"
       } px-[20px] my-[30px]`}
     >

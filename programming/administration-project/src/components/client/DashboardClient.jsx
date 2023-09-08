@@ -99,27 +99,11 @@ const DashboardClient = () => {
       })
         .then(function (response) {
           console.log(response);
-          // axios({
-          //   method: "PUT",
-          //   url: `${addNotificationClientUrl}`,
-          //   headers: { Authorization: `token ${token}` },
-          //   data: {
-          //     notification: `Клиент ${userData?.phone || "Неизвестен"} запросил возврат`,
-          //     phone_client: `${userData.phone}`,
-          //   },
-          //   withCredentials: true,
-          // })r
-          //   .then(function (response) {
-          //     console.log(response);
-          //   })
-          //   .catch(function (response) {
-          //     console.log(response);
-          //     useShowError({ error: "Не удалось отправить уведомление" });
-          //   });
         })
         .catch(function (response) {
           console.log(response);
           useShowError({ error: "Не удалось совершить возврат" });
+          alert("Не удалось совершить возврат");
         });
     };
 
@@ -187,6 +171,7 @@ const DashboardClient = () => {
         } catch (error) {
           console.log(error);
           useShowError({ error: "Не удалось вывести список покупок" });
+          alert("Не удалось вывести список покупок");
         }
       };
 
@@ -548,6 +533,7 @@ const DashboardClient = () => {
         .catch(function (response) {
           console.log(response);
           useShowError({ error: "Не удалось вывести список всех партнеров" });
+          alert("Не удалось вывести список всех партнеров");
         });
     }, [])
 

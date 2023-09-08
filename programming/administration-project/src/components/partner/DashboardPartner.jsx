@@ -508,6 +508,7 @@ const DashboardPartner = () => {
       .catch(function (response) {
         console.log(response);
         useShowError({ error: "Не удалось добавить покупку" });
+        alert("Не удалось добавить покупку");
       });
 
     reset();
@@ -601,6 +602,7 @@ const DashboardPartner = () => {
         .catch(function (response) {
           console.log(response);
           useShowError({ error: "Не удалось добавить файл" });
+          alert("Не удалось добавить файл");
         });
     };
 
@@ -725,115 +727,6 @@ const DashboardPartner = () => {
       </section>
     );
   };
-
-  // const ReceiptInfo = ({ token }) => {
-  //   const [state, setState] = useState([]);
-
-  //   // useEffect(() => {
-  //   //   const getPurchases = async () => {
-  //   //     try {
-  //   //       const response = await axios.get(purchasesUrl, {
-  //   //         headers: {
-  //   //           Authorization: `token ${token}`,
-  //   //         },
-  //   //       });
-  //   //       const responseState = response.data;
-  //   //       setState(responseState);
-  //   //     } catch (error) {
-  //   //       console.log(error);
-  //   //       useShowError({ error: "Не удалось вывести список покупок" });
-  //   //     }
-  //   //   };
-
-  //   //   getPurchases();
-  //   // }, [purchasesUrl]);
-  //   // console.log(state);
-
-  //   const HistoryItem = ({}) => {
-  //     const [expanded, setExpanded] = useState(false);
-
-  //     const HistoryItemDesc = () => {
-  //       function handleToModalScroll() {
-  //         setModalInfo({
-  //           name: name,
-  //           number: number,
-  //           date: date,
-  //           total_amount: total_amount,
-  //         });
-  //         console.log(modalInfo);
-  //         setModal(true);
-  //         window.scrollTo(0, 0);
-  //       }
-
-  //       return (
-  //         <div className="flex flex-col gap-[10px] py-[20px] px-[30px] border-solid border-t-[1px] border-[#D2D2D2]">
-  //           <button
-  //             className="bg-red-500 p-1 rounded-[8px] text-white font-medium
-  //               md:max-w-[150px] w-full ease duration-300 hover:bg-red-400 cursor-pointer mt-[10px]"
-  //           >
-  //             Прикрепить
-  //           </button>
-  //         </div>
-  //       );
-  //     };
-  //     return (
-  //       <>
-  //         <div className="border-solid first:border-t-transparent border-t-[1px] border-[#D2D2D2]">
-  //           <div
-  //             className="
-  //             w-full h-[60px] flex justify-between items-center px-[30px] "
-  //           >
-  //             <h2 className={`${styles.dashboardItemTitle}`}>чек</h2>
-  //             <button onClick={() => setExpanded(!expanded)}>
-  //               <img
-  //                 src={expanded ? arrowExpanded : arrowExpand}
-  //                 alt=""
-  //                 className="w-4 h-4"
-  //               />
-  //             </button>
-  //           </div>
-
-  //           {expanded && <HistoryItemDesc />}
-  //         </div>
-  //       </>
-  //     );
-  //   };
-
-  //   const [value, setValue] = useState("");
-
-  //   const filteredPartners = state.filter((item) => {
-  //     return item.name?.toLowerCase()?.includes(value.toLowerCase());
-  //   });
-
-  //   return (
-  //     <section className="mt-[15px] flex-1">
-  //       <h2 className={`${styles.dashboardItemSubtitle}`}>История покупок</h2>
-  //       <div className="mt-[10px] mb-[15px]">
-  //         <input
-  //           type="text"
-  //           className="max-w-[400px] w-full h-[40px] rounded-[8px]  border-solid border-[1px] border-[#D2D2D2]
-  //           px-[15px] outline-primary"
-  //           placeholder="Поиск по покупкам"
-  //           onChange={(event) => setValue(event.target.value)}
-  //         />
-  //       </div>
-  //       <div className="bg-white w-full min-h-[460px] mt-[15px] rounded-[12px] border-solid border-[1px] border-[#D2D2D2]">
-  //         <div
-  //           className="bg-input w-full h-[60px] rounded-t-[12px] flex justify-between items-center px-[30px] font-medium
-  //           border-solid border-b-[1px] border-[#D2D2D2]"
-  //         >
-  //           <h2>Товар</h2>
-  //           <h2>Информация</h2>
-  //         </div>
-  //         <div className="">
-  //           {filteredPartners.map((item, index) => (
-  //             <HistoryItem key={index} {...item} />
-  //           ))}
-  //         </div>
-  //       </div>
-  //     </section>
-  //   );
-  // };
 
   const AddClient = () => {
     return (
@@ -1013,7 +906,7 @@ const DashboardPartner = () => {
 
     return (
       <>
-        <div className="border-solid border-b-[1px] border-[#D2D2D2]">
+        <div className="border-solid border-b-[1px] border-[#D2D2D2] last:border-b-transparent">
           <div
             className="w-full h-[80px] flex flex-row justify-between items-center 
                 font-medium relative px-[30px]"

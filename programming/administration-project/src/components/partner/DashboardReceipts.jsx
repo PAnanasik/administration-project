@@ -52,6 +52,7 @@ const DashboardReceipts = () => {
         } catch (error) {
           console.log(error);
           useShowError({ error: "Не удалось вывести список покупок" });
+          alert("Не удалось вывести список покупок");
         }
       };
 
@@ -104,7 +105,8 @@ const DashboardReceipts = () => {
           })
           .catch(function (response) {
             console.log(response);
-            useShowError({ error: "Не удалось добавить покупку" });
+            useShowError({ error: "Не удалось добавить файл" });
+            alert("Не удалось добавить файл");
           });
       };
 

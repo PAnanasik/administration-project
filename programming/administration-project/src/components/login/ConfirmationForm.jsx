@@ -131,7 +131,7 @@ const ConfirmationForm = ({ dataUser }) => {
   };
 
   return (
-    <section className="bg-white w-full lg:h-full h-[100vh] flex justify-center items-center px-[20px]">
+    <section className="md:w-3/5 w-full lg:h-full h-[100vh] flex justify-center items-center px-[20px] absolute right-0 top-0">
       <div className="lg:min-w-[600px] min-w-[200px]">
         <h1 className={`${styles.sectionHeadText} text-center`}>
           Подтверждение
