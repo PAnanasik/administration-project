@@ -4,9 +4,10 @@ import Client from "./pages/Client.jsx";
 import Partner from "./pages/Partner.jsx";
 import ProtectedRoutes from "./ProtectedRoutes.jsx";
 import Confirmation from "./pages/Confirmation.jsx";
+import PartnerReceipts from "./pages/PartnerReceipts.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { createContext, useState } from "react";
-import PartnerReceipts from "./pages/PartnerReceipts.jsx";
+import ForgotPhone from "./pages/ForgotPhone.jsx";
 
 export const ResponseContext = createContext();
 
@@ -42,6 +43,10 @@ function App() {
           <Route
             path="/confirmation"
             element={<Confirmation dataUser={responseAuth.dataUser} />}
+          />
+          <Route
+            path="/forgot"
+            element={<ForgotPhone />}
           />
           <Route element={<ProtectedRoutes logged={isLoggedIn} />}>
             <Route path="/dashboardclient" element={<Client />} />

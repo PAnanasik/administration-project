@@ -60,6 +60,7 @@ const RegistrationForm = () => {
         }));
         setRedirection(true);
         dataMain.code = response.data.code;
+        console.log(dataMain)
       })
       .catch(function (response) {
         useShowError({

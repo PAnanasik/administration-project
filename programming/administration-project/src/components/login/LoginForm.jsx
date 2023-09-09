@@ -228,7 +228,7 @@ const LoginForm = () => {
                     ease duration-300 hover:bg-hover cursor-pointer mt-[15px]"
             id="submit_btn"
           />
-          <div className="flex mb-1 justify-center text-center">
+          <div className="flex flex-col mb-1 justify-center text-center">
             <p>
               Еще нет аккаунта?{" "}
               <a
@@ -236,6 +236,15 @@ const LoginForm = () => {
                 className="text-primary underline underline-offset-4"
               >
                 Зарегистрируйтесь
+              </a>
+            </p>
+            <p>
+              Забыли пароль?{" "}
+              <a
+                href="/forgot"
+                className="text-primary underline underline-offset-4"
+              >
+                Сменить пароль
               </a>
             </p>
           </div>

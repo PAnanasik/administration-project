@@ -47,3 +47,13 @@ html {
   -moz-opacity: 0;
   filter:progid:DXImageTransform.Microsoft.Alpha(opacity=0)
 }
+
+#menu::-webkit-scrollbar {
+  width: 3px;
+  background: white;
+}
+
+#menu::-webkit-scrollbar-thumb {
+  background: #a4c4ff;
+  border-radius: 4px;
+}

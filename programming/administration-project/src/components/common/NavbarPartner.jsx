@@ -68,9 +68,7 @@ const NavbarPartner = () => {
 
       return (
         <div className="relative w-full min-h-[60px] bg-white pl-[10px] flex flex-col justify-center rounded-[8px]">
-          <>
-            <h2 className="font-medium text-[14px]">{text}</h2>
-          </>
+          <h2 className="font-medium text-[14px] md:max-w-[340px] sm:max-w-[650px] xs:max-w-[400px] max-w-[240px] w-full">{text}</h2>
           <button
             className="absolute right-[20px] ease duration-300 p-2 rounded-full hover:bg-primary
           hover:bg-opacity-[0.2]"
@@ -85,8 +83,9 @@ const NavbarPartner = () => {
 
     return (
       <div
-        className="fixed md:max-w-[450px] w-full min-h-[400px] bg-input top-[80px] md:right-[40px] right-0 sm:left-auto sm:mx-0 left-0 mx-auto 
-        z-20 border-solid border-[1px] border-[#D2D2D2] border-t-transparent p-4 flex flex-col gap-[15px]"
+        className="fixed md:max-w-[450px] w-full h-[400px] bg-input top-[80px] md:right-[40px] right-0 sm:left-auto sm:mx-0 left-0 mx-auto 
+        z-20 border-solid border-[1px] border-[#D2D2D2] border-t-transparent p-4 flex flex-col gap-[15px] overflow-y-auto"
+        id="menu"
       >
         {notificationArray?.map((item, index) => (
           <NotificationItem key={index} text={item} />

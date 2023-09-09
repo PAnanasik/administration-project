@@ -270,6 +270,17 @@ const DashboardPartner = () => {
         setActive(false);
       }
     }
+
+    function todayDate() {
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, "0");
+      var mm = String(today.getMonth() + 1).padStart(2, "0");
+      var time = today.toLocaleTimeString("ru-Ru");
+      var yyyy = today.getFullYear();
+      var currentDateTime = `${yyyy}-${dd}-${mm} ${time}`;
+      return currentDateTime;
+    }
+
     return (
       <div className="relative h-[60px] w-full">
         <input
@@ -278,11 +289,12 @@ const DashboardPartner = () => {
             errors?.date ? styles.badInputStyles : styles.inputStyles
           }`}
           placeholder="Дата и время покупки"
-          pattern="^(19|20)\d{2}-(0[1-9]|1[1,2])-(0[1-9]|[12][0-9]|3[01])\s(0|1|2){1}[0-9]{1}:[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}[+][0-9]{1}[0]{1}:[0]{2}"
-          title="Используйте формат: 2023-08-23 07:58:53+00:00"
+          pattern="^(19|20)\d{2}-(0[1-9]|1[1,2])-(0[1-9]|[12][0-9]|3[01])\s(0|1|2){1}[0-9]{1}:[0-5]{1}[0-9]{1}:[0-5]{1}[0-9]{1}"
+          title="Используйте формат: 2023-08-23 07:58:53"
           onInput={handleInput}
           {...register("date", {
             required: "Поле обязательно к заполнению",
+            value: todayDate(),
           })}
         />
         {active && <InputIcon prop={4} />}
@@ -476,6 +488,7 @@ const DashboardPartner = () => {
   });
 
   const onSubmitAddPurchase = async (data, event) => {
+    data.date += '+00:00';
     event.preventDefault();
     axios({
       method: "POST",
@@ -495,7 +508,8 @@ const DashboardPartner = () => {
           },
           withCredentials: true,
         })
-          .then(function (response) {})
+          .then(function (response) {
+          })
           .catch(function (response) {
             console.log(response);
             useShowError({ error: "Не удалось отправить уведомление" });
@@ -504,7 +518,9 @@ const DashboardPartner = () => {
       .catch(function (response) {
         console.log(response);
         useShowError({ error: "Не удалось добавить покупку" });
-        alert("Не удалось добавить покупку");
+        alert(
+          "Не удалось добавить покупку или пользователь не имеет такого количества бонусов"
+        );
       });
 
     reset();
@@ -560,88 +576,6 @@ const DashboardPartner = () => {
         </h2>
         <div className="md:block hidden absolute w-[600px] right-0 h-full bg-rectangle"></div>
       </div>
-    );
-  };
-
-  const SendDocument = () => {
-    const [file, setFile] = useState(null);
-    const handleFileChange = (e) => {
-      if (e.target.files) {
-        setFile(e.target.files[0]);
-      }
-    };
-
-    const submitFile = async (event) => {
-      event.preventDefault();
-
-      var formData = new FormData();
-      formData.append("document", file);
-
-      axios(sendDocumentUrl, {
-        method: "POST",
-        headers: {
-          Authorization: `token ${token}`,
-        },
-        data: formData,
-        type: "POST",
-        contentType: false,
-        processData: false,
-      })
-        .then(function (response) {
-          alert("Файл отправлен успешно!");
-        })
-        
-        .catch(function (response) {
-          console.log(response);
-          useShowError({ error: "Не удалось добавить файл" });
-          alert("Не удалось добавить файл");
-        });
-    };
-
-    return (
-      <section className="mt-[15px] flex-1">
-        <h2 className={`${styles.dashboardItemSubtitle}`}>
-          Отправить поручение
-        </h2>
-        <div
-          className="bg-white w-full md:h-[300px] mt-[15px] rounded-[12px] md:px-[30px] px-[10px] h-full
-        border-solid border-[1px] border-[#D2D2D2] flex md:flex-row flex-col py-4 items-center justify-between relative"
-        >
-          <img
-            src={sendDocument}
-            alt=""
-            className="sm:w-1/2 w-full md:h-full h-[300px] object-cover py-2"
-          />
-          <form
-            onSubmit={submitFile}
-            id="form-order"
-            className="md:w-1/2 w-full"
-          >
-            <label htmlFor="uploadInput">
-              <div
-                className="md:max-w-[450px] w-full h-[40px] border-primary border-[1px] border-solid rounded-[8px] flex items-center
-                    justify-center relative ease duration-300 hover:border-[#9dbefc]"
-              >
-                {(file && `${file.name}`) || "Выберите файл"}
-                <input
-                  type="file"
-                  id="uploadInput"
-                  className="fileInput"
-                  accept=".pdf, .doc, .docx"
-                  onChange={handleFileChange}
-                />
-              </div>
-            </label>
-            <button
-              type="submit"
-              className="bg-primary p-2 rounded-[8px] text-white font-medium
-            md:max-w-[450px] w-full ease duration-300 hover:bg-hover cursor-pointer mt-[10px]"
-            >
-              Прикрепить платежное поручение
-            </button>
-          </form>
-        </div>
-      </section>
     );
   };
 
@@ -755,30 +689,6 @@ const DashboardPartner = () => {
 
   const ModalWindow = () => {
     const [dataBonus, setDataBonus] = useState(modalInfo.bonuses);
-    const [inputValue, setInputValue] = useState(0);
-    const withdrawBonuses = async (event) => {
-      event.preventDefault();
-      axios({
-        method: "PUT",
-        url: `${withdrawBonusesUrl}`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `token ${token}`,
-        },
-        withCredentials: true,
-        data: {
-          bonuses: inputValue,
-          phone: `${modalInfo.phone}`,
-        },
-      })
-        .then(function (response) {
-          setDataBonus(response.data.data.bonuses);
-        })
-        .catch(function (response) {
-          console.log(response);
-          useShowError({ error: "Не удалось списать бонусы" });
-        });
-    };
 
     const removeClient = async (event) => {
       event.preventDefault();
@@ -808,44 +718,25 @@ const DashboardPartner = () => {
 
     return (
       <div
-        className="max-w-[560px] w-full h-[360px] bg-white fixed border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
+        className="max-w-[560px] w-full h-[320px] bg-white fixed border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
         lg:bottom-[250px] bottom-[150px] left-0 right-0 mx-auto z-10 px-[30px]"
       >
-        <div className="mt-[40px] h-[260px] relative">
+        <div className="mt-[40px] h-[230px] relative">
           <h2 className="font-medium text-[20px]">
             Имя клиента: {modalInfo.name || "Без имени"}
           </h2>
           <div className="pt-[16px] flex flex-col">
             <form action="" className="flex flex-col">
               <label htmlFor="bonuses">Количество бонусов: {dataBonus}</label>
-              <input
-                type="text"
-                name=""
-                id="bonuses"
-                className="bg-input mb-[15px] h-[50px] rounded-[8px] 
-                        md:max-w-[310px] w-full px-[15px] outline-primary"
-                placeholder="Списать бонусы"
-                onInput={(e) => setInputValue(e.target.value)}
-              />
-              <div className="flex items-center gap-[10px] h-full">
-                <button
-                  type="submit"
-                  className="bg-red-500 p-2 rounded-[8px] text-white font-medium md:max-w-[150px]
-                                w-full ease duration-300 hover:bg-red-400 cursor-pointer outline-none"
-                  onClick={withdrawBonuses}
-                >
-                  Списать
-                </button>
                 <button
                   type="submit"
                   className="bg-red-500 p-2 rounded-[8px] text-white font-medium
-                                md:max-w-[150px] w-full ease duration-300 hover:bg-red-400 cursor-pointer"
+                                md:max-w-[250px] w-full ease duration-300 hover:bg-red-400 cursor-pointer mt-[20px]"
                   id="btn-error-handled"
                   onClick={removeClient}
                 >
-                  Удалить
+                  Удалить клиента
                 </button>
-              </div>
             </form>
           </div>
           <button
@@ -1001,7 +892,6 @@ const DashboardPartner = () => {
       <div className="max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px] ">
         <Intro responseLogin={userData} />
         <div className="flex lg:flex-row flex-col lg:gap-[30px] gap-0 w-full justify-between">
-          <SendDocument />
           <Stats responseLogin={userData} />
         </div>
         <div className="flex flex-col md:gap-[30px] gap-0">

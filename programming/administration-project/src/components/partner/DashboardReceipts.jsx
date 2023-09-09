@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { styles } from "../../styles";
 import greetings from "../greetings";
-import { ordersUrl, sendActUrl } from "../urls";
+import { ordersUrl, sendActUrl, sendDocumentUrl } from "../urls";
 import axios from "axios";
 import { arrowExpand, arrowExpanded } from "../../assets";
 import { ResponseContext } from "../../App";
@@ -59,8 +59,6 @@ const DashboardReceipts = () => {
       getOrders();
     }, [ordersUrl]);
 
-    // uploadInput.addEventListener('change', onSelectFile, false);
-
     const HistoryItem = ({
       name,
       amount,
@@ -70,6 +68,84 @@ const DashboardReceipts = () => {
       bonuses_spent,
       total_amount,
     }) => {
+      const SendDocument = ({ number }) => {
+        const [loading, setLoading] = useState(false);
+        const [file, setFile] = useState(null);
+        const [document, setDocument] = useState(null);
+        const handleDocumentChange = (e) => {
+          if (e.target.files) {
+            setDocument(e.target.files[0]);
+          }
+        };
+
+        const submitDocument = async (event) => {
+          event.preventDefault();
+          setLoading(true);
+
+          var formData = new FormData();
+          formData.append("cheque_number", number);
+          formData.append("document", document);
+
+          axios(sendDocumentUrl, {
+            method: "PUT",
+            headers: {
+              Authorization: `token ${token}`,
+            },
+            data: formData,
+            type: "POST",
+            contentType: false,
+            processData: false,
+          })
+            .then(function (response) {
+              setLoading(false);
+              alert("Документ отправлен успешно!");
+            })
+            .catch(function (response) {
+              console.log(response);
+              useShowError({ error: "Не удалось добавить документ" });
+              alert("Не удалось добавить документ");
+            });
+        };
+
+        return (
+          <div
+            className="bg-white w-full h-full
+             flex md:flex-row flex-col py-4 items-center justify-between relative"
+          >
+            <form
+              onSubmit={submitDocument}
+              id="form-order"
+              className="md:w-1/2 w-full"
+            >
+              <label htmlFor="uploadInput">
+                <div
+                  className="md:max-w-[450px] w-full h-[40px] border-primary border-[1px] border-solid rounded-[8px] flex items-center
+                        justify-center relative ease duration-300 hover:border-[#9dbefc]"
+                >
+                  {(document && `${document.name}`) || "Выберите документ"}
+                  <input
+                    type="file"
+                    id="uploadInput"
+                    className="fileInput"
+                    accept=".pdf, .doc, .docx"
+                    onChange={handleDocumentChange}
+                  />
+                </div>
+              </label>
+              <button
+                type="submit"
+                className="bg-primary p-2 rounded-[8px] text-white font-medium
+                md:max-w-[450px] w-full ease duration-300 hover:bg-hover cursor-pointer mt-[10px]"
+              >
+                {loading
+                  ? "Загрузка документа..."
+                  : "Прикрепить платежное поручение"}
+              </button>
+            </form>
+          </div>
+        );
+      };
+
       const [expanded, setExpanded] = useState(false);
 
       const handleFileChange = (e) => {
@@ -78,13 +154,17 @@ const DashboardReceipts = () => {
         }
       };
 
+      const [loading, setLoading] = useState(false);
       const [file, setFile] = useState(null);
 
-      const submitFile = async (event) => {
+      const submitFile = async () => {
+        const CancelToken = axios.CancelToken;
+        const source = CancelToken.source();
+        setLoading(true);
 
         var formData = new FormData();
         formData.append("cheque_number", number);
-        formData.append("act", file);
+        formData.append("document", file);
 
         axios(sendActUrl, {
           method: "PUT",
@@ -95,8 +175,10 @@ const DashboardReceipts = () => {
           type: "POST",
           contentType: false,
           processData: false,
+          cancelToken: source.token,
         })
           .then(function (response) {
+            setLoading(false);
             alert("Файл отправлен успешно!");
           })
           .catch(function (response) {
@@ -133,6 +215,7 @@ const DashboardReceipts = () => {
                 />
               )}
             </div>
+            <SendDocument number={number} />
             <form onSubmit={submitFile} id="form-order">
               <label htmlFor="uploadInput">
                 <div
@@ -144,7 +227,7 @@ const DashboardReceipts = () => {
                     type="file"
                     id="uploadInput"
                     className="fileInput"
-                    accept=".pdf"
+                    accept=".pdf, .doc, .docx"
                     onChange={handleFileChange}
                   />
                 </div>
@@ -153,8 +236,11 @@ const DashboardReceipts = () => {
                 type="submit"
                 className="bg-primary p-2 rounded-[8px] text-white font-medium
                             md:max-w-[450px] w-full ease duration-300 hover:bg-hover cursor-pointer mt-[10px]"
+                id="submit_file"
               >
-                Прикрепить акт приема-передачи товара
+                {loading
+                  ? "Загрузка файла..."
+                  : "Прикрепить акт приема-передачи товара"}
               </button>
             </form>
           </div>
@@ -167,7 +253,7 @@ const DashboardReceipts = () => {
               className="
                         w-full h-[60px] flex justify-between items-center px-[30px] "
             >
-              <h2 className={`${styles.dashboardItemTitle}`}>{name}</h2>
+              <h2 className={`${styles.dashboardItemTitle}`}>{`${name}, ${number}`}</h2>
               <button onClick={() => setExpanded(!expanded)}>
                 <img
                   src={expanded ? arrowExpanded : arrowExpand}

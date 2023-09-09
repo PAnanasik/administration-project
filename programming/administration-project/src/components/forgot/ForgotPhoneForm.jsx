@@ -1,15 +1,14 @@
-import { styles } from "../../styles";
+import axios from "axios";
 import { useForm } from "react-hook-form";
+import { registrationCodeUrl } from "../urls";
+import { styles } from "../../styles";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ResponseContext } from "../../App";
-import { useContext, useState, useEffect } from "react";
-import { mailInput, nameInput, passwordInput, phoneInput } from "../../assets";
-import axios from "axios";
-import ErrorMessage from "../common/ErrorMessage";
-import { registrationClientUrl, registrationPartnerUrl } from "../urls";
+import { mailInput } from "../../assets";
 
-const ConfirmationForm = ({ dataUser }) => {
-  const [show, setShow] = useState(false);
+const ForgotPhoneForm = () => {
+const [show, setShow] = useState(false);
   const { responseAuth, setResponseAuth } = useContext(ResponseContext);
   const [redirection, setRedirection] = useState(false);
   const navigate = useNavigate();
@@ -29,7 +28,7 @@ const ConfirmationForm = ({ dataUser }) => {
   };
 
   const InputIcon = ({ prop }) => {
-    const array = [phoneInput, nameInput, mailInput, passwordInput];
+    const array = [mailInput];
     return (
       <img
         src={array[prop]}
@@ -48,50 +47,32 @@ const ConfirmationForm = ({ dataUser }) => {
     mode: "onBlur",
   });
 
-  const onSubmit = async (data, event) => {
-    event.preventDefault();
-    if (dataUser.code == data.code) {
-      if (dataUser.method == "client") {
-        axios({
-          method: "POST",
-          url: `${registrationClientUrl}`,
-          data: dataUser,
-        })
-          .then(function (response) {
-            setRedirection(true);
-          })
-          .catch(function (response) {
-            console.log(response);
-            useShowError({ error: "Произошла ошибка" });
-          });
-
-        reset();
-      } else if (dataUser.method == "company") {
-        axios({
-          method: "POST",
-          url: `${registrationPartnerUrl}`,
-          data: dataUser,
-        })
-          .then(function (response) {
-            setRedirection(true);
-            console.log(response);
-          })
-          .catch(function (response) {
-            console.log(response);
-            useShowError({ error: "Произошла ошибка" });
-          });
-        reset();
-      }
-    } else {
-      useShowError({ error: "Неправильный код" });
-    }
+  const registration = async (dataMain) => {
+    await axios({
+      method: "POST",
+      url: `${registrationCodeUrl}`,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: {
+        phone: `${dataMain.phone}`,
+      },
+    })
+      .then(function (response) {
+        setResponseAuth((prev) => ({
+          ...prev,
+          dataUser: dataMain,
+        }));
+        setRedirection(true);
+        dataMain.code = response.data.code;
+        console.log(dataMain);
+      })
+      .catch(function (response) {
+        useShowError({
+          error: "Пользователь с этим номером телефона уже существует",
+        });
+      });
   };
-
-  useEffect(() => {
-    if (redirection) {
-      navigate("/");
-    }
-  }, [redirection]);
 
   const InputCardCode = () => {
     const [active, setActive] = useState(true);
@@ -107,40 +88,41 @@ const ConfirmationForm = ({ dataUser }) => {
     return (
       <div className="relative h-12 w-full">
         <input
-          type="text"
+          type="email"
           className={`${
-            errors?.code ? styles.badInputStyles : styles.inputStyles
+            errors?.email ? styles.badInputStyles : styles.inputStyles
           } relative`}
-          placeholder="Код подтверждения"
+          placeholder="Почта, куда отправится код"
           onInput={handleInput}
-          {...register("code", {
+          {...register("email", {
             required: "Поле обязательно к заполнению",
+            pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
           })}
         />
         {active && <InputIcon prop={0} />}
         <div className="mt-1">
-          {errors?.code && (
+          {errors?.email && (
             <p className="text-red-500 text-[12px]">
-              {errors?.code?.message || "Длина номера 12 символов" || "Ошибка!"}
+              {errors?.email?.message || "Некорректная почта" || "Ошибка!"}
             </p>
           )}
         </div>
       </div>
     );
   };
-
+  
   return (
     <section className="md:w-3/5 w-full lg:h-full h-[100vh] flex justify-center items-center px-[20px] absolute right-0 top-0">
       <div className="lg:min-w-[600px] min-w-[200px]">
         <h1 className={`${styles.sectionHeadText} text-center`}>
-          Подтверждение
+          Восстановление
         </h1>
         <h1 className={`${styles.sectionSubText} text-center`}>
-          Введите код из смс
+          Введите вашу почту
         </h1>
         <form
           className="flex flex-col gap-[40px] mt-[30px]"
-          onSubmit={handleSubmit(onSubmit)}
+        //   onSubmit={handleSubmit(onSubmit)}
         >
           <InputCardCode />
           <input
@@ -163,9 +145,9 @@ const ConfirmationForm = ({ dataUser }) => {
           </div>
         </form>
       </div>
-      {show && <ErrorMessage error={responseAuth.errorMessage} />}
+      {/* {show && <ErrorMessage error={responseAuth.errorMessage} />} */}
     </section>
   );
 };
 
-export default ConfirmationForm;
+export default ForgotPhoneForm;

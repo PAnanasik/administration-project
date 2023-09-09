@@ -25,6 +25,7 @@ const DashboardClient = () => {
   const token = window.localStorage.getItem("token");
   const userData = JSON.parse(window.localStorage.getItem("userData"));
 
+
   const [modalInfo, setModalInfo] = useState({
     name: "",
     amount: "",
@@ -94,6 +95,8 @@ const DashboardClient = () => {
         withCredentials: true,
       })
         .then(function (response) {
+          alert("Возврат совершен успешно!");
+          setModal(false);
         })
         .catch(function (response) {
           console.log(response);
@@ -132,6 +135,7 @@ const DashboardClient = () => {
                 type="submit"
                 className="bg-red-500 p-2 rounded-[8px] text-white font-medium
                         md:max-w-[150px] w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer"
+                // onClick={() => setModal(false)}
               >
                 Возврат
               </button>
@@ -163,6 +167,7 @@ const DashboardClient = () => {
           });
           const responseState = response.data;
           setState(responseState);
+          console.log(state);
         } catch (error) {
           console.log(error);
           useShowError({ error: "Не удалось вывести список покупок" });
@@ -171,7 +176,7 @@ const DashboardClient = () => {
       };
 
       getPurchases();
-    }, [purchasesUrl]);
+    }, []);
 
     const HistoryItem = ({
       name,
@@ -379,13 +384,14 @@ const DashboardClient = () => {
           });
           const responseState = response.data;
           setState(responseState);
+          console.log(state);
         } catch (error) {
           console.log(error);
         }
       };
 
       getPartners();
-    }, [state]);
+    }, []);
 
     const [value, setValue] = useState("");
 
@@ -451,8 +457,7 @@ const DashboardClient = () => {
           method: "add",
         },
       })
-        .then(function (response) {
-        })
+        .then(function (response) {})
         .catch(function (response) {
           console.log(response);
         });
@@ -512,21 +517,22 @@ const DashboardClient = () => {
 
     useEffect(() => {
       axios({
-          method: "GET",
-          url: `${partnersListAll}`,
-          headers: { Authorization: `token ${token}` },
-          withCredentials: true,
-        })
+        method: "GET",
+        url: `${partnersListAll}`,
+        headers: { Authorization: `token ${token}` },
+        withCredentials: true,
+      })
         .then(function (response) {
           const responseState = response.data;
           setState(responseState);
+          console.log(response);
         })
         .catch(function (response) {
           console.log(response);
           useShowError({ error: "Не удалось вывести список всех партнеров" });
           alert("Не удалось вывести список всех партнеров");
         });
-    }, [])
+    }, []);
 
     const [value, setValue] = useState("");
 
