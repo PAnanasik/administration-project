@@ -7,8 +7,6 @@ import NavbarPartner from "./common/NavbarPartner";
 import DashboardClient from "./client/DashboardClient";
 import DashboardPartner from "./partner/DashboardPartner";
 import ErrorMessage from "./common/ErrorMessage";
-import PartnerReceipts from "../pages/PartnerReceipts";
-import ForgotPhone from "../pages/ForgotPhone";
 
 export {
   RegistrationForm,
@@ -19,7 +17,5 @@ export {
   DashboardClient,
   DashboardPartner,
   ErrorMessage,
-  PartnerReceipts,
-  ForgotPhone,
-  SidebarClient
+  SidebarClient,
 };

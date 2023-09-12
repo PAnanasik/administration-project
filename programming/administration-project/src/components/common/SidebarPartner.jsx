@@ -4,16 +4,16 @@ import { ResponseContext } from "../../App";
 const BlockUrls = () => {
   const item = [
     {
-      text: "Ваши товары",
-      url: "/dashboardclient",
+      text: "Главная",
+      url: "/dashboardpartner",
     },
     {
-      text: "Ваши партнеры",
-      url: "/clientpartnerslist",
+      text: "Добавить чек",
+      url: "/partnedaddreceipt",
     },
     {
-      text: "Все партнеры",
-      url: "/clientallpartnerslist",
+      text: "История заказов",
+      url: "/partnerreceipts",
     },
   ];
   return (

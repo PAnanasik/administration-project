@@ -1,7 +1,7 @@
 
-import { NavbarPartner } from "../components";
-import Background from "../components/common/Background";
-import DashboardReceipts from "../components/partner/DashboardReceipts";
+import { NavbarPartner } from "../../components";
+import Background from "../../components/common/Background";
+import DashboardReceipts from "../../components/partner/DashboardReceipts";
 
 const PartnerReceipts = () => {
 
