@@ -1,47 +1,15 @@
 import { useState, useEffect, useContext } from "react";
 import { styles } from "../../styles";
-import {
-  arrowExpand,
-  arrowExpanded,
-  avatar,
-  mailInput,
-  phoneInput,
-} from "../../assets";
+import { arrowExpand, arrowExpanded } from "../../assets";
 import axios from "axios";
 import { ResponseContext } from "../../App";
 import ErrorMessage from "../common/ErrorMessage";
-import {
-  addNotificationClientUrl,
-  partnersListAll,
-  partnersListUrl,
-  purchasesUrl,
-  refundUrl,
-  remove_addUrl,
-} from "../urls";
-import { InView } from "react-intersection-observer";
-import greetings from "../greetings";
-import { useForm } from "react-hook-form";
+import { purchasesUrl, refundUrl } from "../urls";
+import Intro from "../common/Intro";
 
 const DashboardClient = () => {
   const token = window.localStorage.getItem("token");
   const userData = JSON.parse(window.localStorage.getItem("userData"));
-
-  const {
-    formState: { errors },
-    handleSubmit: handleSubmitAdd,
-  } = useForm({
-    mode: "onBlur",
-  });
-
-  const {
-    formState: { 
-      errors: errorsDelete
-    },
-    handleSubmit: handleSubmitRemove,
-  } = useForm({
-    mode: "onBlur",
-  });
-
 
   const [modalInfo, setModalInfo] = useState({
     name: "",
@@ -71,22 +39,6 @@ const DashboardClient = () => {
     }));
     setModal(false);
     setTimeout(() => setShow(false), 5000);
-  };
-
-  const Intro = () => {
-    return (
-      <div
-        className="relative w-full h-[200px] flex md:justify-between justify-center items-center md:text-left text-center 
-      bg-white rounded-[12px] md:pl-[40px] pl-0"
-      >
-        <h2 className={`${styles.sectionHeadText}`}>
-          {greetings()}
-          <br />
-          <span>{userData.fio || "Без имени"}</span>
-        </h2>
-        <div className="md:block hidden absolute w-[600px] right-0 h-full bg-rectangle"></div>
-      </div>
-    );
   };
 
   const ModalWindow = () => {
@@ -152,7 +104,6 @@ const DashboardClient = () => {
                 type="submit"
                 className="bg-red-500 p-2 rounded-[8px] text-white font-medium
                         md:max-w-[150px] w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer"
-                // onClick={() => setModal(false)}
               >
                 Возврат
               </button>
@@ -314,294 +265,6 @@ const DashboardClient = () => {
     );
   };
 
-  const PartnersItem = ({ name, token }) => {
-    const [expanded, setExpanded] = useState(false);
-
-    const removePartner = async () => {
-      axios({
-        method: "PUT",
-        url: `${remove_addUrl}`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `token ${token}`,
-        },
-        withCredentials: true,
-        data: {
-          name_partner: `${name}`,
-          phone_client: `${userData.phone}`,
-          method: "remove",
-        },
-      })
-        .then(function (response) {
-        })
-        .catch(function (response) {
-          console.log(response);
-        });
-    };
-
-    const ItemDesc = () => {
-      return (
-        <form className="flex flex-col gap-[10px] h-[80px] justify-center px-[30px] border-solid border-t-[1px] border-[#D2D2D2]" 
-        onSubmit={handleSubmitRemove(removePartner)}>
-          <button
-            type="submit"
-            className="bg-red-500 p-2 rounded-[8px] text-white font-medium
-            max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-red-400 cursor-pointer"
-          >
-            Удалить
-          </button>
-        </form>
-      );
-    };
-
-    return (
-      <div className="border-solid border-b-[1px] border-[#D2D2D2] last:border-b-transparent">
-        <div
-          className="w-full h-[80px] flex flex-row justify-between items-center 
-            font-medium relative px-[30px]"
-        >
-          <div className="flex gap-[10px] items-center">
-            <div className="w-[40px] h-[40px] rounded-full bg-primary"></div>
-            <h2>{name || "Без имени"}</h2>
-          </div>
-          {matches ? (
-            <form onSubmit={handleSubmitRemove(removePartner)}>
-              <button
-                type="submit"
-                className="bg-red-500 p-2 rounded-[8px] text-white font-medium
-                  max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-red-400 cursor-pointer"
-              >
-                Удалить
-              </button>
-            </form>
-          ) : (
-            <button onClick={() => setExpanded(!expanded)}>
-              <img
-                src={expanded ? arrowExpanded : arrowExpand}
-                className="w-4 h-4"
-              ></img>
-            </button>
-          )}
-        </div>
-
-        {expanded && <ItemDesc />}
-      </div>
-    );
-  };
-
-  const PartnersList = ({ token }) => {
-    const [state, setState] = useState([]);
-
-    useEffect(() => {
-      const getPartners = async () => {
-        try {
-          const response = await axios.get(partnersListUrl, {
-            headers: {
-              Authorization: `token ${token}`,
-            },
-          });
-          const responseState = response.data;
-          setState(responseState);
-          console.log(state);
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      getPartners();
-    }, []);
-
-    const [value, setValue] = useState("");
-
-    const filteredPartners = state.filter((item) => {
-      return item.name?.toLowerCase()?.includes(value.toLowerCase());
-    });
-
-    return (
-      <section className="mt-[15px] flex-1">
-        <h2 className={`${styles.dashboardItemSubtitle}`}>Список партнеров</h2>
-        <div className="mt-[10px] mb-[15px]">
-          <input
-            type="text"
-            className="max-w-[400px] w-full h-[40px] rounded-[8px]  border-solid border-[1px] border-[#D2D2D2]
-            px-[15px] outline-primary"
-            placeholder="Поиск по партнерам"
-            onChange={(event) => setValue(event.target.value)}
-          />
-        </div>
-        <div
-          className="bg-white w-full min-h-[460px] mt-[15px] rounded-[12px] h-full 
-        border-solid border-[1px] border-[#D2D2D2]"
-        >
-          <div
-            className="bg-input w-full h-[60px] rounded-t-[12px] flex justify-between items-center px-[30px] font-medium
-            border-solid border-b-[1px] border-[#D2D2D2]"
-          >
-            <h2>Партнер</h2>
-            <h2>Информация</h2>
-          </div>
-          <InView>
-            {({ inView, ref }) => (
-              <div className="" ref={ref}>
-                {filteredPartners.map(
-                  (item, index) =>
-                    inView && (
-                      <PartnersItem key={index} {...item} token={token} />
-                    )
-                )}
-              </div>
-            )}
-          </InView>
-        </div>
-      </section>
-    );
-  };
-
-  const PartnersItemAll = ({ name, token }) => {
-    const [expanded, setExpanded] = useState(false);
-
-    const addPartner = async (data, event) => {
-      event.preventDefault()
-      axios({
-        method: "PUT",
-        url: `${remove_addUrl}`,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `token ${token}`,
-        },
-        withCredentials: true,
-        data: {
-          name_partner: `${name}`,
-          phone_client: `${userData.phone}`,
-          method: "add",
-        },
-      })
-        .then(function (response) {})
-        .catch(function (response) {
-          console.log(response);
-        });
-    };
-
-    const ItemDesc = () => {
-      return (
-        <form className="flex flex-col gap-[10px] h-[80px] justify-center px-[30px] border-solid border-t-[1px] border-[#D2D2D2]"
-        onSubmit={handleSubmitAdd(addPartner)}>
-          <button
-            type="submit"
-            className="bg-primary p-2 rounded-[8px] text-white font-medium
-            max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer"
-          >
-            Добавить
-          </button>
-        </form>
-      );
-    };
-
-    return (
-      <div className="border-solid border-b-[1px] border-[#D2D2D2] last:border-b-transparent">
-        <div
-          className="w-full h-[80px] flex flex-row justify-between items-center 
-            font-medium relative px-[30px]"
-        >
-          <div className="flex gap-[10px] items-center">
-            <div className="w-[40px] h-[40px] rounded-full bg-primary"></div>
-            <h2>{name || "Без имени"}</h2>
-          </div>
-          {matches ? (
-            <form onSubmit={handleSubmitAdd(addPartner)}>
-              <button
-                type="submit"
-                className="bg-primary p-2 rounded-[8px] text-white font-medium
-                  max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer"
-              >
-                Добавить
-              </button>
-            </form>
-          ) : (
-            <button onClick={() => setExpanded(!expanded)}>
-              <img
-                src={expanded ? arrowExpanded : arrowExpand}
-                className="w-4 h-4"
-              ></img>
-            </button>
-          )}
-        </div>
-
-        {expanded && <ItemDesc />}
-      </div>
-    );
-  };
-
-  const PartnersListAll = ({ token }) => {
-    const [state, setState] = useState([]);
-
-    useEffect(() => {
-      axios({
-        method: "GET",
-        url: `${partnersListAll}`,
-        headers: { Authorization: `token ${token}` },
-        withCredentials: true,
-      })
-        .then(function (response) {
-          const responseState = response.data;
-          setState(responseState);
-          console.log(response);
-        })
-        .catch(function (response) {
-          console.log(response);
-          useShowError({ error: "Не удалось вывести список всех партнеров" });
-          alert("Не удалось вывести список всех партнеров");
-        });
-    }, []);
-
-    const [value, setValue] = useState("");
-
-    const filteredPartners = state.filter((item) => {
-      return item.name?.toLowerCase()?.includes(value.toLowerCase());
-    });
-
-    return (
-      <section className="mt-[15px] flex-1">
-        <h2 className={`${styles.dashboardItemSubtitle}`}>
-          Список всех партнеров
-        </h2>
-        <div className="mt-[10px] mb-[15px]">
-          <input
-            type="text"
-            className="max-w-[400px] w-full h-[40px] rounded-[8px]  border-solid border-[1px] border-[#D2D2D2]
-            px-[15px] outline-primary"
-            placeholder="Поиск по всем партнерам"
-            onChange={(event) => setValue(event.target.value)}
-          />
-        </div>
-        <div
-          className="bg-white w-full min-h-[460px] mt-[15px] rounded-[12px] h-full 
-        border-solid border-[1px] border-[#D2D2D2]"
-        >
-          <div
-            className="bg-input w-full h-[60px] rounded-t-[12px] flex justify-between items-center px-[30px] font-medium
-            border-solid border-b-[1px] border-[#D2D2D2]"
-          >
-            <h2>Партнер</h2>
-            <h2>Информация</h2>
-          </div>
-          <InView>
-            {({ inView, ref }) => (
-              <div className="" ref={ref}>
-                {filteredPartners.map(
-                  (item, index) =>
-                    inView && (
-                      <PartnersItemAll key={index} {...item} token={token} />
-                    )
-                )}
-              </div>
-            )}
-          </InView>
-        </div>
-      </section>
-    );
-  };
-
   return (
     <section className="w-full h-full bgdashboard mt-[60px]">
       {modal && (
@@ -612,8 +275,6 @@ const DashboardClient = () => {
         <Intro />
         <div className="flex flex-col h-full">
           <HistoryInfo token={token} />
-          <PartnersList token={token} />
-          <PartnersListAll token={token} />
         </div>
       </div>
       {show && <ErrorMessage error={responseAuth.errorMessage} />}

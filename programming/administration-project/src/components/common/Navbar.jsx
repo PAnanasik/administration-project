@@ -228,7 +228,7 @@ const Navbar = () => {
         <nav className="md:px-[30px] px-[15px] h-full max-w-[1640px] mx-auto">
           <div className="h-full flex md:flex-row flex-col md:justify-between justify-center items-center">
             <div className="flex gap-[10px]">
-              <button onClick={() => setToggle(!toggle)}>menu</button>
+              <button onClick={() => setResponseAuth(prev => ({...prev, toggleSidebar: !responseAuth.toggleSidebar}))}>menu</button>
               <h2 className="md:text-[16px] text-[14px]">Личный кабинет клиента</h2>
             </div>
             <div className="flex items-center gap-[10px]">
