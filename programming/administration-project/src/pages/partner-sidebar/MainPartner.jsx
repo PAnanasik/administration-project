@@ -1,7 +1,7 @@
-import { NavbarPartner, DashboardPartner } from "../components";
-import Background from "../components/common/Background";
+import { NavbarPartner, DashboardPartner } from "../../components";
+import Background from "../../components/common/Background";
 
-const Partner = () => {
+const MainPartner = () => {
   const method = window.localStorage.getItem("method");
 
   if (method == "false") {
@@ -20,4 +20,4 @@ const Partner = () => {
   }
 };
 
-export default Partner;
+export default MainPartner;

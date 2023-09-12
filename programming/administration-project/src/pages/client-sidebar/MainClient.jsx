@@ -1,7 +1,7 @@
-import { Navbar, DashboardClient, SidebarClient } from "../components";
-import Background from "../components/common/Background";
+import { Navbar, DashboardClient, SidebarClient } from "../../components";
+import Background from "../../components/common/Background";
 
-const Client = () => {
+const MainClient = () => {
   const method = window.localStorage.getItem("method");
 
   if (method == "true") {
@@ -21,4 +21,4 @@ const Client = () => {
   }
 };
 
-export default Client;
+export default MainClient;

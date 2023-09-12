@@ -1,9 +1,14 @@
-import React from 'react'
+import React from "react";
 
 const PartnerAddReceipt = () => {
-  return (
-    <div>PartnerAddReceipt</div>
-  )
-}
+  const method = window.localStorage.getItem("method");
 
-export default PartnerAddReceipt
+  if (method == "false") {
+    localStorage.clear();
+    window.location.pathname = "/";
+  } else {
+    return <div>PartnerAddReceipt</div>;
+  }
+};
+
+export default PartnerAddReceipt;

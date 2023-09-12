@@ -5,16 +5,23 @@ import Background from "../../components/common/Background";
 const ClientPartnersList = () => {
   const token = window.localStorage.getItem("token");
 
-  return (
-    <div>
-      <SidebarClient />
-      <Navbar />
-      <div className="relative z-0">
-        <ListPartners token={token} />
-        <Background />
+  const method = window.localStorage.getItem("method");
+
+  if (method == "true") {
+    localStorage.clear();
+    window.location.pathname = "/";
+  } else {
+    return (
+      <div>
+        <SidebarClient />
+        <Navbar />
+        <div className="relative z-0">
+          <ListPartners token={token} />
+          <Background />
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
 };
 
 export default ClientPartnersList;
