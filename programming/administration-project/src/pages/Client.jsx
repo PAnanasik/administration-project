@@ -1,4 +1,4 @@
-import { Navbar, DashboardClient } from "../components";
+import { Navbar, DashboardClient, SidebarClient } from "../components";
 import Background from "../components/common/Background";
 
 const Client = () => {
@@ -10,6 +10,7 @@ const Client = () => {
   } else {
     return (
       <div>
+        <SidebarClient />
         <Navbar />
         <div className="relative z-0">
           <DashboardClient />

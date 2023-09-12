@@ -20,10 +20,27 @@ import {
 } from "../urls";
 import { InView } from "react-intersection-observer";
 import greetings from "../greetings";
+import { useForm } from "react-hook-form";
 
 const DashboardClient = () => {
   const token = window.localStorage.getItem("token");
   const userData = JSON.parse(window.localStorage.getItem("userData"));
+
+  const {
+    formState: { errors },
+    handleSubmit: handleSubmitAdd,
+  } = useForm({
+    mode: "onBlur",
+  });
+
+  const {
+    formState: { 
+      errors: errorsDelete
+    },
+    handleSubmit: handleSubmitRemove,
+  } = useForm({
+    mode: "onBlur",
+  });
 
 
   const [modalInfo, setModalInfo] = useState({
@@ -324,16 +341,16 @@ const DashboardClient = () => {
 
     const ItemDesc = () => {
       return (
-        <div className="flex flex-col gap-[10px] h-[80px] justify-center px-[30px] border-solid border-t-[1px] border-[#D2D2D2] ">
+        <form className="flex flex-col gap-[10px] h-[80px] justify-center px-[30px] border-solid border-t-[1px] border-[#D2D2D2]" 
+        onSubmit={handleSubmitRemove(removePartner)}>
           <button
             type="submit"
             className="bg-red-500 p-2 rounded-[8px] text-white font-medium
             max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-red-400 cursor-pointer"
-            onClick={removePartner}
           >
             Удалить
           </button>
-        </div>
+        </form>
       );
     };
 
@@ -348,14 +365,15 @@ const DashboardClient = () => {
             <h2>{name || "Без имени"}</h2>
           </div>
           {matches ? (
-            <button
-              type="submit"
-              className="bg-red-500 p-2 rounded-[8px] text-white font-medium
-                max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-red-400 cursor-pointer"
-              onClick={removePartner}
-            >
-              Удалить
-            </button>
+            <form onSubmit={handleSubmitRemove(removePartner)}>
+              <button
+                type="submit"
+                className="bg-red-500 p-2 rounded-[8px] text-white font-medium
+                  max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-red-400 cursor-pointer"
+              >
+                Удалить
+              </button>
+            </form>
           ) : (
             <button onClick={() => setExpanded(!expanded)}>
               <img
@@ -442,7 +460,8 @@ const DashboardClient = () => {
   const PartnersItemAll = ({ name, token }) => {
     const [expanded, setExpanded] = useState(false);
 
-    const addPartner = async () => {
+    const addPartner = async (data, event) => {
+      event.preventDefault()
       axios({
         method: "PUT",
         url: `${remove_addUrl}`,
@@ -465,16 +484,16 @@ const DashboardClient = () => {
 
     const ItemDesc = () => {
       return (
-        <div className="flex flex-col gap-[10px] h-[80px] justify-center px-[30px] border-solid border-t-[1px] border-[#D2D2D2]">
+        <form className="flex flex-col gap-[10px] h-[80px] justify-center px-[30px] border-solid border-t-[1px] border-[#D2D2D2]"
+        onSubmit={handleSubmitAdd(addPartner)}>
           <button
             type="submit"
             className="bg-primary p-2 rounded-[8px] text-white font-medium
             max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer"
-            onClick={addPartner}
           >
             Добавить
           </button>
-        </div>
+        </form>
       );
     };
 
@@ -489,14 +508,15 @@ const DashboardClient = () => {
             <h2>{name || "Без имени"}</h2>
           </div>
           {matches ? (
-            <button
-              type="submit"
-              className="bg-primary p-2 rounded-[8px] text-white font-medium
-                max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer"
-              onClick={addPartner}
-            >
-              Добавить
-            </button>
+            <form onSubmit={handleSubmitAdd(addPartner)}>
+              <button
+                type="submit"
+                className="bg-primary p-2 rounded-[8px] text-white font-medium
+                  max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer"
+              >
+                Добавить
+              </button>
+            </form>
           ) : (
             <button onClick={() => setExpanded(!expanded)}>
               <img
