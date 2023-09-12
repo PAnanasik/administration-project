@@ -1,16 +1,15 @@
 import { useState, useEffect, useContext } from "react";
 import { styles } from "../../styles";
-import greetings from "../greetings";
 import { ordersUrl, sendActUrl, sendDocumentUrl } from "../urls";
 import axios from "axios";
 import { arrowExpand, arrowExpanded } from "../../assets";
 import { ResponseContext } from "../../App";
+import Intro from "../common/Intro";
 
-const DashboardReceipts = () => {
-  const token = window.localStorage.getItem("token");
+const DashboardReceipts = ({ token }) => {
   const userData = JSON.parse(window.localStorage.getItem("userData"));
   const [show, setShow] = useState(false);
-  const { responseAuth, setResponseAuth } = useContext(ResponseContext);
+  const { setResponseAuth } = useContext(ResponseContext);
 
   const useShowError = ({ error }) => {
     setShow(true);
@@ -18,22 +17,6 @@ const DashboardReceipts = () => {
       errorMessage: `${error}`,
     });
     setTimeout(() => setShow(false), 5000);
-  };
-
-  const Intro = ({ responseLogin }) => {
-    return (
-      <div
-        className="w-full h-[200px] flex md:justify-between justify-center items-center md:text-left text-center 
-              bg-white rounded-[12px] md:pl-[40px] pl-0 relative"
-      >
-        <h2 className={`${styles.sectionHeadText}`}>
-          {greetings()}
-          <br />
-          <span>{responseLogin.name}</span>
-        </h2>
-        <div className="md:block hidden absolute w-[600px] right-0 h-full bg-rectangle"></div>
-      </div>
-    );
   };
 
   const ReceiptInfo = ({ token }) => {
@@ -70,7 +53,6 @@ const DashboardReceipts = () => {
     }) => {
       const SendDocument = ({ number }) => {
         const [loading, setLoading] = useState(false);
-        const [file, setFile] = useState(null);
         const [document, setDocument] = useState(null);
         const handleDocumentChange = (e) => {
           if (e.target.files) {
@@ -253,7 +235,9 @@ const DashboardReceipts = () => {
               className="
                         w-full h-[60px] flex justify-between items-center px-[30px] "
             >
-              <h2 className={`${styles.dashboardItemTitle}`}>{`${name}, ${number}`}</h2>
+              <h2
+                className={`${styles.dashboardItemTitle}`}
+              >{`${name}, ${number}`}</h2>
               <button onClick={() => setExpanded(!expanded)}>
                 <img
                   src={expanded ? arrowExpanded : arrowExpand}

@@ -19,8 +19,6 @@ export const ResponseContext = createContext();
 function App() {
   const isLoggedIn = window.localStorage.getItem("loggedIn");
   const token = window.localStorage.getItem("token");
-  const userDataJSON = window.localStorage.getItem("userData");
-  const userData = JSON.parse(userDataJSON);
   const method = window.localStorage.getItem("method");
 
   const [responseAuth, setResponseAuth] = useState({

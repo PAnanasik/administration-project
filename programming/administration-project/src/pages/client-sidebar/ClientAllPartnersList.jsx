@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import ListAllPartners from "../../components/client/ListAllPartners";
 import { Navbar, SidebarClient } from "../../components";
 import Background from "../../components/common/Background";
+import { ResponseContext } from "../../App";
 
 const ClientAllPartnersList = () => {
+  const { responseAuth } = useContext(ResponseContext);
   const token = window.localStorage.getItem("token");
-
   const method = window.localStorage.getItem("method");
 
   if (method == "true") {
@@ -14,7 +15,7 @@ const ClientAllPartnersList = () => {
   } else {
     return (
       <div>
-        <SidebarClient />
+        {responseAuth.toggleSidebar && <SidebarClient />}
         <Navbar />
         <div className="relative z-0">
           <ListAllPartners token={token} />

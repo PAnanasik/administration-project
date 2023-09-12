@@ -79,11 +79,11 @@ const ListPartners = ({ token }) => {
             <h2>{name || "Без имени"}</h2>
           </div>
           {matches ? (
-            <form onSubmit={handleSubmitRemove(removePartner)}>
+            <form onSubmit={handleSubmitRemove(removePartner)} className="max-w-[150px] w-full">
               <button
                 type="submit"
                 className="bg-red-500 p-2 rounded-[8px] text-white font-medium
-                          max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-red-400 cursor-pointer"
+                w-full mt-[10px] ease duration-300 hover:bg-red-400 cursor-pointer"
               >
                 Удалить
               </button>
@@ -173,7 +173,7 @@ const ListPartners = ({ token }) => {
   return (
     <section className="w-full h-full bgdashboard mt-[60px]">
       <div className="max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px]">
-        <Intro />
+        <Intro responseLogin={userData} />
         <div className="flex flex-col h-full">
           <PartnersList token={token} />
         </div>

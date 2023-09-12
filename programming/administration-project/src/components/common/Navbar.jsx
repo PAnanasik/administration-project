@@ -1,4 +1,4 @@
-import { avatar, close, notification, refresh } from "../../assets";
+import { avatar, close, menuNav, notification, refresh } from "../../assets";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { clientUrl, notificationUrl, removeNotificationUrl } from "../urls";
@@ -227,8 +227,10 @@ const Navbar = () => {
       <div className="h-[80px] bg-white border-solid border-b-[1px] border-[#D2D2D2] fixed top-0 z-10 w-full">
         <nav className="md:px-[30px] px-[15px] h-full max-w-[1640px] mx-auto">
           <div className="h-full flex md:flex-row flex-col md:justify-between justify-center items-center">
-            <div className="flex gap-[10px]">
-              <button onClick={() => setResponseAuth(prev => ({...prev, toggleSidebar: !responseAuth.toggleSidebar}))}>menu</button>
+            <div className="flex gap-[20px]">
+              <button onClick={() => setResponseAuth(prev => ({...prev, toggleSidebar: !responseAuth.toggleSidebar}))}>
+                <img src={menuNav} alt="menu" className="w-6 h-6"/>
+              </button>
               <h2 className="md:text-[16px] text-[14px]">Личный кабинет клиента</h2>
             </div>
             <div className="flex items-center gap-[10px]">

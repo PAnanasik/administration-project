@@ -1,4 +1,4 @@
-import { avatar, close, notification } from "../../assets";
+import { avatar, close, menuNav, notification } from "../../assets";
 import { useEffect, useState, useContext } from "react";
 import { notificationUrl, removeNotificationUrl } from "../urls";
 import { ResponseContext } from "../../App";
@@ -7,6 +7,7 @@ import axios from "axios";
 const NavbarPartner = () => {
   const token = window.localStorage.getItem("token");
   const userData = JSON.parse(window.localStorage.getItem("userData"));
+  const { responseAuth, setResponseAuth } = useContext(ResponseContext);
 
   const [notificationIcon, setNotificationIcon] = useState(true);
   const [state, setState] = useState("");
@@ -123,9 +124,12 @@ const NavbarPartner = () => {
     <div className="h-[80px] bg-white border-solid border-[1px] border-b-[#D2D2D2] fixed top-0 z-10 w-full">
       <nav className="md:px-[30px] px-[15px] h-full max-w-[1640px] mx-auto">
         <div className="h-full flex md:flex-row flex-col md:justify-between justify-center items-center">
-          <h2 className="md:text-[16px] text-[14px]">
-            Личный кабинет партнера
-          </h2>
+        <div className="flex md:gap-[20px] gap-[10px]">
+              <button onClick={() => setResponseAuth(prev => ({...prev, toggleSidebar: !responseAuth.toggleSidebar}))}>
+                <img src={menuNav} alt="menu" className="w-6 h-6"/>
+              </button>
+              <h2 className="md:text-[16px] text-[14px]">Личный кабинет партнера</h2>
+            </div>
           <div className="flex items-center gap-[10px]">
             <button
               className={`${

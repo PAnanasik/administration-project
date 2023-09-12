@@ -4,7 +4,7 @@ import { ResponseContext } from "../../App";
 const BlockUrls = () => {
   const item = [
     {
-      text: "Ваши товары",
+      text: "Главная",
       url: "/dashboardclient",
     },
     {

@@ -80,11 +80,11 @@ const ListAllPartners = ({ token }) => {
             <h2>{name || "Без имени"}</h2>
           </div>
           {matches ? (
-            <form onSubmit={handleSubmitAdd(addPartner)}>
+            <form onSubmit={handleSubmitAdd(addPartner)} className="max-w-[150px] w-full">
               <button
                 type="submit"
                 className="bg-primary p-2 rounded-[8px] text-white font-medium
-                      max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer"
+                w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer"
               >
                 Добавить
               </button>
@@ -176,7 +176,7 @@ const ListAllPartners = ({ token }) => {
   return (
     <section className="w-full h-full bgdashboard mt-[60px]">
       <div className="max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px]">
-        <Intro />
+        <Intro responseLogin={userData} />
         <div className="flex flex-col h-full">
           <PartnersListAll token={token} />
         </div>

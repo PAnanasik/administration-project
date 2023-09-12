@@ -272,7 +272,7 @@ const DashboardClient = () => {
       )}
       {modal && <ModalWindow />}
       <div className="max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px]">
-        <Intro />
+        <Intro responseLogin={userData} />
         <div className="flex flex-col h-full">
           <HistoryInfo token={token} />
         </div>

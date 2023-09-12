@@ -32,15 +32,15 @@ const BlockUrls = () => {
   );
 };
 
-const SidebarClient = () => {
+const SidebarPartner = () => {
   const { responseAuth } = useContext(ResponseContext);
 
   return (
     <div
       className={`${
-        responseAuth.toggleSidebar ? "block" : "hidden"
+        responseAuth.toggleSidebar ? "block sidebar-animation-in" : "hidden"
       } bg-[#ffffff] xs:max-w-[300px] w-full border-solid border-[#D2D2D2]
-      border-r-[1px] h-full fixed left-0 overflow-y-auto top-0 z-10`}
+      border-r-[1px] h-full fixed left-0 overflow-y-auto top-0 z-10 ease duration-300`}
       id="container"
     >
       <nav className={`py-[80px] z-40`}>
@@ -50,4 +50,4 @@ const SidebarClient = () => {
   );
 };
 
-export default SidebarClient;
+export default SidebarPartner;

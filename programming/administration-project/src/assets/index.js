@@ -21,6 +21,9 @@ import withdraw from "./dashboard/withdraw.png";
 import sendDocument from "./dashboard/send-document.svg";
 import stats from "./dashboard/stats.svg";
 
+import menuNav from "./dashboard/menu.svg";
+// import close from "./dashboard/close.svg";
+
 export {
   phoneInput,
   nameInput,
@@ -43,4 +46,5 @@ export {
   stats,
   auth,
   authReg,
+  menuNav,
 };
