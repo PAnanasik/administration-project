@@ -52,6 +52,22 @@ const DashboardPartner = ({ token }) => {
     );
   };
 
+  const useShowSuccess = ({ success }) => {
+    setResponseAuth((prev) => ({
+      ...prev,
+      successMessage: `${success}`,
+      showSuccessMessage: true,
+    }));
+    setTimeout(
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showSuccessMessage: false,
+        })),
+      5000
+    );
+  };
+
   const InputIcon = ({ prop }) => {
     const array = [
       phoneInput,
@@ -172,6 +188,7 @@ const DashboardPartner = ({ token }) => {
     })
       .then(function (response) {
         setState((oldItem) => [...oldItem, responseState]);
+        useShowSuccess({ success: "Клиент добавлен успешно!" });
         axios({
           method: "PUT",
           url: `${addNotificationClientUrl}`,
@@ -182,7 +199,8 @@ const DashboardPartner = ({ token }) => {
           },
           withCredentials: true,
         })
-          .then(function (response) {})
+          .then(function (response) {
+          })
           .catch(function (response) {
             console.log(response);
             useShowError({ error: "Не удалось отправить уведомление" });
@@ -190,7 +208,7 @@ const DashboardPartner = ({ token }) => {
       })
       .catch(function (response) {
         console.log(response);
-        useShowError({ error: "Не удалось добавить клиентта" });
+        useShowError({ error: "Не удалось добавить клиента" });
       });
   };
 
@@ -279,11 +297,12 @@ const DashboardPartner = ({ token }) => {
       })
         .then(function (response) {
           setState((oldItem) => [...oldItem, responseState]);
+          useShowSuccess({ success: "Клиент удален успешно!" });
           setModal(false);
         })
         .catch(function (response) {
           console.log(response);
-          useShowError({ error: "Не удалось удалить пользователя" });
+          useShowError({ error: "Не удалось удалить клиента" });
         });
     };
 

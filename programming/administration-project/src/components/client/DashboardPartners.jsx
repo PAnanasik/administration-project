@@ -28,6 +28,22 @@ const DashboardPartners = ({ token }) => {
     );
   };
 
+  const useShowSuccess = ({ success }) => {
+    setResponseAuth((prev) => ({
+      ...prev,
+      successMessage: `${success}`,
+      showSuccessMessage: true,
+    }));
+    setTimeout(
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showSuccessMessage: false,
+        })),
+      5000
+    );
+  };
+
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 560px)").matches
   );
@@ -63,7 +79,9 @@ const DashboardPartners = ({ token }) => {
           method: "remove",
         },
       })
-        .then(function (response) {})
+        .then(function (response) {
+          useShowSuccess({ success: "Партнер удален успешно!" });
+        })
         .catch(function (response) {
           useShowError({ error: "Не удалось удалить партнера" });
           console.log(response);

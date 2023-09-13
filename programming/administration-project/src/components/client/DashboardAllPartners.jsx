@@ -5,7 +5,6 @@ import { InView } from "react-intersection-observer";
 import axios from "axios";
 import Intro from "../common/Intro";
 import { arrowExpand, arrowExpanded } from "../../assets";
-import { useForm } from "react-hook-form";
 import { ResponseContext } from "../../App";
 
 const DashboardAllPartners = ({ token }) => {
@@ -54,18 +53,10 @@ const DashboardAllPartners = ({ token }) => {
       .addEventListener("change", (event) => setMatches(event.matches));
   }, []);
 
-  const {
-    formState: { errors },
-    handleSubmit: handleSubmitAdd,
-  } = useForm({
-    mode: "onBlur",
-  });
-
   const PartnersItemAll = ({ name, token }) => {
     const [expanded, setExpanded] = useState(false);
 
-    const addPartner = async (data, event) => {
-      event.preventDefault();
+    const addPartner = async () => {
       axios({
         method: "PUT",
         url: `${remove_addUrl}`,
@@ -81,7 +72,7 @@ const DashboardAllPartners = ({ token }) => {
         },
       })
         .then(function (response) {
-          useShowSuccess({ success: "Партнер добавлен успешно!" })
+          useShowSuccess({ success: "Партнер добавлен успешно!" });
         })
         .catch(function (response) {
           useShowError({ error: "Не удалось добавить партнера" });
@@ -91,18 +82,14 @@ const DashboardAllPartners = ({ token }) => {
 
     const ItemDesc = () => {
       return (
-        <form
-          className="flex flex-col gap-[10px] h-[80px] justify-center px-[30px] border-solid border-t-[1px] border-[#D2D2D2]"
-          onSubmit={handleSubmitAdd(addPartner)}
-        >
-          <button
-            type="submit"
-            className="bg-primary p-2 rounded-[8px] text-white font-medium
+        <button
+          type="submit"
+          className="bg-primary p-2 rounded-[8px] text-white font-medium
                 max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer"
-          >
-            Добавить
-          </button>
-        </form>
+          onClick={addPartner}
+        >
+          Добавить
+        </button>
       );
     };
 
@@ -117,18 +104,14 @@ const DashboardAllPartners = ({ token }) => {
             <h2>{name || "Без имени"}</h2>
           </div>
           {matches ? (
-            <form
-              onSubmit={handleSubmitAdd(addPartner)}
-              className="max-w-[150px] w-full"
+            <button
+              type="submit"
+              className="bg-primary p-2 rounded-[8px] text-white font-medium
+                max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer"
+              onClick={addPartner}
             >
-              <button
-                type="submit"
-                className="bg-primary p-2 rounded-[8px] text-white font-medium
-                w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer"
-              >
-                Добавить
-              </button>
-            </form>
+              Добавить
+            </button>
           ) : (
             <button onClick={() => setExpanded(!expanded)}>
               <img

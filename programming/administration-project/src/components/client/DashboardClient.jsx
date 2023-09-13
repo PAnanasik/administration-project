@@ -46,6 +46,22 @@ const DashboardClient = () => {
     setModal(false);
   };
 
+  const useShowSuccess = ({ success }) => {
+    setResponseAuth((prev) => ({
+      ...prev,
+      successMessage: `${success}`,
+      showSuccessMessage: true,
+    }));
+    setTimeout(
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showSuccessMessage: false,
+        })),
+      5000
+    );
+  };
+
   const ModalWindow = () => {
     const [selectedCategory, setSelectedCategory] =
       useState("Товар не подошел");
@@ -69,7 +85,7 @@ const DashboardClient = () => {
         withCredentials: true,
       })
         .then(function (response) {
-          alert("Возврат совершен успешно!");
+          useShowSuccess({ success: "Возврат совершен!" });
           setModal(false);
         })
         .catch(function (response) {

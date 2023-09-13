@@ -37,6 +37,22 @@ const DashboardReceiptAdd = ({ token }) => {
     );
   };
 
+  const useShowSuccess = ({ success }) => {
+    setResponseAuth((prev) => ({
+      ...prev,
+      successMessage: `${success}`,
+      showSuccessMessage: true,
+    }));
+    setTimeout(
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showSuccessMessage: false,
+        })),
+      5000
+    );
+  };
+
   const onSubmitAddPurchase = async (data, event) => {
     data.date += "+00:00";
     event.preventDefault();
@@ -48,6 +64,7 @@ const DashboardReceiptAdd = ({ token }) => {
       withCredentials: true,
     })
       .then(function (response) {
+        useShowSuccess({ success: "Покупка добавлена успешно!" });
         axios({
           method: "PUT",
           url: `${addNotificationClientUrl}`,

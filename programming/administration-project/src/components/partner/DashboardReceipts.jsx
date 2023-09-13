@@ -26,6 +26,22 @@ const DashboardReceipts = ({ token }) => {
     );
   };
 
+  const useShowSuccess = ({ success }) => {
+    setResponseAuth((prev) => ({
+      ...prev,
+      successMessage: `${success}`,
+      showSuccessMessage: true,
+    }));
+    setTimeout(
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showSuccessMessage: false,
+        })),
+      5000
+    );
+  };
+
   const ReceiptInfo = ({ token }) => {
     const [state, setState] = useState([]);
 
@@ -86,11 +102,11 @@ const DashboardReceipts = ({ token }) => {
           })
             .then(function (response) {
               setLoading(false);
-              alert("Документ отправлен успешно!");
+              useShowSuccess({ success: "Документ отправлен успешно!" });
             })
             .catch(function (response) {
               console.log(response);
-              useShowError({ error: "Не удалось добавить документ" });
+              useShowError({ error: "Не удалось отправить документ" });
             });
         };
 
@@ -166,10 +182,10 @@ const DashboardReceipts = ({ token }) => {
         })
           .then(function (response) {
             setLoading(false);
-            alert("Файл отправлен успешно!");
+            useShowSuccess({ success: "Файл отправлен успешно!" });
           })
           .catch(function (response) {
-            useShowError({ error: "Не удалось добавить файл" });
+            useShowError({ error: "Не удалось отправить файл" });
           });
       };
 
