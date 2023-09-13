@@ -28,6 +28,22 @@ const DashboardAllPartners = ({ token }) => {
     );
   };
 
+  const useShowSuccess = ({ success }) => {
+    setResponseAuth((prev) => ({
+      ...prev,
+      successMessage: `${success}`,
+      showSuccessMessage: true,
+    }));
+    setTimeout(
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showSuccessMessage: false,
+        })),
+      5000
+    );
+  };
+
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 560px)").matches
   );
@@ -64,7 +80,9 @@ const DashboardAllPartners = ({ token }) => {
           method: "add",
         },
       })
-        .then(function (response) {})
+        .then(function (response) {
+          useShowSuccess({ success: "Партнер добавлен успешно!" })
+        })
         .catch(function (response) {
           useShowError({ error: "Не удалось добавить партнера" });
           console.log(response);

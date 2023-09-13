@@ -23,6 +23,9 @@ function App() {
 
   const [responseAuth, setResponseAuth] = useState({
     errorMessage: {},
+    showErrorMessage: false,
+    successMessage: {},
+    showSuccessMessage: false,
     dataUser: {},
     toggleSidebar: false,
   });

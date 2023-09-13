@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { ResponseContext } from "../../App";
 import { Navbar, SidebarClient, DashboardPartners, ErrorMessage } from "../../components";
 import Background from "../../components/common/Background";
+import SuccessMessage from "../../components/common/SuccessMessage";
 
 const ClientPartnersList = () => {
   const { responseAuth } = useContext(ResponseContext);
@@ -21,6 +22,7 @@ const ClientPartnersList = () => {
           <Background />
         </div>
         {responseAuth.showErrorMessage && <ErrorMessage error={responseAuth.errorMessage} />}
+        {responseAuth.showSuccessMessage && <SuccessMessage error={responseAuth.successMessage} />}
       </div>
     );
   }
