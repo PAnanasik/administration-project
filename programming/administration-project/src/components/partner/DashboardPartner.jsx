@@ -16,7 +16,6 @@ import {
 import { useForm } from "react-hook-form";
 import { ResponseContext } from "../../App";
 import axios from "axios";
-import ErrorMessage from "../common/ErrorMessage";
 import {
   addNotificationClientUrl,
   getClientsListUrl,
@@ -27,24 +26,30 @@ import Intro from "../common/Intro";
 
 const DashboardPartner = ({ token }) => {
   const userData = JSON.parse(window.localStorage.getItem("userData"));
-  
+
   const [modalInfo, setModalInfo] = useState({
     name: "",
     bonuses: "",
     phone: "",
   });
   const [modal, setModal] = useState(false);
-  const { responseAuth, setResponseAuth } = useContext(ResponseContext);
-  const [show, setShow] = useState(false);
+  const { setResponseAuth } = useContext(ResponseContext);
   const [responseState, setState] = useState([]);
 
   const useShowError = ({ error }) => {
-    setShow(true);
-    setResponseAuth({
+    setResponseAuth((prev) => ({
+      ...prev,
       errorMessage: `${error}`,
-    });
-    setModal(false);
-    setTimeout(() => setShow(false), 5000);
+      showErrorMessage: true,
+    }));
+    setTimeout(
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showErrorMessage: false,
+        })),
+      5000
+    );
   };
 
   const InputIcon = ({ prop }) => {
@@ -388,7 +393,7 @@ const DashboardPartner = ({ token }) => {
     const [state, setState] = useState([]);
 
     useEffect(() => {
-      const dataFetch = async () => {
+      const getClient = async () => {
         try {
           const response = await axios.get(`${getClientsListUrl}`, {
             headers: {
@@ -399,16 +404,17 @@ const DashboardPartner = ({ token }) => {
           setState(responseState);
         } catch (error) {
           console.log(error);
+          useShowError({ error: "Не удалось вывести список клиентов" });
         }
       };
 
-      dataFetch();
+      getClient();
     }, []);
 
     const [value, setValue] = useState("");
 
     const filteredClients = state.filter((item) => {
-      return item.fio?.toLowerCase()?.includes(value.toLowerCase());
+      return item.phone?.toLowerCase()?.includes(value.toLowerCase());
     });
 
     return (
@@ -419,7 +425,7 @@ const DashboardPartner = ({ token }) => {
             type="text"
             className="max-w-[400px] w-full h-[40px] rounded-[8px] border-solid border-[1px] border-[#D2D2D2]
             px-[15px] outline-primary"
-            placeholder="Поиск по клиентам"
+            placeholder="Поиск по номеру клиента"
             onChange={(event) => setValue(event.target.value)}
           />
         </div>
@@ -467,7 +473,6 @@ const DashboardPartner = ({ token }) => {
           </div>
         </div>
       </div>
-      {show && <ErrorMessage error={responseAuth.errorMessage} />}
     </section>
   );
 };

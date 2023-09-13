@@ -4,6 +4,7 @@ import {
   NavbarPartner,
   DashboardPartner,
   SidebarPartner,
+  ErrorMessage,
 } from "../../components";
 import Background from "../../components/common/Background";
 
@@ -24,6 +25,7 @@ const MainPartner = () => {
           <DashboardPartner token={token} />
           <Background />
         </div>
+        {responseAuth.showErrorMessage && <ErrorMessage error={responseAuth.errorMessage} />}
       </div>
     );
   }

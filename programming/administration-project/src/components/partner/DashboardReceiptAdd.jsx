@@ -1,6 +1,6 @@
 import { styles } from "../../styles";
 import { useForm } from "react-hook-form";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import {
   phoneInput,
   receipt,
@@ -14,9 +14,28 @@ import {
 import Intro from "../common/Intro";
 import axios from "axios";
 import { addChequeUrl, addNotificationClientUrl } from "../urls";
+import { ResponseContext } from "../../App";
 
 const DashboardReceiptAdd = ({ token }) => {
   const userData = JSON.parse(window.localStorage.getItem("userData"));
+
+  const { setResponseAuth } = useContext(ResponseContext);
+
+  const useShowError = ({ error }) => {
+    setResponseAuth((prev) => ({
+      ...prev,
+      errorMessage: `${error}`,
+      showErrorMessage: true,
+    }));
+    setTimeout(
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showErrorMessage: false,
+        })),
+      5000
+    );
+  };
 
   const onSubmitAddPurchase = async (data, event) => {
     data.date += "+00:00";
@@ -47,10 +66,7 @@ const DashboardReceiptAdd = ({ token }) => {
       })
       .catch(function (response) {
         console.log(response);
-        useShowError({ error: "Не удалось добавить покупку" });
-        alert(
-          "Не удалось добавить покупку или пользователь не имеет такого количества бонусов"
-        );
+        useShowError({ error: "Не удалось добавить покупку (проверьте количество бонусов пользователя)" });
       });
 
     reset();

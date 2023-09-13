@@ -4,6 +4,7 @@ import {
   NavbarPartner,
   SidebarPartner,
   DashboardReceipts,
+  ErrorMessage,
 } from "../../components";
 import Background from "../../components/common/Background";
 
@@ -24,6 +25,7 @@ const PartnerReceipts = () => {
           <DashboardReceipts token={token} />
           <Background />
         </div>
+        {responseAuth.showErrorMessage && <ErrorMessage error={responseAuth.errorMessage} />}
       </div>
     );
   }

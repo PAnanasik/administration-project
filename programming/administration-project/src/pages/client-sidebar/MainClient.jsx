@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { ResponseContext } from "../../App";
-import { Navbar, DashboardClient, SidebarClient } from "../../components";
+import { Navbar, DashboardClient, SidebarClient, ErrorMessage } from "../../components";
 import Background from "../../components/common/Background";
 
 const MainClient = () => {
@@ -20,6 +20,7 @@ const MainClient = () => {
           <DashboardClient token={token} />
           <Background />
         </div>
+        {responseAuth.showErrorMessage && <ErrorMessage error={responseAuth.errorMessage} />}
       </div>
     );
   }

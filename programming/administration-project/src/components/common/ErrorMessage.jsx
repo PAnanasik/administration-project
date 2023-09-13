@@ -1,9 +1,7 @@
 const ErrorMessage = ({ error }) => {
   return (
-    <div
-      className="absolute bottom-[120px] right-0 left-0 mx-auto max-w-[500px] w-full text-center h-[70px] p-4 text-white rounded-[8px]
-        flex justify-center items-center font-medium bg-red-500 z-20"
-    >
+    <div className="fixed h-[60px] bg-red-500 border-solid border-[1px] border-red-600 bottom-[20px] left-0 right-0 mx-auto
+    rounded-[4px] z-10 max-w-[450px] w-full text-white flex items-center justify-center font-medium">
       {error}
     </div>
   );

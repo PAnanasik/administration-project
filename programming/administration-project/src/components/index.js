@@ -6,10 +6,12 @@ import SidebarClient from "./common/SidebarClient";
 import SidebarPartner from "./common/SidebarPartner";
 import NavbarPartner from "./common/NavbarPartner";
 import DashboardClient from "./client/DashboardClient";
+import DashboardAllPartners from "./client/DashboardAllPartners";
+import DashboardPartners from "./client/DashboardPartners";
 import DashboardPartner from "./partner/DashboardPartner";
 import DashboardReceipts from "./partner/DashboardReceipts";
-import ErrorMessage from "./common/ErrorMessage";
 import DashboardReceiptAdd from "./partner/DashboardReceiptAdd";
+import ErrorMessage from "./common/ErrorMessage";
 
 export {
   RegistrationForm,
@@ -24,4 +26,6 @@ export {
   SidebarClient,
   SidebarPartner,
   DashboardReceiptAdd,
+  DashboardAllPartners,
+  DashboardPartners,
 };

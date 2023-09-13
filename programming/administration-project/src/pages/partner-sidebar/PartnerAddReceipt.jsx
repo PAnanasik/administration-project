@@ -2,6 +2,7 @@ import { useContext } from "react";
 import { ResponseContext } from "../../App";
 import {
   DashboardReceiptAdd,
+  ErrorMessage,
   NavbarPartner,
   SidebarPartner,
 } from "../../components";
@@ -24,6 +25,7 @@ const PartnerAddReceipt = () => {
           <DashboardReceiptAdd token={token} />
           <Background />
         </div>
+        {responseAuth.showErrorMessage && <ErrorMessage error={responseAuth.errorMessage} />}
       </div>
     );
   }

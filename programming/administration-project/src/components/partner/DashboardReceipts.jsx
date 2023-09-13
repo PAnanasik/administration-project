@@ -8,15 +8,22 @@ import Intro from "../common/Intro";
 
 const DashboardReceipts = ({ token }) => {
   const userData = JSON.parse(window.localStorage.getItem("userData"));
-  const [show, setShow] = useState(false);
   const { setResponseAuth } = useContext(ResponseContext);
 
   const useShowError = ({ error }) => {
-    setShow(true);
-    setResponseAuth({
+    setResponseAuth((prev) => ({
+      ...prev,
       errorMessage: `${error}`,
-    });
-    setTimeout(() => setShow(false), 5000);
+      showErrorMessage: true,
+    }));
+    setTimeout(
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showErrorMessage: false,
+        })),
+      5000
+    );
   };
 
   const ReceiptInfo = ({ token }) => {
@@ -35,7 +42,6 @@ const DashboardReceipts = ({ token }) => {
         } catch (error) {
           console.log(error);
           useShowError({ error: "Не удалось вывести список покупок" });
-          alert("Не удалось вывести список покупок");
         }
       };
 
@@ -85,7 +91,6 @@ const DashboardReceipts = ({ token }) => {
             .catch(function (response) {
               console.log(response);
               useShowError({ error: "Не удалось добавить документ" });
-              alert("Не удалось добавить документ");
             });
         };
 
@@ -165,7 +170,6 @@ const DashboardReceipts = ({ token }) => {
           })
           .catch(function (response) {
             useShowError({ error: "Не удалось добавить файл" });
-            alert("Не удалось добавить файл");
           });
       };
 
@@ -292,11 +296,6 @@ const DashboardReceipts = ({ token }) => {
   return (
     <section className="relative w-full h-full bgdashboard mt-[60px] z-0">
       <div className="max-w-[1640px] mx-auto md:px-[30px] px-[15px] relative h-full z-0 p-[40px] ">
-        <div className="mb-[20px]">
-          <a href="/dashboardpartner" className="font-medium">
-            Вернуться обратно
-          </a>
-        </div>
         <Intro responseLogin={userData} />
         <div className="flex flex-col md:gap-[30px] gap-0">
           <div>

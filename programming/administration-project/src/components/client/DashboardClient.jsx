@@ -3,7 +3,6 @@ import { styles } from "../../styles";
 import { arrowExpand, arrowExpanded } from "../../assets";
 import axios from "axios";
 import { ResponseContext } from "../../App";
-import ErrorMessage from "../common/ErrorMessage";
 import { purchasesUrl, refundUrl } from "../urls";
 import Intro from "../common/Intro";
 
@@ -18,8 +17,7 @@ const DashboardClient = () => {
     total_amount: "",
   });
   const [modal, setModal] = useState(false);
-  const [show, setShow] = useState(false);
-  const { responseAuth, setResponseAuth } = useContext(ResponseContext);
+  const { setResponseAuth } = useContext(ResponseContext);
 
   const [matches, setMatches] = useState(
     window.matchMedia("(min-width: 560px)").matches
@@ -32,13 +30,20 @@ const DashboardClient = () => {
   }, []);
 
   const useShowError = ({ error }) => {
-    setShow(true);
     setResponseAuth((prev) => ({
       ...prev,
       errorMessage: `${error}`,
+      showErrorMessage: true,
     }));
+    setTimeout(
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showErrorMessage: false,
+        })),
+      5000
+    );
     setModal(false);
-    setTimeout(() => setShow(false), 5000);
   };
 
   const ModalWindow = () => {
@@ -70,7 +75,6 @@ const DashboardClient = () => {
         .catch(function (response) {
           console.log(response);
           useShowError({ error: "Не удалось совершить возврат" });
-          alert("Не удалось совершить возврат");
         });
     };
 
@@ -139,7 +143,6 @@ const DashboardClient = () => {
         } catch (error) {
           console.log(error);
           useShowError({ error: "Не удалось вывести список покупок" });
-          alert("Не удалось вывести список покупок");
         }
       };
 
@@ -277,7 +280,6 @@ const DashboardClient = () => {
           <HistoryInfo token={token} />
         </div>
       </div>
-      {show && <ErrorMessage error={responseAuth.errorMessage} />}
     </section>
   );
 };

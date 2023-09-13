@@ -1,7 +1,6 @@
 import { useContext } from "react";
 import { ResponseContext } from "../../App";
-import { Navbar, SidebarClient } from "../../components";
-import ListPartners from "../../components/client/ListPartners";
+import { Navbar, SidebarClient, DashboardPartners, ErrorMessage } from "../../components";
 import Background from "../../components/common/Background";
 
 const ClientPartnersList = () => {
@@ -18,9 +17,10 @@ const ClientPartnersList = () => {
         {responseAuth.toggleSidebar && <SidebarClient />}
         <Navbar />
         <div className="relative z-0">
-          <ListPartners token={token} />
+          <DashboardPartners token={token} />
           <Background />
         </div>
+        {responseAuth.showErrorMessage && <ErrorMessage error={responseAuth.errorMessage} />}
       </div>
     );
   }

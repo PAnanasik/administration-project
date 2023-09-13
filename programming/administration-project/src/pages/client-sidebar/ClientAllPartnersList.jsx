@@ -1,6 +1,5 @@
-import React, { useContext } from "react";
-import ListAllPartners from "../../components/client/ListAllPartners";
-import { Navbar, SidebarClient } from "../../components";
+import { useContext } from "react";
+import { Navbar, SidebarClient, DashboardAllPartners, ErrorMessage } from "../../components";
 import Background from "../../components/common/Background";
 import { ResponseContext } from "../../App";
 
@@ -18,9 +17,10 @@ const ClientAllPartnersList = () => {
         {responseAuth.toggleSidebar && <SidebarClient />}
         <Navbar />
         <div className="relative z-0">
-          <ListAllPartners token={token} />
+          <DashboardAllPartners token={token} />
           <Background />
         </div>
+        {responseAuth.showErrorMessage && <ErrorMessage error={responseAuth.errorMessage} />}
       </div>
     );
   }
