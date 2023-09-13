@@ -121,10 +121,7 @@ const ForgotPhoneForm = () => {
         <h1 className={`${styles.sectionSubText} text-center`}>
           Введите вашу почту
         </h1>
-        <form
-          className="flex flex-col gap-[40px] mt-[30px]"
-          //   onSubmit={handleSubmit(onSubmit)}
-        >
+        <form className="flex flex-col gap-[40px] mt-[30px]">
           <InputCardCode />
           <input
             type="submit"

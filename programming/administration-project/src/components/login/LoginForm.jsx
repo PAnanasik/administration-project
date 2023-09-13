@@ -11,7 +11,7 @@ import { clientUrl, loginUrl, partnerUrl } from "../urls";
 const LoginForm = () => {
   const [partner, setPartner] = useState(false);
 
-  const { responseAuth, setResponseAuth } = useContext(ResponseContext);
+  const { setResponseAuth } = useContext(ResponseContext);
   const [redirection, setRedirection] = useState(false);
   const navigate = useNavigate();
 

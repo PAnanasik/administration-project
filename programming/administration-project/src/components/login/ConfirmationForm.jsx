@@ -8,7 +8,7 @@ import axios from "axios";
 import { registrationClientUrl, registrationPartnerUrl } from "../urls";
 
 const ConfirmationForm = ({ dataUser }) => {
-  const { responseAuth, setResponseAuth } = useContext(ResponseContext);
+  const { setResponseAuth } = useContext(ResponseContext);
   const [redirection, setRedirection] = useState(false);
   const navigate = useNavigate();
 
