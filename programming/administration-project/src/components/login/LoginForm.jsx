@@ -6,11 +6,9 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ResponseContext } from "../../App";
 import { useContext } from "react";
-import ErrorMessage from "../common/ErrorMessage";
 import { clientUrl, loginUrl, partnerUrl } from "../urls";
 
 const LoginForm = () => {
-  const [show, setShow] = useState(false);
   const [partner, setPartner] = useState(false);
 
   const { responseAuth, setResponseAuth } = useContext(ResponseContext);
@@ -18,15 +16,17 @@ const LoginForm = () => {
   const navigate = useNavigate();
 
   const useShowError = ({ error }) => {
-    document.querySelector("#submit_btn").disabled = true;
-    setShow(true);
     setResponseAuth((prev) => ({
       ...prev,
       errorMessage: `${error}`,
+      showErrorMessage: true,
     }));
-    setTimeout(() => setShow(false), 5000);
     setTimeout(
-      () => (document.querySelector("#submit_btn").disabled = false),
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showErrorMessage: false,
+        })),
       5000
     );
   };
@@ -250,7 +250,6 @@ const LoginForm = () => {
           </div>
         </form>
       </div>
-      {show && <ErrorMessage error={responseAuth.errorMessage} />}
     </section>
   );
 };

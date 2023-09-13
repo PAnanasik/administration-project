@@ -8,21 +8,22 @@ import { ResponseContext } from "../../App";
 import { mailInput } from "../../assets";
 
 const ForgotPhoneForm = () => {
-const [show, setShow] = useState(false);
-  const { responseAuth, setResponseAuth } = useContext(ResponseContext);
+  const { setResponseAuth } = useContext(ResponseContext);
   const [redirection, setRedirection] = useState(false);
   const navigate = useNavigate();
 
   const useShowError = ({ error }) => {
-    document.querySelector("#submit_btn").disabled = true;
-    setShow(true);
     setResponseAuth((prev) => ({
       ...prev,
       errorMessage: `${error}`,
+      showErrorMessage: true,
     }));
-    setTimeout(() => setShow(false), 5000);
     setTimeout(
-      () => (document.querySelector("#submit_btn").disabled = false),
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showErrorMessage: false,
+        })),
       5000
     );
   };
@@ -96,7 +97,7 @@ const [show, setShow] = useState(false);
           onInput={handleInput}
           {...register("email", {
             required: "Поле обязательно к заполнению",
-            pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+            pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
           })}
         />
         {active && <InputIcon prop={0} />}
@@ -110,7 +111,7 @@ const [show, setShow] = useState(false);
       </div>
     );
   };
-  
+
   return (
     <section className="md:w-3/5 w-full lg:h-full h-[100vh] flex justify-center items-center px-[20px] absolute right-0 top-0">
       <div className="lg:min-w-[600px] min-w-[200px]">
@@ -122,7 +123,7 @@ const [show, setShow] = useState(false);
         </h1>
         <form
           className="flex flex-col gap-[40px] mt-[30px]"
-        //   onSubmit={handleSubmit(onSubmit)}
+          //   onSubmit={handleSubmit(onSubmit)}
         >
           <InputCardCode />
           <input
@@ -145,7 +146,6 @@ const [show, setShow] = useState(false);
           </div>
         </form>
       </div>
-      {/* {show && <ErrorMessage error={responseAuth.errorMessage} />} */}
     </section>
   );
 };

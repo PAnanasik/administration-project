@@ -5,25 +5,25 @@ import { ResponseContext } from "../../App";
 import { useContext, useState, useEffect } from "react";
 import { mailInput, nameInput, passwordInput, phoneInput } from "../../assets";
 import axios from "axios";
-import ErrorMessage from "../common/ErrorMessage";
 import { registrationClientUrl, registrationPartnerUrl } from "../urls";
 
 const ConfirmationForm = ({ dataUser }) => {
-  const [show, setShow] = useState(false);
   const { responseAuth, setResponseAuth } = useContext(ResponseContext);
   const [redirection, setRedirection] = useState(false);
   const navigate = useNavigate();
 
   const useShowError = ({ error }) => {
-    document.querySelector("#submit_btn").disabled = true;
-    setShow(true);
     setResponseAuth((prev) => ({
       ...prev,
       errorMessage: `${error}`,
+      showErrorMessage: true,
     }));
-    setTimeout(() => setShow(false), 5000);
     setTimeout(
-      () => (document.querySelector("#submit_btn").disabled = false),
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showErrorMessage: false,
+        })),
       5000
     );
   };
@@ -163,7 +163,6 @@ const ConfirmationForm = ({ dataUser }) => {
           </div>
         </form>
       </div>
-      {show && <ErrorMessage error={responseAuth.errorMessage} />}
     </section>
   );
 };
