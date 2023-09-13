@@ -90,7 +90,7 @@ const DashboardClient = () => {
         })
         .catch(function (response) {
           console.log(response);
-          useShowError({ error: "Не удалось совершить возврат" });
+          useShowError({ error: "Не удалось совершить возврат (чек не подтвержден)" });
         });
     };
 

@@ -27,7 +27,7 @@ const PartnerReceipts = () => {
           <Background />
         </div>
         {responseAuth.showErrorMessage && <ErrorMessage error={responseAuth.errorMessage} />}
-        {responseAuth.showSuccessMessage && <SuccessMessage error={responseAuth.successMessage} />}
+        {responseAuth.showSuccessMessage && <SuccessMessage success={responseAuth.successMessage} />}
       </div>
     );
   }
