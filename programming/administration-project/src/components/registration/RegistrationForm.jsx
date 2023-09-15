@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { styles } from "../../styles";
 import { useForm } from "react-hook-form";
-import { mailInput, nameInput, passwordInput, phoneInput } from "../../assets";
+import { mailInput, nameInput, passwordInput, phoneInput, surnameDashboard } from "../../assets";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ResponseContext } from "../../App";
@@ -75,7 +75,7 @@ const RegistrationForm = () => {
   }, [redirection]);
 
   const InputIcon = ({ prop }) => {
-    const array = [phoneInput, nameInput, mailInput, passwordInput];
+    const array = [phoneInput, nameInput, mailInput, passwordInput, surnameDashboard];
     return (
       <img
         src={array[prop]}
@@ -149,6 +149,41 @@ const RegistrationForm = () => {
           {...register("fio")}
         />
         {active && <InputIcon prop={1} />}
+        <div className="mt-1">
+          {errors?.fio && (
+            <p className="text-red-500 text-[12px]">
+              {errors?.fio?.message || "Ошибка!"}
+            </p>
+          )}
+        </div>
+      </div>
+    );
+  };
+
+  const InputCardPartnerName = () => {
+    const [fullName, setFullName] = useState("");
+    const [active, setActive] = useState(true);
+
+    function handleInput(event) {
+      if (event.target.value == 0) {
+        setActive(true);
+      } else {
+        setActive(false);
+      }
+    }
+    return (
+      <div className="relative h-[60px] w-full">
+        <input
+          type="text"
+          className={`${styles.inputStyles}`}
+          placeholder="ФИО владельца"
+          maxLength={100}
+          onChange={(event) => setFullName(event.target.value)}
+          title="Максимальная длина 100 символов"
+          onInput={handleInput}
+          {...register("fio")}
+        />
+        {active && <InputIcon prop={4} />}
         <div className="mt-1">
           {errors?.fio && (
             <p className="text-red-500 text-[12px]">
@@ -318,6 +353,7 @@ const RegistrationForm = () => {
           <InputCardPhone />
           {!partner && <InputCardName />}
           {partner && <InputCardCompany />}
+          {partner && <InputCardPartnerName />}
           <InputCardMail />
           <InputCardPassword />
           <div className="flex gap-[10px] items-center">

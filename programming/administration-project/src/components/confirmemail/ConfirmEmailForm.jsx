@@ -39,7 +39,7 @@ const ConfirmEmailForm = () => {
       },
     })
       .then(function (response) {
-        window.localStorage.setItem("verified", true)
+        window.localStorage.setItem("verified", true);
         setRedirection(true);
       })
       .catch(function (response) {
@@ -134,6 +134,13 @@ const ConfirmEmailForm = () => {
             id="submit_btn"
           />
         </form>
+      </div>
+      <div
+        className="fixed h-[60px] bg-primary border-solid border-[1px] border-hover bottom-[20px] 
+        sm:right-[40px] sm:left-auto left-0 right-0 mx-auto
+        rounded-[4px] z-10 max-w-[450px] w-full text-white flex items-center justify-center font-medium text-center"
+      >
+        <p>Код отправлен на почту!</p>
       </div>
     </section>
   );
