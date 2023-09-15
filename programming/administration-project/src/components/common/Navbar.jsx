@@ -228,7 +228,7 @@ const Navbar = () => {
     <>
       <div className="h-[80px] bg-white border-solid border-b-[1px] border-[#D2D2D2] fixed top-0 z-10 w-full">
         <nav className="md:px-[30px] px-[15px] h-full max-w-[1640px] mx-auto">
-          <div className="h-full flex md:flex-row flex-col md:justify-between justify-center items-center">
+          <div className="h-full flex flex-row md:justify-between justify-center items-center">
             <div className="flex gap-[20px]">
               <button
                 onClick={() =>
@@ -237,11 +237,12 @@ const Navbar = () => {
                     toggleSidebar: !responseAuth.toggleSidebar,
                   }))
                 }
+                className="mr-[10px]"
                 name="sidebar button"
               >
                 <img src={menuNav} alt="menu" className="w-6 h-6" />
               </button>
-              <h2 className="md:text-[16px] text-[14px]">
+              <h2 className="md:text-[16px] md:block hidden">
                 Личный кабинет клиента
               </h2>
             </div>
@@ -265,15 +266,18 @@ const Navbar = () => {
                 )}
               </button>
               <div className="flex gap-[5px] items-center">
-                <p className="md:text-[16px] text-[14px] font-medium">{`${
+                <p className="md:text-[16px] md:block hidden text-[14px] font-medium w-full">{`${
                   bonus || "0"
                 } бонусов`}</p>
+                <p className="md:text-[16px] md:hidden block text-[14px] font-medium w-full">{`${
+                  bonus || "0"
+                }`}</p>
                 <button
                   onClick={refreshBonuses}
                   id="refresh_bonuses"
                   name="refresh bonuses button"
                 >
-                  <img src={refresh} alt="" className="w-4 h-4" />
+                  <img src={refresh} alt="" className="w-4 h-4 object-cover" />
                 </button>
               </div>
               <img

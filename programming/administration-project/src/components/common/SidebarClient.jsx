@@ -24,7 +24,7 @@ const BlockUrls = () => {
           className={({ isActive }) =>
             isActive ? "link-active link" : "link-unactive link"
           }
-          exact
+          exact="true"
           key={index}
           to={item.url}
           onClick={() =>

@@ -127,7 +127,7 @@ const NavbarPartner = () => {
   return (
     <div className="h-[80px] bg-white border-solid border-[1px] border-b-[#D2D2D2] fixed top-0 z-10 w-full">
       <nav className="md:px-[30px] px-[15px] h-full max-w-[1640px] mx-auto">
-        <div className="h-full flex md:flex-row flex-col md:justify-between justify-center items-center">
+        <div className="h-full flex flex-row md:justify-between justify-center items-center">
           <div className="flex md:gap-[20px] gap-[10px]">
             <button
               onClick={() =>
@@ -137,11 +137,12 @@ const NavbarPartner = () => {
                 }))
               }
               name="sidebar button"
+              className="mr-[10px]"
             >
               <img
                 src={menuNav}
                 alt="menu"
-                className="w-6 h-6 md:block hidden"
+                className="w-6 h-6"
               />
             </button>
             <h2 className="md:text-[16px] md:block text-[14px] hidden">
@@ -149,17 +150,6 @@ const NavbarPartner = () => {
             </h2>
           </div>
           <div className="flex items-center gap-[10px]">
-            <button
-              onClick={() =>
-                setResponseAuth((prev) => ({
-                  ...prev,
-                  toggleSidebar: !responseAuth.toggleSidebar,
-                }))
-              }
-              name="sidebar button"
-            >
-              <img src={menuNav} alt="menu" className="md:hidden w-6 h-6" />
-            </button>
             <button
               className={`${
                 menu
