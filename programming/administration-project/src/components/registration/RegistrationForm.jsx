@@ -331,6 +331,7 @@ const RegistrationForm = () => {
           </div>
           <button
             type="submit"
+            name="registration button"
             className="bg-primary p-4 rounded-[8px] text-white font-medium
                     ease duration-300 hover:bg-hover cursor-pointer relative z-10"
             onClick={() =>

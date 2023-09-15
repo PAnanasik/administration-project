@@ -83,10 +83,8 @@ const DashboardReceiptAdd = ({ token }) => {
       })
       .catch(function (response) {
         console.log(response);
-        useShowError({ error: "Не удалось добавить покупку (проверьте количество бонусов пользователя)" });
+        useShowError({ error: "Не удалось добавить покупку (проверьте существование пользователя и его бонусы)" });
       });
-
-    reset();
   };
 
   const {
@@ -323,7 +321,7 @@ const DashboardReceiptAdd = ({ token }) => {
       var mm = String(today.getMonth() + 1).padStart(2, "0");
       var time = today.toLocaleTimeString("ru-Ru");
       var yyyy = today.getFullYear();
-      var currentDateTime = `${yyyy}-${dd}-${mm} ${time}`;
+      var currentDateTime = `${yyyy}-${mm}-${dd} ${time}`;
       return currentDateTime;
     }
 
@@ -543,6 +541,7 @@ const DashboardReceiptAdd = ({ token }) => {
             <InputOrdered />
             <button
               type="submit"
+              name="add receipt button"
               className="bg-primary p-4 rounded-[8px] text-white font-medium md:max-w-[400px] w-full 
                   mt-[10px] flex justify-center relative ease duration-300 hover:bg-hover gap-[10px]"
               {...register("name_partner", {

@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { ResponseContext } from "../../App";
+import { NavLink } from "react-router-dom";
 
 const BlockUrls = () => {
   const item = [
@@ -19,14 +20,22 @@ const BlockUrls = () => {
   return (
     <div className="flex flex-col">
       {item.map((item, index) => (
-        <a
-          className="h-[70px] flex items-center font-normal py-4 pl-8 border-solid border-b-[1px] 
-        border-[#D2D2D2] ease duration-300 hover:bg-primary hover:text-white hover:font-medium cursor-pointer"
+        <NavLink
+          className={({ isActive }) =>
+            isActive ? "link-active link" : "link-unactive link"
+          }
+          exact
           key={index}
-          href={item.url}
+          to={item.url}
+          onClick={() =>
+            setResponseAuth((prev) => ({
+              ...prev,
+              toggleSidebar: false,
+            }))
+          }
         >
           <div>{item.text}</div>
-        </a>
+        </NavLink>
       ))}
     </div>
   );
@@ -38,9 +47,9 @@ const SidebarClient = () => {
   return (
     <div
       className={`${
-        responseAuth.toggleSidebar ? "block" : "hidden"
+        responseAuth.toggleSidebar ? "block sidebar-animation-in" : "hidden"
       } bg-[#ffffff] xs:max-w-[300px] w-full border-solid border-[#D2D2D2]
-      border-r-[1px] h-full fixed left-0 overflow-y-auto top-0 z-10`}
+    border-r-[1px] h-full fixed left-0 overflow-y-auto top-0 z-10 ease duration-300`}
       id="container"
     >
       <nav className={`py-[80px] z-40`}>

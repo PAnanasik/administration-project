@@ -31,7 +31,6 @@ const NavbarPartner = () => {
     };
 
     getNotifications();
-    
   }, [state, notificationUrl, menu]);
 
   const Menu = () => {
@@ -69,12 +68,15 @@ const NavbarPartner = () => {
 
       return (
         <div className="relative w-full min-h-[60px] bg-white pl-[10px] flex flex-col justify-center rounded-[8px]">
-          <h2 className="font-medium text-[14px] md:max-w-[340px] sm:max-w-[650px] xs:max-w-[400px] max-w-[240px] w-full">{text}</h2>
+          <h2 className="font-medium text-[14px] md:max-w-[340px] sm:max-w-[650px] xs:max-w-[400px] max-w-[240px] w-full">
+            {text}
+          </h2>
           <button
             className="absolute right-[20px] ease duration-300 p-2 rounded-full hover:bg-primary
           hover:bg-opacity-[0.2]"
-          id={i != 1 ? i-- - 1 : i = 0}
+            id={i != 1 ? i-- - 1 : (i = 0)}
             onClick={removeNotification}
+            name="remove notification button"
           >
             <img src={close} alt="" className="w-4 h-4 pointer-events-none" />
           </button>
@@ -91,7 +93,8 @@ const NavbarPartner = () => {
         {notificationArray?.map((item, index) => (
           <NotificationItem key={index} text={item} />
         ))}
-        {(notificationArray?.length == null || notificationArray?.length == 0) && <NoNotificationsText />}
+        {(notificationArray?.length == null ||
+          notificationArray?.length == 0) && <NoNotificationsText />}
       </div>
     );
   };
@@ -117,6 +120,7 @@ const NavbarPartner = () => {
   }
 
   function handleLogout() {
+    window.location.pathname = "/";
     localStorage.clear();
   }
 
@@ -124,13 +128,38 @@ const NavbarPartner = () => {
     <div className="h-[80px] bg-white border-solid border-[1px] border-b-[#D2D2D2] fixed top-0 z-10 w-full">
       <nav className="md:px-[30px] px-[15px] h-full max-w-[1640px] mx-auto">
         <div className="h-full flex md:flex-row flex-col md:justify-between justify-center items-center">
-        <div className="flex md:gap-[20px] gap-[10px]">
-              <button onClick={() => setResponseAuth(prev => ({...prev, toggleSidebar: !responseAuth.toggleSidebar}))}>
-                <img src={menuNav} alt="menu" className="w-6 h-6"/>
-              </button>
-              <h2 className="md:text-[16px] text-[14px]">Личный кабинет партнера</h2>
-            </div>
+          <div className="flex md:gap-[20px] gap-[10px]">
+            <button
+              onClick={() =>
+                setResponseAuth((prev) => ({
+                  ...prev,
+                  toggleSidebar: !responseAuth.toggleSidebar,
+                }))
+              }
+              name="sidebar button"
+            >
+              <img
+                src={menuNav}
+                alt="menu"
+                className="w-6 h-6 md:block hidden"
+              />
+            </button>
+            <h2 className="md:text-[16px] md:block text-[14px] hidden">
+              Личный кабинет партнера
+            </h2>
+          </div>
           <div className="flex items-center gap-[10px]">
+            <button
+              onClick={() =>
+                setResponseAuth((prev) => ({
+                  ...prev,
+                  toggleSidebar: !responseAuth.toggleSidebar,
+                }))
+              }
+              name="sidebar button"
+            >
+              <img src={menuNav} alt="menu" className="md:hidden w-6 h-6" />
+            </button>
             <button
               className={`${
                 menu
@@ -138,6 +167,7 @@ const NavbarPartner = () => {
                   : "bg-none p-0"
               } relative`}
               onClick={handleMenu}
+              name="notification button"
             >
               <img
                 src={notification}
@@ -154,13 +184,13 @@ const NavbarPartner = () => {
               className={`relative w-11 h-11 p-1`}
               onClick={handleProfileMenu}
             />
-            <a
-              href=""
+            <button
               className="md:text-[16px] text-[14px] font-normal"
               onClick={handleLogout}
+              name="logout button"
             >
               Выйти
-            </a>
+            </button>
           </div>
         </div>
       </nav>

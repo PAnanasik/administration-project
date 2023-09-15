@@ -122,6 +122,7 @@ const DashboardClient = () => {
               </select>
               <button
                 type="submit"
+                name="refund button"
                 className="bg-red-500 p-2 rounded-[8px] text-white font-medium
                         md:max-w-[150px] w-full mt-[20px] ease duration-300 hover:bg-red-400 cursor-pointer"
               >
@@ -131,6 +132,7 @@ const DashboardClient = () => {
           </div>
           <button
             type="submit"
+            name="close modal button"
             className="bg-primary p-2 rounded-[8px] text-white font-medium
               w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer absolute bottom-0"
             onClick={() => setModal(false)}

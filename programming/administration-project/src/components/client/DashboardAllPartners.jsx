@@ -82,14 +82,17 @@ const DashboardAllPartners = ({ token }) => {
 
     const ItemDesc = () => {
       return (
-        <button
-          type="submit"
-          className="bg-primary p-2 rounded-[8px] text-white font-medium
-                max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer"
-          onClick={addPartner}
-        >
-          Добавить
-        </button>
+        <div className="flex flex-col gap-[10px] h-[80px] justify-center px-[30px] border-solid border-t-[1px] border-[#D2D2D2]">
+          <button
+            type="submit"
+            name="add partner button"
+            className="bg-primary p-2 rounded-[8px] text-white font-medium
+            max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-primary cursor-pointer"
+            onClick={addPartner}
+          >
+            Добавить
+          </button>
+        </div>
       );
     };
 
@@ -106,6 +109,7 @@ const DashboardAllPartners = ({ token }) => {
           {matches ? (
             <button
               type="submit"
+              name="add partner button"
               className="bg-primary p-2 rounded-[8px] text-white font-medium
                 max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer"
               onClick={addPartner}
@@ -146,7 +150,7 @@ const DashboardAllPartners = ({ token }) => {
           console.log(response);
           useShowError({ error: "Не удалось вывести список всех партнеров" });
         });
-    }, []);
+    }, [partnersListAll]);
 
     const [value, setValue] = useState("");
 

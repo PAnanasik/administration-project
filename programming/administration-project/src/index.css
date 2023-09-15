@@ -72,3 +72,36 @@ html {
     transform: translateX(0%);
   }
 }
+
+.active {
+  background: #2B6DEB;
+}
+
+.link {
+  cursor: pointer;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  padding: 16px 0 16px 40px;
+  border-bottom: solid 1px #D2D2D2;
+  transition: background 0.3s ease;
+}
+
+.link:hover {
+  background: #2b6eeb21;
+}
+
+.link-active {
+  background: #2B6DEB;
+  font-weight: 500;
+  color: #ffffff;
+  pointer-events: none;
+}
+
+.link-unactive {
+  background: none;
+  font-weight: 400;
+  color: black;
+  pointer-events: all;
+}

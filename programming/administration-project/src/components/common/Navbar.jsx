@@ -82,6 +82,7 @@ const Navbar = () => {
   };
 
   function handleLogout() {
+    window.location.pathname = "/";
     localStorage.clear();
   }
 
@@ -128,6 +129,7 @@ const Navbar = () => {
           hover:bg-opacity-[0.2]"
             id={i != 1 ? i-- - 1 : (i = 0)}
             onClick={removeNotification}
+            name="remove notification button"
           >
             <img src={close} alt="" className="w-4 h-4 pointer-events-none" />
           </button>
@@ -228,10 +230,20 @@ const Navbar = () => {
         <nav className="md:px-[30px] px-[15px] h-full max-w-[1640px] mx-auto">
           <div className="h-full flex md:flex-row flex-col md:justify-between justify-center items-center">
             <div className="flex gap-[20px]">
-              <button onClick={() => setResponseAuth(prev => ({...prev, toggleSidebar: !responseAuth.toggleSidebar}))}>
-                <img src={menuNav} alt="menu" className="w-6 h-6"/>
+              <button
+                onClick={() =>
+                  setResponseAuth((prev) => ({
+                    ...prev,
+                    toggleSidebar: !responseAuth.toggleSidebar,
+                  }))
+                }
+                name="sidebar button"
+              >
+                <img src={menuNav} alt="menu" className="w-6 h-6" />
               </button>
-              <h2 className="md:text-[16px] text-[14px]">Личный кабинет клиента</h2>
+              <h2 className="md:text-[16px] text-[14px]">
+                Личный кабинет клиента
+              </h2>
             </div>
             <div className="flex items-center gap-[10px]">
               <button
@@ -241,6 +253,7 @@ const Navbar = () => {
                     : "bg-none p-0"
                 } relative`}
                 onClick={handleMenu}
+                name="notification menu button"
               >
                 <img
                   src={notification}
@@ -255,7 +268,11 @@ const Navbar = () => {
                 <p className="md:text-[16px] text-[14px] font-medium">{`${
                   bonus || "0"
                 } бонусов`}</p>
-                <button onClick={refreshBonuses} id="refresh_bonuses">
+                <button
+                  onClick={refreshBonuses}
+                  id="refresh_bonuses"
+                  name="refresh bonuses button"
+                >
                   <img src={refresh} alt="" className="w-4 h-4" />
                 </button>
               </div>
@@ -269,13 +286,13 @@ const Navbar = () => {
                 } relative w-11 h-11 p-1 cursor-pointer`}
                 onClick={handleProfileMenu}
               />
-              <a
-                href=""
+              <button
                 className="md:text-[16px] text-[14px] font-normal"
                 onClick={handleLogout}
+                name="logout button"
               >
                 Выйти
-              </a>
+              </button>
             </div>
           </div>
         </nav>

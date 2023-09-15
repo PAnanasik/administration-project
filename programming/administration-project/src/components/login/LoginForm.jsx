@@ -223,6 +223,7 @@ const LoginForm = () => {
           <InputCardPassword />
           <input
             type="submit"
+            name="login button"
             value="Войти"
             className="bg-primary p-4 rounded-[8px] text-white font-medium
                     ease duration-300 hover:bg-hover cursor-pointer mt-[15px]"

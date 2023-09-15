@@ -137,6 +137,7 @@ const DashboardReceipts = ({ token }) => {
               </label>
               <button
                 type="submit"
+                name="submit document"
                 className="bg-primary p-2 rounded-[8px] text-white font-medium
                 md:max-w-[450px] w-full ease duration-300 hover:bg-hover cursor-pointer mt-[10px]"
               >
@@ -236,6 +237,7 @@ const DashboardReceipts = ({ token }) => {
               </label>
               <button
                 type="submit"
+                name="submit file"
                 className="bg-primary p-2 rounded-[8px] text-white font-medium
                             md:max-w-[450px] w-full ease duration-300 hover:bg-hover cursor-pointer mt-[10px]"
                 id="submit_file"

@@ -96,6 +96,7 @@ const DashboardPartners = ({ token }) => {
         >
           <button
             type="submit"
+            name="delete partner button"
             className="bg-red-500 p-2 rounded-[8px] text-white font-medium
                     max-w-[150px] w-full mt-[10px] ease duration-300 hover:bg-red-400 cursor-pointer"
           >
@@ -119,6 +120,7 @@ const DashboardPartners = ({ token }) => {
             <form onSubmit={handleSubmitRemove(removePartner)} className="max-w-[150px] w-full">
               <button
                 type="submit"
+                name="delete partner button"
                 className="bg-red-500 p-2 rounded-[8px] text-white font-medium
                 w-full mt-[10px] ease duration-300 hover:bg-red-400 cursor-pointer"
               >

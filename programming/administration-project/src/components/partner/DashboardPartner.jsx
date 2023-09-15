@@ -261,6 +261,7 @@ const DashboardPartner = ({ token }) => {
               <InputCardName />
               <button
                 type="submit"
+                name="add client button"
                 className="bg-primary p-4 rounded-[8px] text-white font-medium md:max-w-[400px]
                 w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer"
                 {...register("name_partner", {
@@ -320,6 +321,7 @@ const DashboardPartner = ({ token }) => {
               <label htmlFor="bonuses">Количество бонусов: {dataBonus}</label>
               <button
                 type="submit"
+                name="delete client button"
                 className="bg-red-500 p-2 rounded-[8px] text-white font-medium
                                 md:max-w-[250px] w-full ease duration-300 hover:bg-red-400 cursor-pointer mt-[20px]"
                 id="btn-error-handled"
@@ -331,6 +333,7 @@ const DashboardPartner = ({ token }) => {
           </div>
           <button
             type="submit"
+            name="modal button"
             className="bg-primary p-2 rounded-[8px] text-white font-medium
                 w-full mt-[10px] ease duration-300 hover:bg-hover cursor-pointer absolute bottom-[-20px]"
             onClick={() => setModal(false)}
