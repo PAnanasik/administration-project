@@ -1,13 +1,13 @@
-import axios from "axios";
-import { useForm } from "react-hook-form";
-import { registrationCodeUrl } from "../urls";
 import { styles } from "../../styles";
-import { useContext, useState, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { ResponseContext } from "../../App";
-import { phoneInput } from "../../assets";
+import { useContext, useState, useEffect } from "react";
+import { mailInput, nameInput, passwordInput, phoneInput } from "../../assets";
+import axios from "axios";
+import { forgotCodeUrl } from "../urls";
 
-const ForgotPhoneForm = () => {
+const ConfirmationFormForgot = ({ phoneUser }) => {
   const { setResponseAuth } = useContext(ResponseContext);
   const [redirection, setRedirection] = useState(false);
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ const ForgotPhoneForm = () => {
   };
 
   const InputIcon = ({ prop }) => {
-    const array = [phoneInput];
+    const array = [phoneInput, nameInput, mailInput, passwordInput];
     return (
       <img
         src={array[prop]}
@@ -48,39 +48,37 @@ const ForgotPhoneForm = () => {
     mode: "onBlur",
   });
 
-  const codeSend = async (dataMain) => {
-    await axios({
+  const onSubmit = async (data, event) => {
+    event.preventDefault();
+    axios({
       method: "POST",
-      url: `${registrationCodeUrl}`,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      url: `${forgotCodeUrl}`,
       data: {
-        phone: `${dataMain.phone}`,
+        phone: `${phoneUser}`,
+        code: `${data.code}`,
       },
     })
       .then(function (response) {
         setResponseAuth((prev) => ({
           ...prev,
-          phoneUser: dataMain.phone,
-        }));
-        setRedirection(true);
+          codeUser: data.code,
+        })),
+          setRedirection(true);
       })
       .catch(function (response) {
-        useShowError({
-          error: "Пользователь не найден",
-        });
         console.log(response);
+        useShowError({ error: "Неправильный код" });
       });
+    reset();
   };
 
   useEffect(() => {
     if (redirection) {
-      navigate("/codeforgot");
+      navigate("/newpassword");
     }
   }, [redirection]);
 
-  const InputCardPhone = () => {
+  const InputCardCode = () => {
     const [active, setActive] = useState(true);
 
     function handleInput(event) {
@@ -92,29 +90,23 @@ const ForgotPhoneForm = () => {
     }
 
     return (
-      <div className="relative h-[60px] w-full">
+      <div className="relative h-12 w-full">
         <input
           type="text"
           className={`${
-            errors?.number ? styles.badInputStyles : styles.inputStyles
+            errors?.code ? styles.badInputStyles : styles.inputStyles
           } relative`}
-          placeholder="Номер телефона"
+          placeholder="Код подтверждения"
           onInput={handleInput}
-          pattern="[+][7]\d{3}\d{3}\d{2}\d{2}"
-          title="Используйте формат: +79046585851"
-          {...register("phone", {
+          {...register("code", {
             required: "Поле обязательно к заполнению",
-            minLength: 12,
-            maxLength: 12,
           })}
         />
         {active && <InputIcon prop={0} />}
         <div className="mt-1">
-          {errors?.number && (
+          {errors?.code && (
             <p className="text-red-500 text-[12px]">
-              {errors?.number?.message ||
-                "Длина номера 12 символов" ||
-                "Ошибка!"}
+              {errors?.code?.message || "Длина номера 12 символов" || "Ошибка!"}
             </p>
           )}
         </div>
@@ -126,16 +118,16 @@ const ForgotPhoneForm = () => {
     <section className="md:w-3/5 w-full lg:h-full h-[100vh] flex justify-center items-center px-[20px] absolute right-0 top-0">
       <div className="lg:min-w-[600px] min-w-[200px]">
         <h1 className={`${styles.sectionHeadText} text-center`}>
-          Восстановление
+          Подтверждение
         </h1>
         <h1 className={`${styles.sectionSubText} text-center`}>
-          Введите вашу почту
+          Введите код из смс
         </h1>
         <form
           className="flex flex-col gap-[35px] mt-[30px]"
-          onSubmit={handleSubmit(codeSend)}
+          onSubmit={handleSubmit(onSubmit)}
         >
-          <InputCardPhone />
+          <InputCardCode />
           <input
             type="submit"
             value="Ввести"
@@ -167,4 +159,4 @@ const ForgotPhoneForm = () => {
   );
 };
 
-export default ForgotPhoneForm;
+export default ConfirmationFormForgot;

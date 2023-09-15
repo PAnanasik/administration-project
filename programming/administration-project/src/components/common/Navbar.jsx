@@ -1,13 +1,15 @@
 import { avatar, close, menuNav, notification, refresh } from "../../assets";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { clientUrl, notificationUrl, removeNotificationUrl } from "../urls";
+import { clientUrl, notificationUrl, removeNotificationUrl, sendEmailUrl } from "../urls";
 import { styles } from "../../styles";
 import { ResponseContext } from "../../App";
 
 const Navbar = () => {
   const token = window.localStorage.getItem("token");
   const userData = JSON.parse(window.localStorage.getItem("userData"));
+  const verified = JSON.parse(window.localStorage.getItem("verified"));
+
   const { responseAuth, setResponseAuth } = useContext(ResponseContext);
 
   const [notificationIcon, setNotificationIcon] = useState(true);
@@ -27,6 +29,27 @@ const Navbar = () => {
     setTimeout(() => setShow(false), 5000);
   };
 
+  function handleSend() {
+    axios({
+      method: "POST",
+      url: `${sendEmailUrl}`,
+      headers: { Authorization: `token ${token}` },
+      data: {
+        email: userData.email,
+      },
+      withCredentials: true,
+    })
+      .then(function (response) {
+        console.log(response)
+      })
+      .catch(function (response) {
+        console.log(response);
+      });
+
+    window.location.pathname = "/";
+    localStorage.clear();
+  }
+
   useEffect(() => {
     const getNotifications = async () => {
       try {
@@ -45,11 +68,6 @@ const Navbar = () => {
 
     getNotifications();
   }, [state, notificationUrl, menu]);
-
-  // const arr = [];
-  // arr.push("Вы дурак", "причем реальный")
-
-  // notificationArray.push("Вы дурак")
 
   useEffect(() => {
     axios({
@@ -137,6 +155,22 @@ const Navbar = () => {
       );
     };
 
+    const StinkyNotificationItem = () => {
+      return (
+        <div className="relative w-full min-h-[60px] bg-white pl-[10px] flex flex-col justify-center rounded-[8px]">
+          <p className="font-medium text-[14px] md:max-w-[340px] sm:max-w-[650px] xs:max-w-[400px] max-w-[240px] w-full">
+            Подтвердите почту,{" "}
+            <a
+              onClick={handleSend}
+              className="text-primary border-solid border-b-[1px] border-primary underline-offset-[3px] cursor-pointer"
+            >
+              нажав на это сообщение
+            </a>
+          </p>
+        </div>
+      );
+    };
+
     return (
       <div
         className="fixed md:max-w-[450px] w-full h-[400px] bg-input top-[80px] md:right-[40px] right-0 sm:left-auto sm:mx-0 left-0 mx-auto 
@@ -147,7 +181,10 @@ const Navbar = () => {
           <NotificationItem key={index} text={item} />
         ))}
         {(notificationArray?.length == null ||
-          notificationArray?.length == 0) && <NoNotificationsText />}
+          (notificationArray?.length == 0 && verified)) && (
+          <NoNotificationsText />
+        )}
+        {!verified && <StinkyNotificationItem />}
       </div>
     );
   };
@@ -261,9 +298,8 @@ const Navbar = () => {
                   alt="notification-menu"
                   className="w-8 h-8 p-1"
                 />
-                {notificationArray?.length >= 1 && notificationIcon && (
-                  <NotificationIcon />
-                )}
+                {(notificationArray?.length >= 1 && notificationIcon) ||
+                  (!verified && <NotificationIcon />)}
               </button>
               <div className="flex gap-[5px] items-center">
                 <p className="md:text-[16px] md:block hidden text-[14px] font-medium w-full">{`${
@@ -277,7 +313,11 @@ const Navbar = () => {
                   id="refresh_bonuses"
                   name="refresh bonuses button"
                 >
-                  <img src={refresh} alt="" className="w-4 h-4 object-cover" />
+                  <img
+                    src={refresh}
+                    alt=""
+                    className="w-6 h-6 object-contain"
+                  />
                 </button>
               </div>
               <img

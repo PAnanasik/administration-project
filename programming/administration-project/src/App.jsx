@@ -9,7 +9,8 @@ import {
   ClientPartnersList,
   PartnerAddReceipt,
   PartnerReceipts,
-  Confirmation
+  Confirmation,
+  ConfirmationForgot,
 } from "./pages/index.js";
 import ProtectedRoutes from "./ProtectedRoutes.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -28,6 +29,8 @@ function App() {
     showSuccessMessage: false,
     dataUser: {},
     toggleSidebar: false,
+    phoneUser: '',
+    codeUser: '',
   });
 
   return (
@@ -52,7 +55,9 @@ function App() {
             element={<Confirmation dataUser={responseAuth.dataUser} />}
           />
           <Route path="/forgot" element={<ForgotPhone />} />
-          <Route element={<ProtectedRoutes logged={isLoggedIn} />}>
+          <Route path="/codeforgot" element={<ConfirmationForgot phoneUser={responseAuth.phoneUser} />} />
+          <Route path="/newpassword" element={<NewPassword phoneUser={responseAuth.phoneUser} codeUser={responseAuth.codeUser} />} />
+          <Route element={<ProtectedRoutes />}>
             <Route path="/dashboardclient" element={<Client />} />
             <Route
               path="/clientpartnerslist"

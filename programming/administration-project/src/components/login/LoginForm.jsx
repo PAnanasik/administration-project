@@ -55,7 +55,9 @@ const LoginForm = () => {
               JSON.stringify(response.data[0])
             );
             window.localStorage.setItem("method", partner);
+            window.localStorage.setItem("verified", response.data[0].is_verified_email)
             setRedirection(true);
+            console.log(response)
           })
           .catch(function (response) {
             console.log(response);
@@ -216,7 +218,7 @@ const LoginForm = () => {
           </button>
         </div>
         <form
-          className="flex flex-col gap-[40px] mt-[30px]"
+          className="flex flex-col gap-[35px] mt-[30px]"
           onSubmit={handleSubmit(onSubmit)}
         >
           <InputCardPhone />

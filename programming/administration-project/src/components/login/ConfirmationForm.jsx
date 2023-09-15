@@ -50,7 +50,7 @@ const ConfirmationForm = ({ dataUser }) => {
 
   const onSubmit = async (data, event) => {
     event.preventDefault();
-    if (dataUser.code == data.code) {
+    if ((dataUser.code = data.code)) {
       if (dataUser.method == "client") {
         axios({
           method: "POST",
@@ -139,13 +139,14 @@ const ConfirmationForm = ({ dataUser }) => {
           Введите код из смс
         </h1>
         <form
-          className="flex flex-col gap-[40px] mt-[30px]"
+          className="flex flex-col gap-[35px] mt-[30px]"
           onSubmit={handleSubmit(onSubmit)}
         >
           <InputCardCode />
           <input
             type="submit"
             value="Ввести"
+            name="submit button"
             className="bg-primary p-4 rounded-[8px] text-white font-medium
                 ease duration-300 hover:bg-hover cursor-pointer mt-[15px]"
             id="submit_btn"

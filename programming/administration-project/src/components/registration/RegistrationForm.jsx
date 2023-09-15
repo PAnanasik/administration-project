@@ -59,10 +59,9 @@ const RegistrationForm = () => {
           dataUser: dataMain,
         }));
         setRedirection(true);
-        dataMain.code = response.data.code;
-        console.log(dataMain)
       })
       .catch(function (response) {
+        console.log(response)
         useShowError({
           error: "Пользователь с этим номером телефона уже существует",
         });
@@ -220,6 +219,7 @@ const RegistrationForm = () => {
           onInput={handleInput}
           {...register("email", {
             pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+            required: "Поле обязательно"
           })}
         />
         {active && <InputIcon prop={2} />}
@@ -312,7 +312,7 @@ const RegistrationForm = () => {
           </button>
         </div>
         <form
-          className="flex flex-col gap-[40px]"
+          className="flex flex-col gap-[35px]"
           onSubmit={handleSubmit(registration)}
         >
           <InputCardPhone />

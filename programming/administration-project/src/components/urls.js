@@ -8,9 +8,13 @@ const ordersUrl = `${API_KEY}/api/v1/partner_purchases_order/`;
 const sendActUrl = `${API_KEY}/api/v1/send_act/`;
 const sendDocumentUrl = `${API_KEY}/api/v1/send_payment_assignment/`;
 
-const registrationCodeUrl = `${API_KEY}/auth/send_code/`;
+const registrationCodeUrl = `${API_KEY}/api/v1/code_reset_password/`;
 const registrationClientUrl = `${API_KEY}/auth/registration_client/`;
 const registrationPartnerUrl = `${API_KEY}/auth/registration_partner/`;
+const forgotCodeUrl = `${API_KEY}/api/v1/code_confirmed_reset_password/`;
+const resetPasswordUrl = `${API_KEY}/api/v1/reset_password/`;
+const sendEmailUrl = `${API_KEY}/api/v1/send_code_email/`;
+
 const loginUrl = `${API_KEY}/auth/token/login/`;
 
 const clientUrl = `${API_KEY}/api/v1/client/`;
@@ -48,4 +52,7 @@ export {
   ordersUrl,
   sendActUrl,
   sendDocumentUrl,
+  forgotCodeUrl,
+  resetPasswordUrl,
+  sendEmailUrl,
 };

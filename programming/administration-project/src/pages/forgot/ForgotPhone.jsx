@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
-import ForgotPhoneForm from '../components/forgot/ForgotPhoneForm'
-import { authReg } from '../assets'
-import { ResponseContext } from '../App';
-import { ErrorMessage } from '../components';
+import ForgotPhoneForm from '../../components/forgot/ForgotPhoneForm'
+import { authReg } from '../../assets'
+import { ResponseContext } from '../../App';
+import { ErrorMessage } from '../../components';
 
 const ForgotPhone = () => {
   const { responseAuth } = useContext(ResponseContext);
