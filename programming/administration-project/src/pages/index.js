@@ -10,6 +10,7 @@ import ClientPartnersList from "./client-sidebar/ClientPartnersList";
 import PartnerAddReceipt from "./partner-sidebar/PartnerAddReceipt";
 import PartnerReceipts from "./partner-sidebar/PartnerReceipts";
 import ConfirmationForgot from "./forgot/ConfirmationForgot";
+import ConfirmEmail from "./confirmemail/ConfirmEmail";
 
 export {
   Registration,
@@ -24,4 +25,5 @@ export {
   PartnerAddReceipt,
   PartnerReceipts,
   ConfirmationForgot,
+  ConfirmEmail,
 };

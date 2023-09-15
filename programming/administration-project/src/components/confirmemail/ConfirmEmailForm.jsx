@@ -1,14 +1,14 @@
 import { styles } from "../../styles";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { ResponseContext } from "../../App";
-import { useContext, useState, useEffect } from "react";
-import { mailInput, nameInput, passwordInput, phoneInput } from "../../assets";
+import { useState, useEffect, useContext } from "react";
+import { mailInput } from "../../assets";
 import axios from "axios";
-import { registrationClientUrl, registrationPartnerUrl } from "../urls";
-
-const ConfirmationForm = ({ dataUser }) => {
+import { confirmEmailUrl } from "../urls";
+import { ResponseContext } from "../../App";
+const ConfirmEmailForm = () => {
   const { setResponseAuth } = useContext(ResponseContext);
+  const userData = JSON.parse(window.localStorage.getItem("userData"));
   const [redirection, setRedirection] = useState(false);
   const navigate = useNavigate();
 
@@ -28,8 +28,35 @@ const ConfirmationForm = ({ dataUser }) => {
     );
   };
 
+  const onSubmit = async (data, event) => {
+    event.preventDefault();
+    axios({
+      method: "PATCH",
+      url: `${confirmEmailUrl}`,
+      data: {
+        email: `${userData.email}`,
+        code: `${data.code}`,
+      },
+    })
+      .then(function (response) {
+        window.localStorage.setItem("verified", true)
+        setRedirection(true);
+      })
+      .catch(function (response) {
+        console.log(response);
+        useShowError({ error: "Неправильный код" });
+      });
+    reset();
+  };
+
+  useEffect(() => {
+    if (redirection) {
+      navigate("/");
+    }
+  }, [redirection]);
+
   const InputIcon = ({ prop }) => {
-    const array = [phoneInput, nameInput, mailInput, passwordInput];
+    const array = [mailInput];
     return (
       <img
         src={array[prop]}
@@ -47,51 +74,6 @@ const ConfirmationForm = ({ dataUser }) => {
   } = useForm({
     mode: "onBlur",
   });
-
-  const onSubmit = async (data, event) => {
-    event.preventDefault();
-    if ((dataUser.code = data.code)) {
-      if (dataUser.method == "client") {
-        axios({
-          method: "POST",
-          url: `${registrationClientUrl}`,
-          data: dataUser,
-        })
-          .then(function (response) {
-            setRedirection(true);
-          })
-          .catch(function (response) {
-            console.log(response);
-            useShowError({ error: "Произошла ошибка" });
-          });
-
-        reset();
-      } else if (dataUser.method == "company") {
-        axios({
-          method: "POST",
-          url: `${registrationPartnerUrl}`,
-          data: dataUser,
-        })
-          .then(function (response) {
-            setRedirection(true);
-            console.log(response);
-          })
-          .catch(function (response) {
-            console.log(response);
-            useShowError({ error: "Произошла ошибка" });
-          });
-        reset();
-      }
-    } else {
-      useShowError({ error: "Неправильный код" });
-    }
-  };
-
-  useEffect(() => {
-    if (redirection) {
-      navigate("/");
-    }
-  }, [redirection]);
 
   const InputCardCode = () => {
     const [active, setActive] = useState(true);
@@ -136,7 +118,7 @@ const ConfirmationForm = ({ dataUser }) => {
           Подтверждение
         </h1>
         <h1 className={`${styles.sectionSubText} text-center`}>
-          Введите код из смс
+          Введите код с почты
         </h1>
         <form
           className="flex flex-col gap-[35px] mt-[30px]"
@@ -145,27 +127,16 @@ const ConfirmationForm = ({ dataUser }) => {
           <InputCardCode />
           <input
             type="submit"
-            value="Ввести"
+            value="Подтвердить"
             name="submit button"
             className="bg-primary p-4 rounded-[8px] text-white font-medium
-                ease duration-300 hover:bg-hover cursor-pointer mt-[15px]"
+                    ease duration-300 hover:bg-hover cursor-pointer mt-[15px]"
             id="submit_btn"
           />
-          <div className="flex mb-1 justify-center text-center">
-            <p>
-              Уже есть аккант?{" "}
-              <a
-                href="/"
-                className="text-primary underline underline-offset-4"
-              >
-                Войдите
-              </a>
-            </p>
-          </div>
         </form>
       </div>
     </section>
   );
 };
 
-export default ConfirmationForm;
+export default ConfirmEmailForm;

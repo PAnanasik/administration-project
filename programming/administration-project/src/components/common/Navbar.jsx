@@ -1,7 +1,12 @@
 import { avatar, close, menuNav, notification, refresh } from "../../assets";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { clientUrl, notificationUrl, removeNotificationUrl, sendEmailUrl } from "../urls";
+import {
+  clientUrl,
+  notificationUrl,
+  removeNotificationUrl,
+  sendEmailUrl,
+} from "../urls";
 import { styles } from "../../styles";
 import { ResponseContext } from "../../App";
 
@@ -40,14 +45,12 @@ const Navbar = () => {
       withCredentials: true,
     })
       .then(function (response) {
-        console.log(response)
+        console.log(response);
       })
       .catch(function (response) {
         console.log(response);
       });
-
-    window.location.pathname = "/";
-    localStorage.clear();
+    window.location.pathname = "/confirmemail";
   }
 
   useEffect(() => {
@@ -223,6 +226,7 @@ const Navbar = () => {
                 <h2 className="font-medium text-[18px] mt-[15px] text-center">
                   {userData.fio || "Без ФИО"}
                 </h2>
+                {verified ? <div>Почта подтверждена</div> : <div>Почта не подтверждена</div>}
               </div>
             </div>
             <div className="pt-[20px] w-full h-full flex flex-col gap-[20px]">

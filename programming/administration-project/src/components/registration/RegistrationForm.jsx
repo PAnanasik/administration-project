@@ -61,7 +61,7 @@ const RegistrationForm = () => {
         setRedirection(true);
       })
       .catch(function (response) {
-        console.log(response)
+        console.log(response);
         useShowError({
           error: "Пользователь с этим номером телефона уже существует",
         });
@@ -219,7 +219,7 @@ const RegistrationForm = () => {
           onInput={handleInput}
           {...register("email", {
             pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            required: "Поле обязательно"
+            required: "Поле обязательно",
           })}
         />
         {active && <InputIcon prop={2} />}

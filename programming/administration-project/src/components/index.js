@@ -11,6 +11,11 @@ import DashboardPartners from "./client/DashboardPartners";
 import DashboardPartner from "./partner/DashboardPartner";
 import DashboardReceipts from "./partner/DashboardReceipts";
 import DashboardReceiptAdd from "./partner/DashboardReceiptAdd";
+import ConfirmEmailForm from "./confirmemail/ConfirmEmailForm";
+import ConfirmationFormForgot from "./forgot/ConfirmationFormForgot";
+import ForgotPhoneForm from "./forgot/ForgotPhoneForm";
+import NewPasswordForm from "./forgot/NewPasswordForm";
+import ConfirmationForm from "./login/ConfirmationForm";
 import ErrorMessage from "./common/ErrorMessage";
 
 export {
@@ -28,4 +33,9 @@ export {
   DashboardReceiptAdd,
   DashboardAllPartners,
   DashboardPartners,
+  ConfirmEmailForm,
+  ConfirmationForm,
+  ConfirmationFormForgot,
+  ForgotPhoneForm,
+  NewPasswordForm,
 };

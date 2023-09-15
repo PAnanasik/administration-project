@@ -11,6 +11,7 @@ import {
   PartnerReceipts,
   Confirmation,
   ConfirmationForgot,
+  ConfirmEmail,
 } from "./pages/index.js";
 import ProtectedRoutes from "./ProtectedRoutes.jsx";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -57,6 +58,7 @@ function App() {
           <Route path="/forgot" element={<ForgotPhone />} />
           <Route path="/codeforgot" element={<ConfirmationForgot phoneUser={responseAuth.phoneUser} />} />
           <Route path="/newpassword" element={<NewPassword phoneUser={responseAuth.phoneUser} codeUser={responseAuth.codeUser} />} />
+          <Route path="/confirmemail" element={<ConfirmEmail />} />
           <Route element={<ProtectedRoutes />}>
             <Route path="/dashboardclient" element={<Client />} />
             <Route
