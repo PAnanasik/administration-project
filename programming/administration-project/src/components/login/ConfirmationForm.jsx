@@ -61,7 +61,6 @@ const ConfirmationForm = ({ dataUser }) => {
             setRedirection(true);
           })
           .catch(function (response) {
-            console.log(response);
             useShowError({ error: "Произошла ошибка" });
           });
 
@@ -74,10 +73,8 @@ const ConfirmationForm = ({ dataUser }) => {
         })
           .then(function (response) {
             setRedirection(true);
-            console.log(response);
           })
           .catch(function (response) {
-            console.log(response);
             useShowError({ error: "Произошла ошибка" });
           });
         reset();

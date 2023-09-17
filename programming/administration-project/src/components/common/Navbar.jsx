@@ -35,6 +35,22 @@ const Navbar = () => {
     setTimeout(() => setShow(false), 5000);
   };
 
+  const useShowSuccess = ({ success }) => {
+    setResponseAuth((prev) => ({
+      ...prev,
+      successMessage: `${success}`,
+      showSuccessMessage: true,
+    }));
+    setTimeout(
+      () =>
+        setResponseAuth((prev) => ({
+          ...prev,
+          showSuccessMessage: false,
+        })),
+      5000
+    );
+  };
+
   function handleSend() {
     axios({
       method: "POST",
@@ -45,12 +61,8 @@ const Navbar = () => {
       },
       withCredentials: true,
     })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (response) {
-        console.log(response);
-      });
+      .then(function (response) {})
+      .catch(function (response) {});
     window.location.pathname = "/confirmemail";
   }
 
@@ -65,7 +77,6 @@ const Navbar = () => {
         const responseState = response.data[0].notifications;
         setNotificationArray(responseState);
       } catch (error) {
-        console.log(error);
         useShowError({ error: "Не удалось вывести список покупок" });
       }
     };
@@ -83,9 +94,7 @@ const Navbar = () => {
       .then(function (response) {
         setBonus(response.data[0].bonuses);
       })
-      .catch(function (response) {
-        console.log(response);
-      });
+      .catch(function (response) {});
   }, [bonus]);
 
   const refreshBonuses = () => {
@@ -98,9 +107,7 @@ const Navbar = () => {
       .then(function (response) {
         setBonus(response.data[0].bonuses);
       })
-      .catch(function (response) {
-        console.log(response);
-      });
+      .catch(function (response) {});
   };
 
   function handleLogout() {
@@ -136,18 +143,34 @@ const Navbar = () => {
           .then(function (response) {
             setState(response);
           })
-          .catch(function (response) {
-            console.log(response);
-          });
+          .catch(function (response) {});
       };
 
       useEffect(() => {
-        // console.log([...document.querySelectorAll('.border-primary')])
         [...document.querySelectorAll("#assigment")].map((item) => {
-          item.onclick = function(event) {
-            event.preventDefault()
-            document.getElementById(`${item.parentElement.parentElement.childNodes[1].id}`).click()
-            return false
+          const partnerName =
+            item.parentElement.parentElement.childNodes[0].textContent
+              .replace(/[^а-я]+/gi, " ")
+              .trim()
+              .split(" ")[1];
+          item.onclick = function () {
+            axios({
+              method: "POST",
+              url: `http://localhost:8000/api/v1/withdraw_bonuses_confirm/${partnerName}/`,
+              headers: { Authorization: `token ${token}` },
+              withCredentials: true,
+            })
+              .then(function (response) {
+                useShowSuccess({ success: "Возврат одобрен!" })
+                document
+                  .getElementById(
+                    `${item.parentElement.parentElement.childNodes[1].id}`
+                  )
+                  .click();
+              })
+              .catch(function (response) {
+                useShowError({ error: "Не удалось совершить возврат" })
+              });
           };
         });
       });

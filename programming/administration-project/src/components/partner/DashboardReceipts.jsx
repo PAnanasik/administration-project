@@ -72,7 +72,7 @@ const DashboardReceipts = ({ token }) => {
       is_confirmed,
       bonuses_spent,
       total_amount,
-      custom_goods
+      custom_goods,
     }) => {
       const [expanded, setExpanded] = useState(false);
       const SendDocument = ({ number }) => {
@@ -107,7 +107,6 @@ const DashboardReceipts = ({ token }) => {
               useShowSuccess({ success: "Документ отправлен успешно!" });
             })
             .catch(function (response) {
-              console.log(response);
               useShowError({ error: "Не удалось отправить документ" });
             });
         };
@@ -170,8 +169,7 @@ const DashboardReceipts = ({ token }) => {
           formData.append("cheque_number", number);
           formData.append("document", file);
 
-
-          console.log(...formData)
+          console.log(...formData);
           axios(sendActUrl, {
             method: "PUT",
             headers: {
@@ -188,7 +186,6 @@ const DashboardReceipts = ({ token }) => {
             })
             .catch(function (response) {
               useShowError({ error: "Не удалось отправить файл" });
-              console.log(response);
             });
         };
         return (

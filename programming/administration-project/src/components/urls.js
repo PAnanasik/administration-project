@@ -12,6 +12,7 @@ const registrationCodeUrl = `${API_KEY}/api/v1/send_code_phone/`;
 const registrationClientUrl = `${API_KEY}/auth/registration_client/`;
 const registrationPartnerUrl = `${API_KEY}/auth/registration_partner/`;
 const forgotCodeUrl = `${API_KEY}/api/v1/code_confirmed_reset_password/`;
+const resetPasswordCodeUrl = `${API_KEY}/api/v1/send_code_reset_password/`;
 const resetPasswordUrl = `${API_KEY}/api/v1/reset_password/`;
 const sendEmailUrl = `${API_KEY}/api/v1/send_code_email/`;
 const confirmEmailUrl = `${API_KEY}/api/v1/confirmed_email/`;
@@ -59,4 +60,5 @@ export {
   sendEmailUrl,
   confirmEmailUrl,
   addNotificationChoiseUrl,
+  resetPasswordCodeUrl,
 };

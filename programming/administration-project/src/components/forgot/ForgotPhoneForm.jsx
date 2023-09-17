@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useForm } from "react-hook-form";
-import { registrationCodeUrl } from "../urls";
+import { registrationCodeUrl, resetPasswordCodeUrl } from "../urls";
 import { styles } from "../../styles";
 import { useContext, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +51,7 @@ const ForgotPhoneForm = () => {
   const codeSend = async (dataMain) => {
     await axios({
       method: "POST",
-      url: `${registrationCodeUrl}`,
+      url: `${resetPasswordCodeUrl}`,
       headers: {
         "Content-Type": "application/json",
       },
@@ -67,10 +67,10 @@ const ForgotPhoneForm = () => {
         setRedirection(true);
       })
       .catch(function (response) {
+        console.log(response)
         useShowError({
           error: "Пользователь не найден",
         });
-        console.log(response);
       });
   };
 
@@ -92,7 +92,7 @@ const ForgotPhoneForm = () => {
     }
 
     return (
-      <div className="relative h-[60px] w-full">
+      <div className="relative h-12 w-full">
         <input
           type="text"
           className={`${
@@ -124,12 +124,12 @@ const ForgotPhoneForm = () => {
 
   return (
     <section className="md:w-3/5 w-full lg:h-full h-[100vh] flex justify-center items-center px-[20px] absolute right-0 top-0">
-      <div className="lg:min-w-[600px] min-w-[200px]">
+      <div className="sm:min-w-[600px] min-w-[270px]">
         <h1 className={`${styles.sectionHeadText} text-center`}>
           Восстановление
         </h1>
         <h1 className={`${styles.sectionSubText} text-center`}>
-          Введите вашу почту
+          Введите ваш номер телефона
         </h1>
         <form
           className="flex flex-col gap-[35px] mt-[30px]"

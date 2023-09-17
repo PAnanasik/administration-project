@@ -43,7 +43,6 @@ const ConfirmEmailForm = () => {
         setRedirection(true);
       })
       .catch(function (response) {
-        console.log(response);
         useShowError({ error: "Неправильный код" });
       });
     reset();

@@ -77,12 +77,10 @@ const DashboardReceiptAdd = ({ token }) => {
         })
           .then(function (response) {})
           .catch(function (response) {
-            console.log(response);
             useShowError({ error: "Не удалось отправить уведомление" });
           });
       })
       .catch(function (response) {
-        console.log(response);
         useShowError({ error: "Не удалось добавить покупку (проверьте существование пользователя и его бонусы)" });
       });
   };

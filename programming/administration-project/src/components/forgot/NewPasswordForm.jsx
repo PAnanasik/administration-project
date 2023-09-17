@@ -49,7 +49,6 @@ const NewPasswordForm = ({ codeUser, phoneUser }) => {
   });
 
   const codeSend = async (data) => {
-    console.log(data);
     if (data.newpassword == data.newpasswordrepeat) {
       await axios({
         method: "PATCH",
@@ -65,13 +64,11 @@ const NewPasswordForm = ({ codeUser, phoneUser }) => {
       })
         .then(function (response) {
             setRedirection(true)
-            console.log(response)
         })
         .catch(function (response) {
           useShowError({
             error: "Произошла ошибка",
           });
-          console.log(response);
         });
     } else {
       useShowError({ error: "Пароли не совпадают" });
@@ -165,7 +162,7 @@ const NewPasswordForm = ({ codeUser, phoneUser }) => {
 
   return (
     <section className="md:w-3/5 w-full lg:h-full h-[100vh] flex justify-center items-center px-[20px] absolute right-0 top-0">
-      <div className="lg:min-w-[600px] min-w-[200px]">
+      <div className="sm:min-w-[600px] min-w-[270px]">
         <h1 className={`${styles.sectionHeadText} text-center`}>
           Восстановление
         </h1>
@@ -183,7 +180,7 @@ const NewPasswordForm = ({ codeUser, phoneUser }) => {
             value="Ввести"
             name="submit button"
             className="bg-primary p-4 rounded-[8px] text-white font-medium
-                  ease duration-300 hover:bg-hover cursor-pointer mt-[15px]"
+                  ease duration-300 hover:bg-hover cursor-pointer mt-[15px] h-12"
             id="submit_btn"
           />
           <div className="flex flex-col mb-1 justify-center text-center">

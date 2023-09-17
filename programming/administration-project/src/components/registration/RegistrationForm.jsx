@@ -1,7 +1,13 @@
 import { useState, useEffect, useContext } from "react";
 import { styles } from "../../styles";
 import { useForm } from "react-hook-form";
-import { mailInput, nameInput, passwordInput, phoneInput, surnameDashboard } from "../../assets";
+import {
+  mailInput,
+  nameInput,
+  passwordInput,
+  phoneInput,
+  surnameDashboard,
+} from "../../assets";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ResponseContext } from "../../App";
@@ -61,7 +67,6 @@ const RegistrationForm = () => {
         setRedirection(true);
       })
       .catch(function (response) {
-        console.log(response);
         useShowError({
           error: "Пользователь с этим номером телефона уже существует",
         });
@@ -75,7 +80,13 @@ const RegistrationForm = () => {
   }, [redirection]);
 
   const InputIcon = ({ prop }) => {
-    const array = [phoneInput, nameInput, mailInput, passwordInput, surnameDashboard];
+    const array = [
+      phoneInput,
+      nameInput,
+      mailInput,
+      passwordInput,
+      surnameDashboard,
+    ];
     return (
       <img
         src={array[prop]}
@@ -322,7 +333,7 @@ const RegistrationForm = () => {
         matches ? "items-center" : "items-start"
       } px-[20px] my-[30px]`}
     >
-      <div className="lg:min-w-[600px] min-w-[200px]">
+      <div className="sm:min-w-[600px] min-w-[270px]">
         <h1 className={`${styles.sectionHeadText} text-center`}>
           Зарегистрироваться
         </h1>

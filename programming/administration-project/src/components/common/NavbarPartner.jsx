@@ -28,7 +28,6 @@ const NavbarPartner = () => {
         const responseState = response.data[0].notifications;
         setNotificationArray(responseState);
       } catch (error) {
-        console.log(error);
       }
     };
 
@@ -46,10 +45,8 @@ const NavbarPartner = () => {
       withCredentials: true,
     })
       .then(function (response) {
-        console.log(response);
       })
       .catch(function (response) {
-        console.log(response);
       });
     window.location.pathname = "/confirmemail";
   }
@@ -99,7 +96,6 @@ const NavbarPartner = () => {
             setState(response);
           })
           .catch(function (response) {
-            console.log(response);
           });
       };
 

@@ -203,12 +203,10 @@ const DashboardPartner = ({ token }) => {
         })
           .then(function (response) {})
           .catch(function (response) {
-            console.log(response);
             useShowError({ error: "Не удалось отправить уведомление" });
           });
       })
       .catch(function (response) {
-        console.log(response);
         useShowError({ error: "Не удалось добавить клиента" });
       });
   };
@@ -304,7 +302,6 @@ const DashboardPartner = ({ token }) => {
           setModal(false);
         })
         .catch(function (response) {
-          console.log(response);
           useShowError({ error: "Не удалось удалить клиента" });
         });
     };
@@ -327,10 +324,9 @@ const DashboardPartner = ({ token }) => {
             useShowSuccess({
               success: "Уведомление о списании успешно отправлено!",
             });
-            console.log(response)
+            console.log(response);
           })
           .catch(function (response) {
-            console.log(response);
             useShowError({ error: "Не удалось отправить уведомление" });
           });
       } else {

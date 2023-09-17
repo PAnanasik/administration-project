@@ -59,19 +59,15 @@ const LoginForm = () => {
               "verified",
               response.data[0].is_verified_email
             );
-            window.localStorage.setItem("theme", "light");
             setRedirection(true);
-            console.log(response);
           })
           .catch(function (response) {
-            console.log(response);
             window.localStorage.removeItem("loggedIn");
             useShowError({ error: "Проверьте правильность выбранной роли" });
           });
       })
 
       .catch(function (response) {
-        console.log(response);
         setResponseAuth({ loggedIn: false });
         useShowError({ error: "Проверьте правильность введенных данных" });
       });
@@ -194,7 +190,7 @@ const LoginForm = () => {
 
   return (
     <section className="bg-white md:w-3/5 w-full lg:h-full h-[100vh] flex justify-center items-center px-[20px] absolute right-0 top-0">
-      <div className="lg:min-w-[600px] min-w-[200px]">
+      <div className="sm:min-w-[600px] min-w-[270px]">
         <h1 className={`${styles.sectionHeadText} text-center`}>
           Войти в аккаунт
         </h1>

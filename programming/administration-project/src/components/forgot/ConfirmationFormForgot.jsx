@@ -116,7 +116,7 @@ const ConfirmationFormForgot = ({ phoneUser }) => {
 
   return (
     <section className="md:w-3/5 w-full lg:h-full h-[100vh] flex justify-center items-center px-[20px] absolute right-0 top-0">
-      <div className="lg:min-w-[600px] min-w-[200px]">
+      <div className="sm:min-w-[600px] min-w-[270px]">
         <h1 className={`${styles.sectionHeadText} text-center`}>
           Подтверждение
         </h1>
