@@ -56,7 +56,6 @@ const DashboardReceipts = ({ token }) => {
           const responseState = response.data;
           setState(responseState);
         } catch (error) {
-          console.log(error);
           useShowError({ error: "Не удалось вывести список покупок" });
         }
       };
@@ -169,7 +168,6 @@ const DashboardReceipts = ({ token }) => {
           formData.append("cheque_number", number);
           formData.append("document", file);
 
-          console.log(...formData);
           axios(sendActUrl, {
             method: "PUT",
             headers: {

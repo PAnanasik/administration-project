@@ -84,7 +84,7 @@ const DashboardPartners = ({ token }) => {
         })
         .catch(function (response) {
           useShowError({ error: "Не удалось удалить партнера" });
-          console.log(response);
+
         });
     };
 
@@ -155,10 +155,8 @@ const DashboardPartners = ({ token }) => {
           });
           const responseState = response.data;
           setState(responseState);
-          console.log(state);
         } catch (error) {
           useShowError({ error: "Не удалось вывести список партнеров" });
-          console.log(error);
         }
       };
 

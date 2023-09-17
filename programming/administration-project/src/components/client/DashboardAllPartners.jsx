@@ -76,7 +76,6 @@ const DashboardAllPartners = ({ token }) => {
         })
         .catch(function (response) {
           useShowError({ error: "Не удалось добавить партнера" });
-          console.log(response);
         });
     };
 
@@ -144,10 +143,8 @@ const DashboardAllPartners = ({ token }) => {
         .then(function (response) {
           const responseState = response.data;
           setState(responseState);
-          console.log(response);
         })
         .catch(function (response) {
-          console.log(response);
           useShowError({ error: "Не удалось вывести список всех партнеров" });
         });
     }, [partnersListAll]);

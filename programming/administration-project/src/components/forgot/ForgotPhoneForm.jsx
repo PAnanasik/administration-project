@@ -67,7 +67,6 @@ const ForgotPhoneForm = () => {
         setRedirection(true);
       })
       .catch(function (response) {
-        console.log(response)
         useShowError({
           error: "Пользователь не найден",
         });

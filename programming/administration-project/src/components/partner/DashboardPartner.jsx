@@ -324,7 +324,6 @@ const DashboardPartner = ({ token }) => {
             useShowSuccess({
               success: "Уведомление о списании успешно отправлено!",
             });
-            console.log(response);
           })
           .catch(function (response) {
             useShowError({ error: "Не удалось отправить уведомление" });
@@ -473,7 +472,6 @@ const DashboardPartner = ({ token }) => {
           const responseState = response.data;
           setState(responseState);
         } catch (error) {
-          console.log(error);
           useShowError({ error: "Не удалось вывести список клиентов" });
         }
       };

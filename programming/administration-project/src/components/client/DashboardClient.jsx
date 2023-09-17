@@ -89,7 +89,6 @@ const DashboardClient = () => {
           setModal(false);
         })
         .catch(function (response) {
-          console.log(response);
           useShowError({ error: "Не удалось совершить возврат (чек не подтвержден)" });
         });
     };
@@ -157,9 +156,7 @@ const DashboardClient = () => {
           });
           const responseState = response.data;
           setState(responseState);
-          console.log(state);
         } catch (error) {
-          console.log(error);
           useShowError({ error: "Не удалось вывести список покупок" });
         }
       };
