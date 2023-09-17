@@ -59,6 +59,7 @@ const LoginForm = () => {
               "verified",
               response.data[0].is_verified_email
             );
+            window.localStorage.setItem("theme", "light");
             setRedirection(true);
             console.log(response);
           })

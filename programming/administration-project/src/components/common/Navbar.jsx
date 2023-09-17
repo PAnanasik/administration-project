@@ -141,14 +141,24 @@ const Navbar = () => {
           });
       };
 
+      useEffect(() => {
+        // console.log([...document.querySelectorAll('.border-primary')])
+        [...document.querySelectorAll("#assigment")].map((item) => {
+          item.onclick = function(event) {
+            event.preventDefault()
+            document.getElementById(`${item.parentElement.parentElement.childNodes[1].id}`).click()
+            return false
+          };
+        });
+      });
+
       return (
         <div className="relative w-full min-h-[60px] bg-white pl-[10px] flex flex-col justify-center rounded-[8px]">
           <p
             className="font-medium text-[14px] md:max-w-[340px] sm:max-w-[650px] xs:max-w-[400px] max-w-[240px] w-full"
             id="notification"
             dangerouslySetInnerHTML={{ __html: text }}
-          >
-          </p>
+          ></p>
           <button
             className="absolute right-[10px] ease duration-300 p-2 rounded-full hover:bg-primary
           hover:bg-opacity-[0.2]"
@@ -275,7 +285,7 @@ const Navbar = () => {
 
   return (
     <>
-      <div className="h-[80px] bg-white border-solid border-b-[1px] border-[#D2D2D2] fixed top-0 z-10 w-full">
+      <div className="bg-white h-[80px] border-solid border-b-[1px] border-[#D2D2D2] fixed top-0 z-10 w-full">
         <nav className="md:px-[30px] px-[15px] h-full max-w-[1640px] mx-auto">
           <div className="h-full flex flex-row md:justify-between justify-center items-center">
             <div className="flex gap-[20px]">

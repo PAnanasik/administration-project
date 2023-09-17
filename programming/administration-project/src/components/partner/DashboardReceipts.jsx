@@ -72,7 +72,9 @@ const DashboardReceipts = ({ token }) => {
       is_confirmed,
       bonuses_spent,
       total_amount,
+      custom_goods
     }) => {
+      const [expanded, setExpanded] = useState(false);
       const SendDocument = ({ number }) => {
         const [loading, setLoading] = useState(false);
         const [document, setDocument] = useState(null);
@@ -150,44 +152,75 @@ const DashboardReceipts = ({ token }) => {
         );
       };
 
-      const [expanded, setExpanded] = useState(false);
+      const SendFile = () => {
+        const handleFileChange = (e) => {
+          if (e.target.files) {
+            setFile(e.target.files[0]);
+          }
+        };
 
-      const handleFileChange = (e) => {
-        if (e.target.files) {
-          setFile(e.target.files[0]);
-        }
-      };
+        const [loading, setLoading] = useState(false);
+        const [file, setFile] = useState(null);
 
-      const [loading, setLoading] = useState(false);
-      const [file, setFile] = useState(null);
+        const submitFile = async (event) => {
+          event.preventDefault();
+          setLoading(true);
 
-      const submitFile = async () => {
-        const CancelToken = axios.CancelToken;
-        const source = CancelToken.source();
-        setLoading(true);
+          var formData = new FormData();
+          formData.append("cheque_number", number);
+          formData.append("document", file);
 
-        var formData = new FormData();
-        formData.append("cheque_number", number);
-        formData.append("document", file);
 
-        axios(sendActUrl, {
-          method: "PUT",
-          headers: {
-            Authorization: `token ${token}`,
-          },
-          data: formData,
-          type: "POST",
-          contentType: false,
-          processData: false,
-          cancelToken: source.token,
-        })
-          .then(function (response) {
-            setLoading(false);
-            useShowSuccess({ success: "Файл отправлен успешно!" });
+          console.log(...formData)
+          axios(sendActUrl, {
+            method: "PUT",
+            headers: {
+              Authorization: `token ${token}`,
+            },
+            data: formData,
+            type: "POST",
+            contentType: false,
+            processData: false,
           })
-          .catch(function (response) {
-            useShowError({ error: "Не удалось отправить файл" });
-          });
+            .then(function (response) {
+              setLoading(false);
+              useShowSuccess({ success: "Файл отправлен успешно!" });
+            })
+            .catch(function (response) {
+              useShowError({ error: "Не удалось отправить файл" });
+              console.log(response);
+            });
+        };
+        return (
+          <form onSubmit={submitFile} id="form-order">
+            <label htmlFor="uploadInput">
+              <div
+                className="md:max-w-[450px] w-full h-[40px] border-primary border-[1px] border-solid rounded-[8px] flex items-center
+                        justify-center relative ease duration-300 hover:border-[#9dbefc]"
+              >
+                {(file && `${file.name}`) || "Выберите файл"}
+                <input
+                  type="file"
+                  id="uploadInput"
+                  className="fileInput"
+                  accept=".pdf, .doc, .docx"
+                  onChange={handleFileChange}
+                />
+              </div>
+            </label>
+            <button
+              type="submit"
+              name="submit file"
+              className="bg-primary p-2 rounded-[8px] text-white font-medium
+                            md:max-w-[450px] w-full ease duration-300 hover:bg-hover cursor-pointer mt-[10px]"
+              id="submit_file"
+            >
+              {loading
+                ? "Загрузка файла..."
+                : "Прикрепить акт приема-передачи товара"}
+            </button>
+          </form>
+        );
       };
 
       const HistoryItemDesc = () => {
@@ -196,7 +229,28 @@ const DashboardReceipts = ({ token }) => {
             <p>Цена: {amount}</p>
             <p>Списанные бонусы: {bonuses_spent}</p>
             <p>Дата покупки: {date}</p>
-            <p className="font-medium">Итоговая цена: {total_amount}</p>
+            <p>Итоговая цена: {total_amount}</p>
+            <div className="flex items-center gap-[8px]">
+              <p className="font-medium">Товар на заказ</p>
+              {custom_goods ? (
+                <input
+                  type="checkbox"
+                  name=""
+                  id=""
+                  className="w-4 h-4 pointer-events-none"
+                  readOnly
+                  checked
+                />
+              ) : (
+                <input
+                  type="checkbox"
+                  name=""
+                  id=""
+                  className="w-4 h-4 pointer-events-none"
+                  readOnly
+                />
+              )}
+            </div>
             <div className="flex items-center gap-[8px]">
               <p className="font-medium">Подтверждено</p>
               {is_confirmed ? (
@@ -219,34 +273,7 @@ const DashboardReceipts = ({ token }) => {
               )}
             </div>
             <SendDocument number={number} />
-            <form onSubmit={submitFile} id="form-order">
-              <label htmlFor="uploadInput">
-                <div
-                  className="md:max-w-[450px] w-full h-[40px] border-primary border-[1px] border-solid rounded-[8px] flex items-center
-                        justify-center relative ease duration-300 hover:border-[#9dbefc]"
-                >
-                  {(file && `${file.name}`) || "Выберите файл"}
-                  <input
-                    type="file"
-                    id="uploadInput"
-                    className="fileInput"
-                    accept=".pdf, .doc, .docx"
-                    onChange={handleFileChange}
-                  />
-                </div>
-              </label>
-              <button
-                type="submit"
-                name="submit file"
-                className="bg-primary p-2 rounded-[8px] text-white font-medium
-                            md:max-w-[450px] w-full ease duration-300 hover:bg-hover cursor-pointer mt-[10px]"
-                id="submit_file"
-              >
-                {loading
-                  ? "Загрузка файла..."
-                  : "Прикрепить акт приема-передачи товара"}
-              </button>
-            </form>
+            {custom_goods && <SendFile />}
           </div>
         );
       };
