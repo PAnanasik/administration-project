@@ -180,7 +180,7 @@ const NewPasswordForm = ({ codeUser, phoneUser }) => {
             value="Ввести"
             name="submit button"
             className="bg-primary p-4 rounded-[8px] text-white font-medium
-                  ease duration-300 hover:bg-hover cursor-pointer mt-[15px] h-12"
+                  ease duration-300 hover:bg-hover cursor-pointer mt-[15px]"
             id="submit_btn"
           />
           <div className="flex flex-col mb-1 justify-center text-center">
