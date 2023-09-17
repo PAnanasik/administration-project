@@ -14,6 +14,7 @@ const Navbar = () => {
   const token = window.localStorage.getItem("token");
   const userData = JSON.parse(window.localStorage.getItem("userData"));
   const verified = JSON.parse(window.localStorage.getItem("verified"));
+  // const verified = true;
 
   const { responseAuth, setResponseAuth } = useContext(ResponseContext);
 
@@ -142,8 +143,11 @@ const Navbar = () => {
 
       return (
         <div className="relative w-full min-h-[60px] bg-white pl-[10px] flex flex-col justify-center rounded-[8px]">
-          <p className="font-medium text-[14px] md:max-w-[340px] sm:max-w-[650px] xs:max-w-[400px] max-w-[240px] w-full">
-            {text}
+          <p
+            className="font-medium text-[14px] md:max-w-[340px] sm:max-w-[650px] xs:max-w-[400px] max-w-[240px] w-full"
+            id="notification"
+            dangerouslySetInnerHTML={{ __html: text }}
+          >
           </p>
           <button
             className="absolute right-[10px] ease duration-300 p-2 rounded-full hover:bg-primary
@@ -180,6 +184,7 @@ const Navbar = () => {
       z-20 border-solid border-[1px] border-[#D2D2D2] border-t-transparent p-4 flex flex-col gap-[15px] overflow-y-auto"
         id="menu"
       >
+        {!verified && <StinkyNotificationItem />}
         {notificationArray?.map((item, index) => (
           <NotificationItem key={index} text={item} />
         ))}
@@ -187,7 +192,6 @@ const Navbar = () => {
           (notificationArray?.length == 0 && verified)) && (
           <NoNotificationsText />
         )}
-        {!verified && <StinkyNotificationItem />}
       </div>
     );
   };
@@ -226,7 +230,11 @@ const Navbar = () => {
                 <h2 className="font-medium text-[18px] mt-[15px] text-center">
                   {userData.fio || "Без ФИО"}
                 </h2>
-                {verified ? <div>Почта подтверждена</div> : <div>Почта не подтверждена</div>}
+                {verified ? (
+                  <div>Почта подтверждена</div>
+                ) : (
+                  <div>Почта не подтверждена</div>
+                )}
               </div>
             </div>
             <div className="pt-[20px] w-full h-full flex flex-col gap-[20px]">
@@ -302,8 +310,10 @@ const Navbar = () => {
                   alt="notification-menu"
                   className="w-8 h-8 p-1"
                 />
-                {(notificationArray?.length >= 1 && notificationIcon) ||
-                  (!verified && <NotificationIcon />)}
+                {notificationArray?.length >= 1 && notificationIcon && (
+                  <NotificationIcon />
+                )}
+                {!verified && <NotificationIcon />}
               </button>
               <div className="flex gap-[5px] items-center">
                 <p className="md:text-[16px] md:block hidden text-[14px] font-medium w-full">{`${

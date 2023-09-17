@@ -55,9 +55,12 @@ const LoginForm = () => {
               JSON.stringify(response.data[0])
             );
             window.localStorage.setItem("method", partner);
-            window.localStorage.setItem("verified", response.data[0].is_verified_email)
+            window.localStorage.setItem(
+              "verified",
+              response.data[0].is_verified_email
+            );
             setRedirection(true);
-            console.log(response)
+            console.log(response);
           })
           .catch(function (response) {
             console.log(response);

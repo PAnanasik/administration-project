@@ -257,8 +257,10 @@ const NavbarPartner = () => {
                 alt="notification-menu"
                 className="w-8 h-8 p-1"
               />
-              {(notificationArray?.length >= 1 && notificationIcon) ||
-                (!verified && <NotificationIcon />)}
+              {notificationArray?.length >= 1 && notificationIcon && (
+                <NotificationIcon />
+              )}
+              {!verified && <NotificationIcon />}
             </button>
             <img
               src={avatar}

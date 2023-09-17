@@ -31,6 +31,7 @@ const notificationUrl = `${API_KEY}/api/v1/get_notifications/`;
 const removeNotificationUrl = `${API_KEY}/api/v1/delete_notification/`;
 
 const addNotificationClientUrl = `${API_KEY}/api/v1/add_notification_client/`;
+const addNotificationChoiseUrl = `${API_KEY}/api/v1/send_confirm_withdraw_bonuses/`;
 
 export {
   purchasesUrl,
@@ -57,4 +58,5 @@ export {
   resetPasswordUrl,
   sendEmailUrl,
   confirmEmailUrl,
+  addNotificationChoiseUrl,
 };

@@ -17,9 +17,11 @@ import { useForm } from "react-hook-form";
 import { ResponseContext } from "../../App";
 import axios from "axios";
 import {
+  addNotificationChoiseUrl,
   addNotificationClientUrl,
   getClientsListUrl,
   remove_addUrl,
+  withdrawBonusesUrl,
 } from "../urls";
 import { InView } from "react-intersection-observer";
 import Intro from "../common/Intro";
@@ -199,8 +201,7 @@ const DashboardPartner = ({ token }) => {
           },
           withCredentials: true,
         })
-          .then(function (response) {
-          })
+          .then(function (response) {})
           .catch(function (response) {
             console.log(response);
             useShowError({ error: "Не удалось отправить уведомление" });
@@ -279,6 +280,7 @@ const DashboardPartner = ({ token }) => {
 
   const ModalWindow = () => {
     const [dataBonus, setDataBonus] = useState(modalInfo.bonuses);
+    const [bonusWithdraw, setBonusWithdraw] = useState("");
 
     const removeClient = async (event) => {
       event.preventDefault();
@@ -307,28 +309,78 @@ const DashboardPartner = ({ token }) => {
         });
     };
 
+    const withdrawBonuses = async (event) => {
+      const url = '<a href="#">Одобрить</a>';
+      event.preventDefault();
+      if (bonusWithdraw != "" && Number(bonusWithdraw) > 0) {
+        axios({
+          method: "PUT",
+          url: `${addNotificationChoiseUrl}`,
+          headers: { Authorization: `token ${token}` },
+          data: {
+            bonuses: bonusWithdraw,
+            phone_client: `${modalInfo.phone}`,
+          },
+          withCredentials: true,
+        })
+          .then(function (response) {
+            useShowSuccess({
+              success: "Уведомление о списании успешно отправлено!",
+            });
+            console.log(response)
+          })
+          .catch(function (response) {
+            console.log(response);
+            useShowError({ error: "Не удалось отправить уведомление" });
+          });
+      } else {
+        useShowError({ error: "Невозможно ничего не списать" });
+      }
+    };
+
     return (
       <div
-        className="max-w-[560px] w-full h-[320px] bg-white fixed border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
+        className="max-w-[560px] w-full h-[360px] bg-white fixed border-solid border-[1px] border-[#D2D2D2] rounded-[12px]
         lg:bottom-[250px] bottom-[150px] left-0 right-0 mx-auto z-10 px-[30px]"
       >
-        <div className="mt-[40px] h-[230px] relative">
+        <div className="mt-[40px] h-[270px] relative">
           <h2 className="font-medium text-[20px]">
             Имя клиента: {modalInfo.name || "Без имени"}
           </h2>
           <div className="pt-[16px] flex flex-col">
             <form action="" className="flex flex-col">
-              <label htmlFor="bonuses">Количество бонусов: {dataBonus}</label>
-              <button
-                type="submit"
-                name="delete client button"
-                className="bg-red-500 p-2 rounded-[8px] text-white font-medium
-                                md:max-w-[250px] w-full ease duration-300 hover:bg-red-400 cursor-pointer mt-[20px]"
-                id="btn-error-handled"
-                onClick={removeClient}
-              >
-                Удалить клиента
-              </button>
+              <div className="flex flex-col">
+                <label htmlFor="bonuses">Количество бонусов: {dataBonus}</label>
+                <input
+                  type="text"
+                  onInput={(event) => setBonusWithdraw(event.target.value)}
+                  placeholder="Бонусов для списания"
+                  className="h-12 bg-input rounded-[8px] w-full px-3 text-[18px]"
+                  required
+                />
+              </div>
+              <div className="flex xs:flex-row flex-col xs:gap-[10px] gap-0">
+                <button
+                  type="submit"
+                  name="delete client button"
+                  className="bg-red-500 p-2 rounded-[8px] text-white font-medium
+                  w-full ease duration-300 hover:bg-red-400 cursor-pointer mt-[20px]"
+                  id="btn-error-handled"
+                  onClick={removeClient}
+                >
+                  Удалить клиента
+                </button>
+                <button
+                  type="submit"
+                  name="delete client button"
+                  className="bg-red-500 p-2 rounded-[8px] text-white font-medium
+                   w-full ease duration-300 hover:bg-red-400 cursor-pointer mt-[20px]"
+                  id="btn-error-handled"
+                  onClick={withdrawBonuses}
+                >
+                  Списать бонусы
+                </button>
+              </div>
             </form>
           </div>
           <button
