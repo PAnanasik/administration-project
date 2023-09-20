@@ -172,7 +172,7 @@ const DashboardPartner = ({ token }) => {
     handleSubmit,
     reset,
   } = useForm({
-    mode: "onBlur",
+    mode: "onSubmit",
   });
 
   const onSubmitAddClient = async (data, event) => {

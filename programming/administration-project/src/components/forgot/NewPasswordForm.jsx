@@ -45,7 +45,7 @@ const NewPasswordForm = ({ codeUser, phoneUser }) => {
     handleSubmit,
     reset,
   } = useForm({
-    mode: "onBlur",
+    mode: "onSubmit",
   });
 
   const codeSend = async (data) => {

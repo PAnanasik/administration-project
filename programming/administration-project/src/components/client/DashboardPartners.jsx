@@ -58,7 +58,7 @@ const DashboardPartners = ({ token }) => {
     formState: { errors: errorsDelete },
     handleSubmit: handleSubmitRemove,
   } = useForm({
-    mode: "onBlur",
+    mode: "onSubmit",
   });
 
   const PartnersItem = ({ name, token }) => {

@@ -91,7 +91,7 @@ const DashboardReceiptAdd = ({ token }) => {
     handleSubmit,
     reset,
   } = useForm({
-    mode: "onBlur",
+    mode: "onSubmit",
   });
 
   const InputIcon = ({ prop }) => {

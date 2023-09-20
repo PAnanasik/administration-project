@@ -45,7 +45,7 @@ const ForgotPhoneForm = () => {
     handleSubmit,
     reset,
   } = useForm({
-    mode: "onBlur",
+    mode: "onSubmit",
   });
 
   const codeSend = async (dataMain) => {

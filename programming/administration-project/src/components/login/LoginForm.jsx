@@ -78,7 +78,7 @@ const LoginForm = () => {
     formState: { errors },
     handleSubmit,
   } = useForm({
-    mode: "onBlur",
+    mode: "onSubmit",
   });
 
   const onSubmit = async (data, event) => {

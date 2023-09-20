@@ -45,7 +45,7 @@ const ConfirmationForm = ({ dataUser }) => {
     handleSubmit,
     reset,
   } = useForm({
-    mode: "onBlur",
+    mode: "onSubmit",
   });
 
   const onSubmit = async (data, event) => {

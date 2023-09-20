@@ -42,7 +42,7 @@ const RegistrationForm = () => {
     reset,
     setValue,
   } = useForm({
-    mode: "onBlur",
+    mode: "onSubmit",
     defaultValues: {
       method: "",
     },
@@ -370,7 +370,7 @@ const RegistrationForm = () => {
           <div className="flex gap-[10px] items-center">
             <input type="checkbox" className="w-4 h-4" required />
             <p>
-              Продолжая, вы принимаете какую-то там{" "}
+              Продолжая, вы принимаете{" "}
               <a href="#" className="text-primary underline underline-offset-4">
                 оферту
               </a>

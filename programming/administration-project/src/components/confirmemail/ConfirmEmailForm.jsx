@@ -71,7 +71,7 @@ const ConfirmEmailForm = () => {
     handleSubmit,
     reset,
   } = useForm({
-    mode: "onBlur",
+    mode: "onSubmit",
   });
 
   const InputCardCode = () => {
