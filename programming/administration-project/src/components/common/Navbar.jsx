@@ -4,6 +4,7 @@ import axios from "axios";
 import {
   clientUrl,
   notificationUrl,
+  refreshClientBonusesUrl,
   removeNotificationUrl,
   sendEmailUrl,
 } from "../urls";
@@ -99,13 +100,13 @@ const Navbar = () => {
 
   const refreshBonuses = () => {
     axios({
-      method: "GET",
-      url: `${clientUrl}`,
+      method: "PATCH",
+      url: `${refreshClientBonusesUrl}`,
       headers: { Authorization: `token ${token}` },
       withCredentials: true,
     })
       .then(function (response) {
-        setBonus(response.data[0].bonuses);
+        setBonus(response.data.bonuses);
       })
       .catch(function (response) {});
   };
@@ -161,7 +162,7 @@ const Navbar = () => {
               withCredentials: true,
             })
               .then(function (response) {
-                useShowSuccess({ success: "Возврат одобрен!" })
+                useShowSuccess({ success: "Возврат одобрен!" });
                 document
                   .getElementById(
                     `${item.parentElement.parentElement.childNodes[1].id}`
@@ -169,7 +170,7 @@ const Navbar = () => {
                   .click();
               })
               .catch(function (response) {
-                useShowError({ error: "Не удалось совершить возврат" })
+                useShowError({ error: "Не удалось совершить возврат" });
               });
           };
         });

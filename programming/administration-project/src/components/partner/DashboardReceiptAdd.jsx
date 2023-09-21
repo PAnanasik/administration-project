@@ -1,6 +1,6 @@
 import { styles } from "../../styles";
 import { useForm } from "react-hook-form";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   phoneInput,
   receipt,
@@ -81,7 +81,10 @@ const DashboardReceiptAdd = ({ token }) => {
           });
       })
       .catch(function (response) {
-        useShowError({ error: "Не удалось добавить покупку (проверьте существование пользователя и его бонусы)" });
+        useShowError({
+          error:
+            "Не удалось добавить покупку (проверьте существование пользователя и его бонусы)",
+        });
       });
   };
 
@@ -89,7 +92,6 @@ const DashboardReceiptAdd = ({ token }) => {
     register,
     formState: { errors },
     handleSubmit,
-    reset,
   } = useForm({
     mode: "onSubmit",
   });
@@ -111,82 +113,6 @@ const DashboardReceiptAdd = ({ token }) => {
         alt="phone"
         className="absolute right-[20px] top-[18px] w-6 h-6 opacity-[0.6]"
       />
-    );
-  };
-
-  const InputCardPhone = () => {
-    const [active, setActive] = useState(true);
-
-    function handleInput(event) {
-      if (event.target.value == 0) {
-        setActive(true);
-      } else {
-        setActive(false);
-      }
-    }
-    return (
-      <div className="relative h-[60px] w-full">
-        <input
-          type="tel"
-          className={`${
-            errors2?.phone_client ? styles.badInputStyles : styles.inputStyles
-          } relative`}
-          placeholder="Номер телефона"
-          onInput={handleInput}
-          pattern="[+][7]\d{3}\d{3}\d{2}\d{2}"
-          title="Используйте формат: +79046585851"
-          {...register2("phone_client", {
-            required: "Поле обязательно к заполнению",
-            minLength: 12,
-            maxLength: 12,
-          })}
-        />
-        {active && <InputIcon prop={0} />}
-        <div className="mt-1">
-          {errors2?.phone_client && (
-            <p className="text-red-500 text-[12px]">
-              {errors2?.phone_client?.message ||
-                "Длина номера 12 символов" ||
-                "Ошибка!"}
-            </p>
-          )}
-        </div>
-      </div>
-    );
-  };
-
-  const InputCardName = () => {
-    const [active, setActive] = useState(true);
-
-    function handleInput(event) {
-      if (event.target.value == 0) {
-        setActive(true);
-      } else {
-        setActive(false);
-      }
-    }
-    return (
-      <div className="relative h-[60px] w-full">
-        <input
-          type="text"
-          className={`${
-            errors2?.fio_client ? styles.badInputStyles : styles.inputStyles
-          }`}
-          placeholder="ФИО"
-          onInput={handleInput}
-          {...register2("fio_client", {
-            required: "Поле обязательно к заполнению",
-          })}
-        />
-        {active && <InputIcon prop={1} />}
-        <div className="mt-1">
-          {errors2?.fio_client && (
-            <p className="text-red-500 text-[12px]">
-              {errors2?.fio_client?.message || "Ошибка!"}
-            </p>
-          )}
-        </div>
-      </div>
     );
   };
 
@@ -215,6 +141,7 @@ const DashboardReceiptAdd = ({ token }) => {
           {...register("phone", {
             required: "Поле обязательно к заполнению",
           })}
+          key={1}
         />
         {active && <InputIcon prop={0} />}
         <div className="mt-1">
@@ -251,6 +178,7 @@ const DashboardReceiptAdd = ({ token }) => {
             required: "Поле обязательно к заполнению",
             pattern: /^[0-9]+$/,
           })}
+          key={2}
         />
         {active && <InputIcon prop={2} />}
         <div className="mt-1">
@@ -289,6 +217,7 @@ const DashboardReceiptAdd = ({ token }) => {
             required: "Поле обязательно к заполнению",
             pattern: /^[0-9]+$/,
           })}
+          key={3}
         />
         {active && <InputIcon prop={3} />}
         <div className="mt-1">
@@ -338,6 +267,7 @@ const DashboardReceiptAdd = ({ token }) => {
             required: "Поле обязательно к заполнению",
             value: todayDate(),
           })}
+          key={4}
         />
         {active && <InputIcon prop={4} />}
         <div className="mt-1">
@@ -373,6 +303,7 @@ const DashboardReceiptAdd = ({ token }) => {
           {...register("name_purchase", {
             required: "Поле обязательно к заполнению",
           })}
+          key={5}
         />
         {active && <InputIcon prop={5} />}
         <div className="mt-1">
@@ -409,6 +340,7 @@ const DashboardReceiptAdd = ({ token }) => {
             pattern: /^[0-9]+$/,
             required: "Поле обязательно к заполнению",
           })}
+          key={6}
         />
         {active && <InputIcon prop={6} />}
         <div className="mt-1">
@@ -447,6 +379,7 @@ const DashboardReceiptAdd = ({ token }) => {
             required:
               "Поле обязательно (если вы не хотите снимать бонусы, напишите 0)",
           })}
+          key={7}
         />
         {active && <InputIcon prop={7} />}
         <div className="mt-1">
@@ -505,6 +438,7 @@ const DashboardReceiptAdd = ({ token }) => {
           {...register("to_order", {
             value: isChecked,
           })}
+          key={8}
         />
         <p>Товар на заказ</p>
       </div>

@@ -20,6 +20,7 @@ const confirmEmailUrl = `${API_KEY}/api/v1/confirmed_email/`;
 const loginUrl = `${API_KEY}/auth/token/login/`;
 
 const clientUrl = `${API_KEY}/api/v1/client/`;
+const refreshClientBonusesUrl = `${API_KEY}/api/v1/refresh_bonuses_client/`;
 const partnerUrl = `${API_KEY}/api/v1/partner/`;
 
 const remove_addUrl = `${API_KEY}/api/v1/add_or_remove_client/`;
@@ -61,4 +62,5 @@ export {
   confirmEmailUrl,
   addNotificationChoiseUrl,
   resetPasswordCodeUrl,
+  refreshClientBonusesUrl,
 };

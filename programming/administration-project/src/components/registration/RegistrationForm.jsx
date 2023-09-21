@@ -371,7 +371,8 @@ const RegistrationForm = () => {
             <input type="checkbox" className="w-4 h-4" required />
             <p>
               Продолжая, вы принимаете{" "}
-              <a href="#" className="text-primary underline underline-offset-4">
+              <a href="http://localhost:5173/src/assets/client-offer.docx" target="_blank" 
+              className="text-primary underline underline-offset-4">
                 оферту
               </a>
             </p>
